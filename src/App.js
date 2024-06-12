@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Cart from "./pages/cart/Cart";
+import CartOrder from "./pages/cart/CartOrder.jsx";
 import Order from "./pages/order/Order";
 import Home from "./pages/home/Home";
 
@@ -10,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/order" element={<Order />} />
+        <Route path="/order" element={<CartOrder />} />
       </Routes>
     </BrowserRouter>
   );
