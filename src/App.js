@@ -1,19 +1,29 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import * as React from 'react';
+import { ChakraBaseProvider, extendBaseTheme, theme as chakraTheme } from '@chakra-ui/react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/home/Home';
+import MainLayout from './layouts/MainLayout';
 
-import Cart from "./pages/cart/Cart";
-import Order from "./pages/order/Order";
-import Home from "./pages/home/Home";
+const { Button } = chakraTheme.components;
 
-function App() {
+const theme = extendBaseTheme({
+  components: {
+    Button,
+  },
+});
+
+const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/order" element={<Order />} />
-      </Routes>
-    </BrowserRouter>
+    <ChakraBaseProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainLayout headerTitle="Home Page" />}>
+            <Route index element={<Home />} />
+          </Route>
+        </Routes>
+      </Router>
+    </ChakraBaseProvider>
   );
-}
+};
 
 export default App;
