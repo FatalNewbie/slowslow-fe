@@ -11,16 +11,16 @@ const Header = () => {
           {/* 왼쪽 공간 확보 */}
         </Flex>
         <HStack spacing={4}>
-          <Image src={CampingImage} alt="캠핑" boxSize="80px" />
-          <Text fontSize="4xl" fontWeight="bold" textAlign="center" letterSpacing="widest">
+          <Image src={CampingImage} alt="캠핑" boxSize="70px" />
+          <Text fontSize="3xl" fontWeight="bold" textAlign="center" letterSpacing="widest">
             늘짝늘짝
           </Text>
         </HStack>
         <Flex flex="1" justifyContent="flex-end" pr={12}>
-          <HStack spacing={6}>
-            <IconButton icon={<FaSignOutAlt size="2em" />} aria-label="Logout" variant="ghost" color="#444E42"  />
-            <IconButton icon={<FaUser size="2em" />} aria-label="User" variant="ghost" color="#444E42"  />
-            <IconButton icon={<FaShoppingCart size="2em" />} aria-label="Cart" variant="ghost" color="#444E42"  />
+          <HStack spacing={8}>
+            <IconButton icon={<FaSignOutAlt size="1.8em" />} aria-label="Logout" variant="ghost" color="#444E42"  />
+            <IconButton icon={<FaUser size="1.8em" />} aria-label="User" variant="ghost" color="#444E42"  />
+            <IconButton icon={<FaShoppingCart size="1.8em" />} aria-label="Cart" variant="ghost" color="#444E42"  />
           </HStack>
         </Flex>
       </Flex>
