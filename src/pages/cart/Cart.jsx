@@ -7,7 +7,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
-import CartProduct from "./CartProduct";
+import CartProduct from "./components/CartProduct";
 
 // MUI 체크박스 만드는데 피료한 라벨
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -51,7 +51,6 @@ function Cart() {
         setTotalProductAmount(
           (prevTotal) => prevTotal + product.productCnt * details.price
         );
-        console.log("hello!");
 
         return {
           ...product,
