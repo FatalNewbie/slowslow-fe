@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Typography, Divider } from '@mui/material';
 
 const Home = () => {
   return (
-    <Box px={10} py={5}>
-      <Heading as="h1" fontSize="3xl" fontWeight="bold" mb={2} ml={6}>
+    <Box px={5} py={2}>
+      <Typography sx={{ fontWeight: 'bold', fontSize: '1.7rem' }} mb={1} ml={5}>
         홈페이지
-      </Heading>
-      <Box height="1px" bg="rgba(128, 128, 128, 0.8)" width="100%" mb={4} />
-      <Text>Welcome to the home page!</Text>
+      </Typography>
+      <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
+      <Typography>Welcome to the home page!</Typography>
     </Box>
   );
 };

@@ -1,28 +1,33 @@
 import * as React from 'react';
-import { ChakraBaseProvider, extendBaseTheme, theme as chakraTheme } from '@chakra-ui/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/home/Home';
 import MainLayout from './layouts/MainLayout';
+import './index.css'; // CSS 파일 임포트
 
-const { Button } = chakraTheme.components;
-
-const theme = extendBaseTheme({
+const theme = createTheme({
   components: {
-    Button,
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          // 커스터마이징 옵션 추가
+        },
+      },
+    },
   },
 });
 
 const App = () => {
   return (
-    <ChakraBaseProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Router>
         <Routes>
-          <Route path="/" element={<MainLayout headerTitle="Home Page" />}>
+          <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
           </Route>
         </Routes>
       </Router>
-    </ChakraBaseProvider>
+    </ThemeProvider>
   );
 };
 

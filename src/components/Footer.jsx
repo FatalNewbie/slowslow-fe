@@ -1,31 +1,32 @@
 import React from 'react';
-import { Box, Text, Flex, HStack } from '@chakra-ui/react';
+import { Box, Typography, Stack, Divider } from '@mui/material';
 import CampingImage from '../assets/campingicon.png'; // 이미지 파일 가져오기
 
 const Footer = () => {
   return (
-    <Box as="footer" bg="#586555" color="white" pt={20} px={4} pb={20}>
-      <Flex direction="column" align="center">
-        <HStack spacing={2} mb={20}>
-          <img src={CampingImage} alt="캠핑" style={{ width: '50px', height: '50px' }} /> 
-          <Text fontSize="3xl" fontWeight="bold" letterSpacing="widest">
+    <Box component="footer" sx={{ backgroundColor: '#586555', color: 'white', pt: 5, px: 2, pb: 5 }}>
+      <Stack direction="column" alignItems="center">
+        <Stack direction="row" spacing={1} mt={3.5} mb={7.5} alignItems="center">
+          <img src={CampingImage} alt="캠핑" style={{ width: '50px', height: '50px', marginTop: '-10px' }} /> 
+          <Typography variant="h5" fontWeight="bold" letterSpacing={3}>
             늘짝늘짝
-          </Text>
-        </HStack>
-        <Box width="80%" height="1px" bg="rgba(255, 255, 255, 0.8)" mb={10}></Box>
-        {/* <Divider borderColor="white" borderWidth="2px" width="80%" mb={10} /> */}
-        <HStack spacing={10} mt={4} mb={10}>
-          <Text fontSize="sm">박원정</Text>
-          <Text fontSize="sm">고의성</Text>
-          <Text fontSize="sm">김경래</Text>
-          <Text fontSize="sm">김연지</Text>
-          <Text fontSize="sm">김이삭</Text>
-          <Text fontSize="sm">조한휘</Text>
-        </HStack>
-        <Text fontSize="sm" mt={20}>
+          </Typography>
+        </Stack>
+        <Box width="80%">
+          <Divider sx={{ bgcolor: 'rgba(255, 255, 255, 0.8)', mb: 2 }} />
+        </Box>
+        <Stack direction="row" spacing={4} mt={4} mb={6}>
+          <Typography variant="body2">박원정</Typography>
+          <Typography variant="body2">고의성</Typography>
+          <Typography variant="body2">김경래</Typography>
+          <Typography variant="body2">김연지</Typography>
+          <Typography variant="body2">김이삭</Typography>
+          <Typography variant="body2">조한휘</Typography>
+        </Stack>
+        <Typography variant="body2" mt={5} mb={3}>
           늘짝늘짝 @ 2024. All rights reserved.
-        </Text>
-      </Flex>
+        </Typography>
+      </Stack>
     </Box>
   );
 };
