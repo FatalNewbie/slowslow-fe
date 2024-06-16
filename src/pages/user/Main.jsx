@@ -1,16 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { checkTokenValidity, setToken, removeToken } from './utils/auth';
 
 function Main() {
+    const navigate = useNavigate();
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        if (checkTokenValidity()) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, []);
+
+    const handleLogin = () => {
+        navigate('/login');
+    };
+
     const handleLogout = () => {
-        // 로그아웃 버튼을 눌렀을 때 실행되는 함수
-        localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 제거
-        // 다른 로그아웃 관련 작업을 수행할 수 있음
+        removeToken();
+
+        setIsLoggedIn(false);
+
+        navigate('/');
     };
 
     return (
         <div>
-            <h1>로그인 성공</h1>
-            <button onClick={handleLogout}>로그아웃</button>
+            <h1>임시 메인페이지</h1>
+
+            <nav>
+                {isLoggedIn ? (
+                    <button onClick={handleLogout}>
+                        <FaSignOutAlt />
+                    </button>
+                ) : (
+                    <button onClick={handleLogin}>
+                        <FaSignInAlt />
+                    </button>
+                )}
+            </nav>
         </div>
     );
 }
