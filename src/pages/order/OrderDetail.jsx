@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -16,6 +16,7 @@ import { useToken } from '../../contexts/TokenContext'; // TokenContext 임포�
 const OrderDetail = () => {
   const { orderId } = useParams(); // URL 파라미터에서 orderId 가져오기
   const { token } = useToken(); // Context에서 토큰 가져오기
+  const navigate = useNavigate(); // useNavigate 훅 사용
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,10 +47,10 @@ const OrderDetail = () => {
           shipTel: data.shipTel,
           shipAddr: data.shipAddr,
           shipReq: data.shipReq,
-          orderDetails: data.orderDetails,  // 추가
-          status: data.status,  // 추가
-          totalPrice: data.totalPrice,  // 추가
-          userId: data.userId  // 추가
+          orderDetails: data.orderDetails,
+          status: data.status,
+          totalPrice: data.totalPrice,
+          userId: data.userId
         });
       } catch (err) {
         setError(err);
@@ -77,6 +78,7 @@ const OrderDetail = () => {
 
       alert('주문이 취소되었습니다.');
       setOrder({ ...order, status: 'CANCELLED' });
+      navigate('/mypage/orders'); // 주문 취소 후 mypage/orders로 리다이렉트
     } catch (err) {
       alert('주문 취소 중 오류가 발생했습니다.');
     }
