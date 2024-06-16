@@ -53,7 +53,7 @@ const Login = () => {
             // localStorage에 토큰 저장
             localStorage.setItem('token', token);
 
-            navigate('/main');
+            navigate('/myPage');
         } catch (error) {
             console.error('Login error:', error);
             // 에러 처리 로직 추가
