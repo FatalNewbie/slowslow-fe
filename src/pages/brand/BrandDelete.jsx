@@ -1,5 +1,5 @@
 import React from 'react';
-import './Modal.css';
+import '../../components/Modal.css';
 
 const BrandDelete = ({ show, onClose, onConfirm }) => {
     if (!show) {
