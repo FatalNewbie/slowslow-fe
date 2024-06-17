@@ -23,7 +23,7 @@ const MyPage = () => {
                 navigate('/login'); // 토큰이 유효하지 않거나 에러가 발생하면 로그인 페이지로 리다이렉트
             });
         } else {
-            navigate('/myPage');
+            navigate('/login');
         }
     }, [navigate]);
 
