@@ -41,6 +41,16 @@ const MyPage = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
+                    navigate('/checkPassword');
+                }}
+                sx={{ mt: 2 }}
+            >
+                정보 수정
+            </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
                     localStorage.removeItem('token');
                     navigate('/main');
                 }}
