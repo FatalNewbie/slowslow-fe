@@ -21,7 +21,7 @@ const BrandListAdmin = () => {
     }, []);
 
     const handleAddBrand = (brandName) => {
-        fetch('http://localhost:8080/brand/post', {
+        fetch('http://localhost:8080/admin/brand/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const BrandListAdmin = () => {
     };
 
     const handleUpdateBrand = (brandName) => {
-        fetch(`http://localhost:8080/brand/edit/${brandToEdit.id}`, {
+        fetch(`http://localhost:8080/admin/brand/edit/${brandToEdit.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const BrandListAdmin = () => {
     };
 
     const handleDeleteBrand = () => {
-        fetch(`http://localhost:8080/brand/delete/${deleteBrandId}`, {
+        fetch(`http://localhost:8080/admin/brand/delete/${deleteBrandId}`, {
             method: 'DELETE',
         })
         .then(() => {

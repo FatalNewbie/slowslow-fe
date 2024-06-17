@@ -21,7 +21,7 @@ const CategoryListAdmin = () => {
     }, []);
 
     const handleAddCategory = (categoryName) => {
-        fetch('http://localhost:8080/category/post', {
+        fetch('http://localhost:8080/admin/category/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const CategoryListAdmin = () => {
     };
 
     const handleUpdateCategory = (categoryName) => {
-        fetch(`http://localhost:8080/category/edit/${categoryToEdit.id}`, {
+        fetch(`http://localhost:8080/admin/category/edit/${categoryToEdit.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const CategoryListAdmin = () => {
     };
 
     const handleDeleteCategory = () => {
-        fetch(`http://localhost:8080/category/delete/${deleteCategoryId}`, {
+        fetch(`http://localhost:8080/admin/category/delete/${deleteCategoryId}`, {
             method: 'DELETE',
         })
         .then(() => {

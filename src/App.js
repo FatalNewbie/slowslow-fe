@@ -51,7 +51,7 @@ function App() {
           <Route path="/brand/:id" element={<MainLayout />}>
             <Route index element={<BrandPage />} />
           </Route>
-          <Route path="/brand/admin" element={<MainLayout />}>
+          <Route path="/admin/brand" element={<MainLayout />}>
             <Route index element={<BrandAdmin />} />
           </Route>
           <Route path="/category" element={<MainLayout />}>
@@ -60,7 +60,7 @@ function App() {
           <Route path="/category/:id" element={<MainLayout />}>
             <Route index element={<CategoryPage />} />
           </Route>
-          <Route path="/category/admin" element={<MainLayout />}>
+          <Route path="/admin/category" element={<MainLayout />}>
             <Route index element={<CategoryAdmin />} />
           </Route>
         </Routes>
