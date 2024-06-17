@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -10,8 +10,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { AuthContext } from './AuthContext';
 
 const Login = () => {
+    const { login } = useContext(AuthContext);
+
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -50,10 +53,10 @@ const Login = () => {
             // 토큰을 응답 헤더에서 가져오기
             const token = response.headers.get('Authorization');
 
-            // localStorage에 토큰 저장
-            localStorage.setItem('token', token);
+            //localStorage에 토큰 저장
+            login(token);
 
-            navigate('/main');
+            navigate('/');
         } catch (error) {
             console.error('Login error:', error);
             // 에러 처리 로직 추가

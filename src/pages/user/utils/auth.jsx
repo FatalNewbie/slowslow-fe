@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode';
+
 export const setToken = (token) => {
     localStorage.setItem('token', token);
 };
@@ -7,12 +9,21 @@ export const removeToken = () => {
 };
 
 export const isTokenValid = (token) => {
-    // 토큰 유효성 검사 로직 구현
-    // 예: 토큰 만료 시간 확인
-    const expirationTime = 3600; // 1시간
-    const tokenIssuedAt = Date.now() / 1000;
-    const tokenExpiresAt = tokenIssuedAt + expirationTime;
-    return Date.now() / 1000 < tokenExpiresAt;
+    try {
+        // 토큰 디코딩
+        const decoded = jwtDecode(token);
+
+        // 만료 시간 확인
+        const currentTime = Date.now() / 1000; // 현재 시간 (초 단위)
+        const expirationTime = decoded.exp; // 토큰 만료 시간 (초 단위)
+
+        // 토큰이 아직 유효한지 확인
+        return currentTime < expirationTime;
+    } catch (error) {
+        // 토큰 디코딩 실패 시 처리
+        console.error('Error decoding token:', error);
+        return false;
+    }
 };
 
 export const checkTokenValidity = () => {
