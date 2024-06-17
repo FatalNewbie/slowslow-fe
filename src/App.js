@@ -28,6 +28,6 @@ function App() {
       </BrowserRouter>
     </TokenProvider>
   );
-}
+};
 
 export default App;
