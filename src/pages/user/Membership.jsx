@@ -191,6 +191,7 @@ function Membership() {
                             variant="contained"
                             sx={{
                                 mb: 2,
+                                height: 50,
                                 width: 400,
                                 backgroundColor: '#586555',
                                 borderRadius: '10px',

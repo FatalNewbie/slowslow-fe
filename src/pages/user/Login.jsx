@@ -48,15 +48,21 @@ const Login = () => {
             }
 
             // 토큰을 응답 헤더에서 가져오기
-            const token = response.headers.get('Authorization');
+            const authHeader = response.headers.get('Authorization');
+            const token = authHeader ? authHeader.replace('Bearer ', '') : null;
 
-            // localStorage에 토큰 저장
-            localStorage.setItem('token', token);
-
-            navigate('/myPage');
+            if(token) {// localStorage에 토큰 저장
+                localStorage.setItem('token', token);
+    
+                navigate('/myPage');
+            } else {
+                throw new Error('No token received');
+            }
+            
         } catch (error) {
             console.error('Login error:', error);
             // 에러 처리 로직 추가
+            alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
         }
     };
 
@@ -126,6 +132,7 @@ const Login = () => {
                         variant="contained"
                         sx={{
                             mb: 2,
+                            height: 50,
                             width: 400,
                             backgroundColor: '#586555',
                             borderRadius: '10px',
@@ -138,7 +145,7 @@ const Login = () => {
                     </Button>
                 </form>
                 <Button
-                    sx={{ width: 400, color: '#586555', border: '2px solid #586555', borderRadius: '10px' }}
+                    sx={{ height: 50, width: 400, color: '#586555', border: '2px solid #586555', borderRadius: '10px' }}
                     onClick={handleSignupClick}
                     variant="text"
                 >

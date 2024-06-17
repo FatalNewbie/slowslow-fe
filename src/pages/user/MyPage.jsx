@@ -4,16 +4,16 @@ import { Box, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
             axios.get('/api/v1/mypage', {
                 headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                    Authorization: storedToken,
+                },
             })
             .then(response => {
                 setUserData(response.data);
@@ -42,7 +42,7 @@ const MyPage = () => {
                 color="primary"
                 onClick={() => {
                     localStorage.removeItem('token');
-                    navigate('/login');
+                    navigate('/main');
                 }}
                 sx={{ mt: 2 }}
             >
