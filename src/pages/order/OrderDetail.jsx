@@ -145,7 +145,7 @@ const OrderDetail = () => {
   return (
     <Container maxWidth="md">
       <Typography sx={{ fontWeight: 'bold', fontSize: '1.7rem' }} mb={1} ml={5}>
-        주문 상세
+        주문상세
       </Typography>
       <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
       {order ? (
@@ -159,39 +159,48 @@ const OrderDetail = () => {
                 {formatDate(order.createdDate)}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center">
+            <Grid item xs={12} sm={6} container direction="column" spacing={2}>
               {order.orderDetails.map((detail) => (
-                <Box key={detail.id} mx={1} textAlign="center">
-                  <img src={detail.orderImg} style={{ width: '100px', height: '100px' }} />
-                  <Typography variant="body2">{detail.productName}</Typography>
-                  <Typography variant="body2">수량: {detail.productCnt}</Typography>
-                  <Typography variant="body2">{formatNumber(detail.productPrice)}원</Typography>
-                </Box>
+                <Grid item key={detail.id} container spacing={2} alignItems="center">
+                  <Grid item>
+                    <img src={detail.orderImg} style={{ width: '100px', height: '100px' }} />
+                  </Grid>
+                  <Grid item>
+                    <Typography variant="body2">{detail.productName}</Typography>
+                    <Typography variant="body2">수량: {detail.productCnt}</Typography>
+                    <Box component="span" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{formatNumber(detail.productPrice)}</Box>
+                    <Box component="span" sx={{ fontSize: '0.875rem' }}>원</Box>
+
+                  </Grid>
+                </Grid>
               ))}
             </Grid>
             <Grid item xs={12} sm={3} container direction="column" justifyContent="flex-end">
               <Typography variant="h5" align="right">
-                <Box component="span" sx={{ fontWeight: 'bold' }}>{formatNumber(order.totalPrice)}</Box>
+                <Box component="span" sx={{ fontSize: '0.875rem' }}>총 주문금액:   </Box>
+                <Box component="span" sx={{ fontWeight: 'bold', fontSize: '1.8rem'}}>{formatNumber(order.totalPrice)}</Box>
                 <Box component="span" sx={{ fontSize: '0.875rem' }}>원</Box>
               </Typography>
             </Grid>
           </Grid>
           <Divider sx={{ my: 2 }} />
-          <Grid container spacing={2}>
+          <Grid container spacing={16}>
             <Grid item xs={6}>
-              <Typography variant="subtitle1">주문자</Typography>
-              <Typography variant="body2">{order.orderName}</Typography>
-              <Typography variant="body2">{order.orderEmail}</Typography>
-              <Typography variant="body2">{order.orderTel}</Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>주문자</Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>{order.orderName}</Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>{order.orderEmail}</Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>{order.orderTel}</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="subtitle1">배송지</Typography>
-              <Typography variant="body2">{order.shipName}</Typography>
-              <Typography variant="body2">{order.shipAddr}</Typography>
-              <Typography variant="body2">{order.shipTel}</Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>배송지</Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>{order.shipName}</Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>{order.shipAddr}</Typography>
+              <Typography variant="body2" sx={{ mb: 2 }}>{order.shipTel}</Typography>
+              <Divider sx={{ my: 1, mb: 2 }} />
               <Typography variant="body2">요청사항: {order.shipReq}</Typography>
             </Grid>
           </Grid>
+
           <Divider sx={{ my: 2 }} />
           <Box display="flex" justifyContent="center" mt={3}>
             {order.status === 'PENDING' ? (

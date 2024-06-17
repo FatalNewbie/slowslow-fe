@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Typography, CircularProgress, Box, Grid, TextField, Button, Divider, Checkbox, FormControlLabel } from '@mui/material';
+import { Container, Typography, CircularProgress, Box, Grid, TextField, Button, Divider, Checkbox, FormControlLabel, Card, CardContent, FormControl, FormGroup } from '@mui/material';
 import { styled } from '@mui/system';
-import { useToken } from '../../contexts/TokenContext'; // TokenContext 임포트
+import { useToken } from '../../contexts/TokenContext';
 
-// 로컬 스토리지에서 장바구니 데이터를 가져오는 함수
 const getCartData = () => {
   return JSON.parse(localStorage.getItem("orders")) || [];
 };
@@ -29,8 +28,8 @@ const FormSection = styled(Box)({
 });
 
 const OrderPage = () => {
-  const { token, userId } = useToken(); // TokenContext에서 토큰과 userId 가져오기
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const { token, userId } = useToken();
+  const navigate = useNavigate();
   const [orderPageData, setOrderPageData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,15 +42,18 @@ const OrderPage = () => {
     shipAddr: '',
     shipReq: ''
   });
-  const [paymentConfirmed, setPaymentConfirmed] = useState(false);
-  const [agreementConfirmed, setAgreementConfirmed] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [agreementConfirmed, setAgreementConfirmed] = useState({
+    personalInfo: false,
+    orderAgreement: false
+  });
 
   useEffect(() => {
-    // 로컬 스토리지에서 가짜 데이터를 가져오는 함수
     const fetchOrderPage = () => {
       try {
         const cartData = getCartData();
         const totalPrice = cartData.reduce((total, item) => total + (item.productCnt * item.productPrice), 0);
+
         const data = {
           orderDetails: cartData,
           totalPrice,
@@ -63,6 +65,7 @@ const OrderPage = () => {
           shipAddr: "서울특별시 홍지동 123-12, 201호",
           shipReq: "문 앞에 놔주세요."
         };
+
         setOrderPageData(data);
         setFormData({
           orderName: data.orderName,
@@ -89,33 +92,30 @@ const OrderPage = () => {
       return;
     }
 
-    if (!paymentConfirmed || !agreementConfirmed) {
+    if (!paymentMethod || !agreementConfirmed.personalInfo || !agreementConfirmed.orderAgreement) {
       alert('결제 수단과 주문자 동의에 체크해주세요.');
       return;
     }
 
     const orderData = {
       ...formData,
-      userId, // userId 추가
+      userId,
       orderDetails: orderPageData.orderDetails,
       totalPrice: orderPageData.totalPrice
     };
 
-    console.log('Order Data:', orderData);
-
     try {
-      const response = await fetch(`http://localhost:8080/orders?paymentConfirmed=${paymentConfirmed}&agreementConfirmed=${agreementConfirmed}`, {
+      const response = await fetch(`http://localhost:8080/orders?paymentConfirmed=true&agreementConfirmed=true`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': token // TokenContext에서 가져온 토큰 사용
+          'Authorization': token
         },
         body: JSON.stringify(orderData)
       });
 
       if (!response.ok) {
         if (response.status === 500) {
-          // 주문 실패 시, 실패 페이지로 이동
           navigate('/orders/failure');
         } else {
           const errorResponse = await response.text();
@@ -124,8 +124,6 @@ const OrderPage = () => {
       }
 
       const updatedOrder = await response.json();
-      console.log('Order placed successfully:', updatedOrder);
-      // 주문 성공 시, 성공 페이지로 이동
       navigate('/orders/success');
     } catch (err) {
       alert('주문 중 오류가 발생했습니다: ' + err.message);
@@ -139,13 +137,15 @@ const OrderPage = () => {
     });
   };
 
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    if (name === 'paymentConfirmed') {
-      setPaymentConfirmed(checked);
-    } else if (name === 'agreementConfirmed') {
-      setAgreementConfirmed(checked);
-    }
+  const handlePaymentChange = (e) => {
+    setPaymentMethod(e.target.name);
+  };
+
+  const handleAgreementChange = (e) => {
+    setAgreementConfirmed({
+      ...agreementConfirmed,
+      [e.target.name]: e.target.checked
+    });
   };
 
   if (loading) {
@@ -156,29 +156,53 @@ const OrderPage = () => {
     return <Typography variant="h6" color="error">오류가 발생했습니다: {error}</Typography>;
   }
 
+  const shippingFee = orderPageData.totalPrice >= 50000 ? 0 : 3000;
+
   return (
+    <Container maxWidth="md">
+      <Typography sx={{ fontWeight: 'bold', fontSize: '1.7rem' }} mb={1} ml={5}>
+        주문서
+      </Typography>
+      <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
     <StyledContainer maxWidth="md">
-      <SectionTitle>주문/결제</SectionTitle>
       <FormSection>
         <SectionTitle variant="h6">주문 목록</SectionTitle>
-        <Grid container spacing={2}>
-          {orderPageData.orderDetails.map((detail) => (
-            <Grid item xs={12} key={detail.productId}>
-              <Box display="flex" alignItems="center" mb={2}>
-                <img src={detail.orderImg} alt={detail.productName} style={{ width: '100px', height: '100px', borderRadius: '8px', marginRight: '1rem' }} />
-                <Box>
-                  <Typography variant="body1" fontWeight="bold">{detail.productName}</Typography>
-                  <Typography variant="body2">수량: {detail.productCnt}</Typography>
-                  <Typography variant="body2">{detail.productPrice.toLocaleString()}원</Typography>
-                </Box>
-              </Box>
+        <Card variant="outlined">
+          <CardContent sx={{ px: 4 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={8}>
+                {orderPageData.orderDetails.map((detail) => (
+                  <Box display="flex" alignItems="center" mb={2} key={detail.productId}>
+                    <img src={detail.orderImg} alt={detail.productName} style={{ width: '100px', height: '100px', borderRadius: '8px', marginRight: '1rem' }} />
+                    <Box>
+                      <Typography variant="body1" fontWeight="bold">{detail.productName}</Typography>
+                      <Typography variant="body2">수량: {detail.productCnt}</Typography>
+                      <Typography variant="body2">{detail.productPrice.toLocaleString()}원</Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Grid>
+              <Grid item xs={4} container direction="column" justifyContent="center">
+                <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>주문 금액</Typography>
+                <Divider sx={{ my: 1 }} />
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  총 상품 가격: <Box component="span" sx={{ fontWeight: 'bold' }}>{orderPageData.totalPrice.toLocaleString()}원</Box>
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  총 배송비: <Box component="span" sx={{ fontWeight: 'bold' }}>+{shippingFee.toLocaleString()}원</Box>
+                </Typography>
+                <Divider sx={{ my: 1 }} />
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  최종 결제 금액: <Box component="span" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{(orderPageData.totalPrice + shippingFee).toLocaleString()}원</Box>
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#586555', fontWeight: 'bold' }}>
+                  50,000원 이상 구매시 배송비 무료
+                </Typography>
+              </Grid>
+
             </Grid>
-          ))}
-        </Grid>
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="body1">총 상품 가격: {orderPageData.totalPrice.toLocaleString()}원</Typography>
-        <Typography variant="body1">총 배송비: 3,000원</Typography>
-        <Typography variant="h6">최종 결제 금액: {(orderPageData.totalPrice + 3000).toLocaleString()}원</Typography>
+          </CardContent>
+        </Card>
       </FormSection>
       <FormSection>
         <SectionTitle variant="h6">주문자 정보</SectionTitle>
@@ -244,29 +268,90 @@ const OrderPage = () => {
       </FormSection>
       <FormSection>
         <SectionTitle variant="h6">결제 정보</SectionTitle>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={paymentConfirmed}
-              onChange={handleCheckboxChange}
-              name="paymentConfirmed"
-              color="primary"
+        <FormControl component="fieldset">
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={paymentMethod === 'kakaopay'}
+                  onChange={handlePaymentChange}
+                  name="kakaopay"
+                  color="primary"
+                />
+              }
+              label="카카오페이"
             />
-          }
-          label="결제 수단에 체크해주세요."
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={agreementConfirmed}
-              onChange={handleCheckboxChange}
-              name="agreementConfirmed"
-              color="primary"
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={paymentMethod === 'creditcard'}
+                  onChange={handlePaymentChange}
+                  name="creditcard"
+                  color="primary"
+                />
+              }
+              label="신용카드"
             />
-          }
-          label="주문자 동의에 체크해주세요."
-        />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={paymentMethod === 'phone'}
+                  onChange={handlePaymentChange}
+                  name="phone"
+                  color="primary"
+                />
+              }
+              label="휴대폰 결제"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={paymentMethod === 'account'}
+                  onChange={handlePaymentChange}
+                  name="account"
+                  color="primary"
+                />
+              }
+              label="실시간 계좌이체"
+            />
+          </FormGroup>
+        </FormControl>
       </FormSection>
+      <FormSection>
+        <SectionTitle variant="h6">주문자 동의</SectionTitle>
+        <FormControl component="fieldset">
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={agreementConfirmed.personalInfo}
+                  onChange={handleAgreementChange}
+                  name="personalInfo"
+                  color="primary"
+                />
+              }
+              label="개인정보 수집 이용"
+            />
+            <Typography variant="body2" sx={{ ml: 4 }}>주문자 정보(연락처, 이메일) / 배송지 정보(이름, 연락처, 주소) / 관계 법령에 따라 5년간 보관</Typography>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={agreementConfirmed.orderAgreement}
+                  onChange={handleAgreementChange}
+                  name="orderAgreement"
+                  color="primary"
+                />
+              }
+              label="주문 동의"
+            />
+            <Typography variant="body2" sx={{ ml: 4 }}>주문 / 결제 정보를 확인하여 구매 진행에 동의합니다.</Typography>
+          </FormGroup>
+        </FormControl>
+      </FormSection>
+      <Divider sx={{ my: 2 }} />
+      <Box sx={{ backgroundColor: '#E5F4E3', padding: '1rem', borderRadius: '8px' }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>최종 결제 금액: <Box component="span" sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>{(orderPageData.totalPrice + shippingFee).toLocaleString()}원</Box></Typography>
+      </Box>
       <Box display="flex" justifyContent="center" mt={4}>
         <Button
           variant="contained"
@@ -283,12 +368,13 @@ const OrderPage = () => {
             }
           }}
           onClick={handleSubmitOrder}
-          disabled={!paymentConfirmed || !agreementConfirmed} // 결제 수단과 주문자 동의가 체크되지 않으면 버튼 비활성화
+          disabled={!paymentMethod || !agreementConfirmed.personalInfo || !agreementConfirmed.orderAgreement}
         >
           주문하기
         </Button>
       </Box>
     </StyledContainer>
+    </Container>
   );
 };
 
