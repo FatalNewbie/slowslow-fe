@@ -8,21 +8,56 @@ function CartOrder() {
     event.preventDefault();
 
     // 로컬 스토리지에서 물픔들을 가져옴.
-    var storedUsers = JSON.parse(localStorage.getItem("orders"));
+    let storedUsers = JSON.parse(localStorage.getItem("orders"));
+    let isExist = false;
 
     // 만약 비어있으면 새로 만들어서 넣어줌.
     if (storedUsers == null) {
-      var order = [
-        { productId: productId, productCnt: productCnt, checked: true },
+      let order = [
+        {
+          productId: Number(productId),
+          productCnt: Number(productCnt),
+          checked: true,
+        },
       ];
       localStorage.setItem("orders", JSON.stringify(order));
       return;
     }
 
-    // 안 비어있으면 가져온 json객채 배열에 현재 값을 추가해서 다시 로컬스토리지에 저장함.
+    // 안 비어있으면 기존에 존재하는 값인지 확인함
+    storedUsers.map((cart) => {
+      if (Number(cart.productId) === Number(productId)) {
+        isExist = true;
+      }
+    });
+
+    console.log(isExist);
+
+    // 같은 값이 존재한다면 현재 갯수를 추가해줌.
+    if (isExist) {
+      let newStoredUsers = storedUsers.map((cart) => {
+        if (cart.productId === Number(productId)) {
+          console.log(Number(cart.productCnt + productCnt));
+          return {
+            ...cart,
+            productCnt: Number(cart.productCnt) + Number(productCnt),
+          };
+        }
+        return cart;
+      });
+
+      // 갯수추가한 정보 로컬스토리지에 저장.
+      localStorage.setItem("orders", JSON.stringify(newStoredUsers));
+
+      //isExist 초기화
+      isExist = false;
+      return;
+    }
+
+    // 안 비어있고 중복된 값이 없다면 json객채 배열에 현재 값을 추가해서 다시 로컬스토리지에 저장함.
     storedUsers.push({
-      productId: productId,
-      productCnt: productCnt,
+      productId: Number(productId),
+      productCnt: Number(productCnt),
       checked: true,
     });
     localStorage.setItem("orders", JSON.stringify(storedUsers));
