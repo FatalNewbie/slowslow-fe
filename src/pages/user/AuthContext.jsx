@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = (token) => {
-        const isValid = checkTokenValidity(token);
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
     };
