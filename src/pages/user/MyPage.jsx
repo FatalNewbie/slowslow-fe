@@ -10,18 +10,19 @@ const MyPage = () => {
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
-            axios.get('/api/v1/myPage', {
-                headers: {
-                    Authorization: `Bearer ${storedToken}`,
-                },
-            })
-            .then(response => {
-                setUserData(response.data);
-            })
-            .catch(error => {
-                console.error('There was an error!', error);
-                navigate('/login'); // 토큰이 유효하지 않거나 에러가 발생하면 로그인 페이지로 리다이렉트
-            });
+            axios
+                .get('/api/v1/myPage', {
+                    headers: {
+                        Authorization: `Bearer ${storedToken}`,
+                    },
+                })
+                .then((response) => {
+                    setUserData(response.data);
+                })
+                .catch((error) => {
+                    console.error('There was an error!', error);
+                    navigate('/login'); // 토큰이 유효하지 않거나 에러가 발생하면 로그인 페이지로 리다이렉트
+                });
         } else {
             navigate('/login');
         }
@@ -33,7 +34,9 @@ const MyPage = () => {
 
     return (
         <Box px={5} py={2}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold' }} mb={2}>마이페이지</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 'bold' }} mb={2}>
+                마이페이지
+            </Typography>
             <Typography variant="h6">이름: {userData.name}</Typography>
             <Typography variant="h6">이메일: {userData.username}</Typography>
             <Typography variant="h6">전화번호: {userData.phoneNumber}</Typography>
