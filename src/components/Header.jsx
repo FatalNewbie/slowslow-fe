@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Box, Button, Stack } from '@mui/material';
-import { FaUser, FaShoppingCart, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaShoppingCart, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import CampingImage from '../assets/campingicon.png'; // 이미지 파일 가져오기
 import { checkTokenValidity, setToken, removeToken } from '../utils/auth';
@@ -46,7 +46,7 @@ const Header = () => {
     };
 
     const handleMyPage = () => {
-        navigate('mypage');
+        navigate('/mypage');
     };
     return (
         <AppBar position="static" sx={{ backgroundColor: 'white', color: 'black', boxShadow: 3, mb: 2 }}>

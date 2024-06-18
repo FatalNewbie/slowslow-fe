@@ -71,11 +71,18 @@ const App = () => {
                     </Route>
                     <Route path="/admin/order" element={<MainLayout />}>
                         <Route index element={<AdminOrder />} />
-                    <Route index element={<Main />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/main" element={<Main />} />
-                    <Route path="/membership" element={<Membership />} />
-                    <Route path="/mypage" element={<MyPage />} />
+                    </Route>
+                    <Route path="/login" element={<MainLayout />}>
+                        <Route index element={<Login />} />
+                    </Route>
+                    <Route path="/main" element={<MainLayout />}>
+                        <Route index element={<Main />} />
+                    </Route>
+                    <Route path="/membership" element={<MainLayout />}>
+                        <Route index element={<Membership />} />
+                    </Route>
+                    <Route path="/mypage" element={<MainLayout />}>
+                        <Route index element={<MyPage />} />
                     </Route>
                 </Routes>
             </Router>
