@@ -27,11 +27,11 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route path="/" element={<MainLayout />}>
-                        <Route index element={<Home />} />
+                        <Route index element={<Main />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/main" element={<Main />} />
                         <Route path="/membership" element={<Membership />} />
-                        <Route path="/myPage" element={<MyPage />} />
+                        <Route path="/mypage" element={<MyPage />} />
                     </Route>
                 </Routes>
             </Router>

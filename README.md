@@ -1,7 +1,7 @@
 # slowslow-frontend
 
-늘짝늘짝> 캠핑 용품 전문 쇼핑몰 서비스입니다!
-=======
+# 늘짝늘짝> 캠핑 용품 전문 쇼핑몰 서비스입니다!
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -72,4 +72,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
->>>>>>> feature/isaac
+
+> > > > > > > feature/isaac

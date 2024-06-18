@@ -48,17 +48,16 @@ const Login = () => {
             }
 
             // 토큰을 응답 헤더에서 가져오기
-            const authHeader = response.headers.get('Authorization');
-            const token = authHeader ? authHeader.replace('Bearer ', '') : null;
+            const token = response.headers.get('Authorization');
 
-            if(token) {// localStorage에 토큰 저장
+            if (token) {
+                // localStorage에 토큰 저장
                 localStorage.setItem('token', token);
-    
-                navigate('/myPage');
+
+                navigate('/main');
             } else {
                 throw new Error('No token received');
             }
-            
         } catch (error) {
             console.error('Login error:', error);
             // 에러 처리 로직 추가

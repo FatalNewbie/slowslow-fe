@@ -11,9 +11,9 @@ const MyPage = () => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             axios
-                .get('/api/v1/myPage', {
+                .get('/api/v1/mypage', {
                     headers: {
-                        Authorization: `Bearer ${storedToken}`,
+                        Authorization: `${storedToken}`,
                     },
                 })
                 .then((response) => {
@@ -59,7 +59,7 @@ const MyPage = () => {
                 }}
                 sx={{ mt: 2 }}
             >
-                로그아웃
+                회원탈퇴
             </Button>
         </Box>
     );

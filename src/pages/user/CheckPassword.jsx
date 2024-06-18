@@ -1,37 +1,40 @@
 import React, { useState } from 'react';
-import { Modal, TextField, Button } from '@material-ui/core';
 
-const PasswordVerificationModal = ({ open, onClose, onVerify }) => {
-  const [password, setPassword] = useState('');
+const PasswordVerificationModal = ({ onVerify, onCancel }) => {
+    const [currentPassword, setCurrentPassword] = useState('');
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-  const handleVerify = () => {
-    // 서버에 비밀번호 확인 요청 보내기
-    // 비밀번호가 올바르면 onVerify 콜백 함수 실행
-    onVerify();
-    onClose();
-  };
+        // 현재 비밀번호 확인 로직
+        if (currentPassword === 'correctPassword') {
+            // 비밀번호 확인 성공 시 정보 수정 페이지로 이동
+            onVerify();
+        } else {
+            // 비밀번호 확인 실패 시 에러 메시지 표시 등의 처리
+            alert('비밀번호가 일치하지 않습니다.');
+        }
+    };
 
-  return (
-    <Modal open={open} onClose={onClose}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-        <TextField
-          label="비밀번호"
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-          variant="outlined"
-          style={{ marginBottom: '16px' }}
-        />
-        <Button variant="contained" color="primary" onClick={handleVerify}>
-          확인
-        </Button>
-      </div>
-    </Modal>
-  );
+    return (
+        <div>
+            <h2>현재 비밀번호 확인</h2>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    현재 비밀번호:
+                    <input
+                        type="password"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                </label>
+                <button type="submit">확인</button>
+                <button type="button" onClick={onCancel}>
+                    취소
+                </button>
+            </form>
+        </div>
+    );
 };
 
 export default PasswordVerificationModal;

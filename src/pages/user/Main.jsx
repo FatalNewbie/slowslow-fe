@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-import { checkTokenValidity, setToken, removeToken } from './utils/auth';
+import { checkTokenValidity, setToken, removeToken } from '../../utils/auth';
+import { AppBar, Toolbar, Typography, IconButton, Box, Button, Stack } from '@mui/material';
 
 function Main() {
     const navigate = useNavigate();
@@ -34,13 +35,15 @@ function Main() {
 
             <nav>
                 {isLoggedIn ? (
-                    <button onClick={handleLogout}>
-                        <FaSignOutAlt />
-                    </button>
+                    <IconButton color="inherit" onClick={handleLogout}>
+                        <FaSignOutAlt size="1.2em" />
+                        <Typography>로그아웃</Typography>
+                    </IconButton>
                 ) : (
-                    <button onClick={handleLogin}>
-                        <FaSignInAlt />
-                    </button>
+                    <IconButton color="inherit" onClick={handleLogin}>
+                        <FaSignInAlt size="1.2em" />
+                        <Typography>로그인</Typography>
+                    </IconButton>
                 )}
             </nav>
         </div>
