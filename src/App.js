@@ -12,6 +12,7 @@ import BrandAdmin from './pages/admin/BrandAdmin';
 import Category from './pages/category/Category';
 import CategoryPage from './pages/category/CategoryPage';
 import CategoryAdmin from './pages/admin/CategoryAdmin';
+import CartOrder from './pages/cart/CartOrder.jsx';
 
 import './index.css'; // CSS 파일 임포트
 
@@ -58,6 +59,9 @@ function App() {
                     </Route>
                     <Route path="/admin/category" element={<MainLayout />}>
                         <Route index element={<CategoryAdmin />} />
+                    </Route>
+                    <Route path="/admin/order" element={<MainLayout />}>
+                        <Route index element={<CartOrder />} />
                     </Route>
                 </Routes>
             </Router>
