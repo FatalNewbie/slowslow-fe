@@ -14,8 +14,8 @@ const Form = ({ initialValue, onSave, onClose }) => {
 
     return (
         <div>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="이름 입력"

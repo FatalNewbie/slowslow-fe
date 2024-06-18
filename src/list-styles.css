@@ -91,11 +91,14 @@
     border-collapse: collapse;
 }
 
-.brand-list table, .brand-list th, .brand-list td {
+.brand-list table,
+.brand-list th,
+.brand-list td {
     border: 1px solid #ddd;
 }
 
-.brand-list th, .brand-list td {
+.brand-list th,
+.brand-list td {
     padding: 10px;
     text-align: center;
 }
@@ -116,11 +119,14 @@
     border-collapse: collapse;
 }
 
-.category-list table, .category-list th, .category-list td {
+.category-list table,
+.category-list th,
+.category-list td {
     border: 1px solid #ddd;
 }
 
-.category-list th, .category-list td {
+.category-list th,
+.category-list td {
     padding: 10px;
     text-align: center;
 }
@@ -129,7 +135,6 @@
     background-color: #f2f2f2;
     color: #333;
 }
-
 
 /* Link Styles */
 .brand-list a {
@@ -177,4 +182,3 @@
 .category-list tr {
     text-align: center;
 }
-

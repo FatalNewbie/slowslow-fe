@@ -7,15 +7,17 @@ const CategoryList = () => {
 
     useEffect(() => {
         fetch('http://localhost:8080/category/all')
-            .then(response => response.json())
-            .then(data => setCategories(data))
-            .catch(error => console.error('Error fetching data:', error));
+            .then((response) => response.json())
+            .then((data) => setCategories(data))
+            .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     return (
         <Container>
             <div className="category-list">
-            <Typography variant="h5" gutterBottom>카테고리 목록</Typography>
+                <Typography variant="h5" gutterBottom>
+                    카테고리 목록
+                </Typography>
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -24,7 +26,7 @@ const CategoryList = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {categories.map(category => (
+                            {categories.map((category) => (
                                 <TableRow key={category.id}>
                                     <TableCell>
                                         <Link to={`/category/${category.id}`}>{category.categoryName}</Link>

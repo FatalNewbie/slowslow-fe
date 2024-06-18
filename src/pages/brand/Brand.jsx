@@ -7,15 +7,17 @@ const BrandList = () => {
 
     useEffect(() => {
         fetch('http://localhost:8080/brand/all')
-            .then(response => response.json())
-            .then(data => setBrands(data))
-            .catch(error => console.error('Error fetching data:', error));
+            .then((response) => response.json())
+            .then((data) => setBrands(data))
+            .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     return (
         <Container>
             <div className="brand-list">
-                <Typography variant="h5" gutterBottom>브랜드 목록</Typography>
+                <Typography variant="h5" gutterBottom>
+                    브랜드 목록
+                </Typography>
                 <TableContainer>
                     <Table>
                         <TableHead>
@@ -24,7 +26,7 @@ const BrandList = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {brands.map(brand => (
+                            {brands.map((brand) => (
                                 <TableRow key={brand.id}>
                                     <TableCell>
                                         <Link to={`/brand/${brand.id}`}>{brand.brandName}</Link>

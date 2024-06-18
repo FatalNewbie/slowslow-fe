@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 import Form from '../../components/Form';
 import DeleteModal from '../../components/deleteModal';
-import { Fab, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+    Fab,
+    Typography,
+    Button,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import '../../list-styles.css';
 
@@ -16,9 +26,9 @@ const CategoryListAdmin = () => {
 
     useEffect(() => {
         fetch('http://localhost:8080/category/all')
-            .then(response => response.json())
-            .then(data => setCategories(data))
-            .catch(error => console.error('Error fetching data:', error));
+            .then((response) => response.json())
+            .then((data) => setCategories(data))
+            .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     const handleAddCategory = (categoryName) => {
@@ -29,12 +39,12 @@ const CategoryListAdmin = () => {
             },
             body: JSON.stringify({ categoryName }),
         })
-        .then(response => response.json())
-        .then(newCategory => {
-            setCategories([...categories, newCategory]);
-            setShowAddModal(false);
-        })
-        .catch(error => console.error('Error adding category:', error));
+            .then((response) => response.json())
+            .then((newCategory) => {
+                setCategories([...categories, newCategory]);
+                setShowAddModal(false);
+            })
+            .catch((error) => console.error('Error adding category:', error));
     };
 
     const handleUpdateCategory = (categoryName) => {
@@ -45,42 +55,52 @@ const CategoryListAdmin = () => {
             },
             body: JSON.stringify({ categoryName }),
         })
-        .then(response => response.json())
-        .then(updatedCategory => {
-            setCategories(categories.map(category => (category.id === updatedCategory.id ? updatedCategory : category)));
-            setShowEditModal(false);
-        })
-        .catch(error => console.error('Error updating category:', error));
+            .then((response) => response.json())
+            .then((updatedCategory) => {
+                setCategories(
+                    categories.map((category) => (category.id === updatedCategory.id ? updatedCategory : category))
+                );
+                setShowEditModal(false);
+            })
+            .catch((error) => console.error('Error updating category:', error));
     };
 
     const handleDeleteCategory = () => {
         fetch(`http://localhost:8080/admin/category/delete/${deleteCategoryId}`, {
             method: 'DELETE',
         })
-        .then(() => {
-            setCategories(categories.filter(category => category.id !== deleteCategoryId));
-            setShowDeleteModal(false);
-        })
-        .catch(error => console.error('Error deleting category:', error));
+            .then(() => {
+                setCategories(categories.filter((category) => category.id !== deleteCategoryId));
+                setShowDeleteModal(false);
+            })
+            .catch((error) => console.error('Error deleting category:', error));
     };
 
     return (
         <div>
             <div className="category-list">
-                <div className="category-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , marginBottom: '20px' }}>
+                <div
+                    className="category-header"
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '20px',
+                    }}
+                >
                     <Typography sx={{ fontWeight: 'semibold', fontSize: '1.5rem' }}>
                         카테고리 목록 - 관리자 화면
                     </Typography>
-                    <Fab 
-                        sx={{ 
-                            backgroundColor: '#586555', 
-                            color: 'white', 
+                    <Fab
+                        sx={{
+                            backgroundColor: '#586555',
+                            color: 'white',
                             '&:hover': {
-                                backgroundColor: '#3a4338'
+                                backgroundColor: '#3a4338',
                             },
-                            zIndex: 0
-                        }} 
-                        aria-label="add" 
+                            zIndex: 0,
+                        }}
+                        aria-label="add"
                         onClick={() => setShowAddModal(true)}
                     >
                         <AddIcon />
@@ -97,44 +117,44 @@ const CategoryListAdmin = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {categories.map(category => (
+                            {categories.map((category) => (
                                 <TableRow key={category.id}>
                                     <TableCell>{category.id}</TableCell>
                                     <TableCell>{category.categoryName}</TableCell>
                                     <TableCell>
-                                        <Button onClick={() => {
-                                            setCategoryToEdit(category);
-                                            setShowEditModal(true);
-                                        }}>수정</Button>
+                                        <Button
+                                            onClick={() => {
+                                                setCategoryToEdit(category);
+                                                setShowEditModal(true);
+                                            }}
+                                        >
+                                            수정
+                                        </Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button onClick={() => {
-                                            setDeleteCategoryId(category.id);
-                                            setShowDeleteModal(true);
-                                        }}>삭제</Button>
+                                        <Button
+                                            onClick={() => {
+                                                setDeleteCategoryId(category.id);
+                                                setShowDeleteModal(true);
+                                            }}
+                                        >
+                                            삭제
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Modal 
+                <Modal
                     show={showAddModal}
                     title="카테고리 추가"
                     onClose={() => setShowAddModal(false)}
                     onSave={handleAddCategory}
                 >
-                    <Form 
-                        initialValue=""
-                        onSave={handleAddCategory}
-                        onClose={() => setShowAddModal(false)}
-                    />
+                    <Form initialValue="" onSave={handleAddCategory} onClose={() => setShowAddModal(false)} />
                 </Modal>
-                <Modal
-                    show={showEditModal}
-                    title="카테고리 수정"
-                    onClose={() => setShowEditModal(false)}
-                >
+                <Modal show={showEditModal} title="카테고리 수정" onClose={() => setShowEditModal(false)}>
                     <Form
                         initialValue={categoryToEdit ? categoryToEdit.categoryName : ''}
                         onSave={handleUpdateCategory}

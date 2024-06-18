@@ -8,40 +8,40 @@ const BrandPage = () => {
     const [brands, setBrands] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:8080/brand/all`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 const brandsMap = {};
-                data.forEach(brand => {
+                data.forEach((brand) => {
                     brandsMap[brand.id] = brand.brandName;
                 });
                 setBrands(brandsMap);
             })
-            .catch(error => {
+            .catch((error) => {
                 setError(error);
             });
 
-            // 해당 카테고리에 속한 상품 정보 가져오기
-            fetch(`http://localhost:8080/brand/${brandId}`)
-            .then(response => {
+        // 해당 카테고리에 속한 상품 정보 가져오기
+        fetch(`http://localhost:8080/brand/${brandId}`)
+            .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setProducts(data.content);
                 setLoading(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 setError(error);
                 setLoading(false);
             });
@@ -56,7 +56,7 @@ const BrandPage = () => {
     }
 
     const getBrandName = (brandId) => {
-        return brands[brandId] || "Unknown";
+        return brands[brandId] || 'Unknown';
     };
 
     const handleCardClick = (productId) => {
@@ -70,15 +70,10 @@ const BrandPage = () => {
             </Typography>
             {products.length > 0 ? (
                 <Grid container spacing={4}>
-                    {products.map(product => (
+                    {products.map((product) => (
                         <Grid item key={product.id} xs={12} sm={6} md={4}>
                             <Card onClick={() => handleCardClick(product.id)} style={{ cursor: 'pointer' }}>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={product.imageLink}
-                                    alt={product.name}
-                                />
+                                <CardMedia component="img" height="140" image={product.imageLink} alt={product.name} />
                                 <CardContent>
                                     <Typography gutterBottom variant="h6" component="div">
                                         {product.name}
@@ -95,9 +90,7 @@ const BrandPage = () => {
                     ))}
                 </Grid>
             ) : (
-                <Typography variant="body1">
-                    {getBrandName(brandId)} 브랜드에 속하는 상품이 없습니다.
-                </Typography>
+                <Typography variant="body1">{getBrandName(brandId)} 브랜드에 속하는 상품이 없습니다.</Typography>
             )}
         </Container>
     );

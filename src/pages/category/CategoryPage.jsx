@@ -8,41 +8,41 @@ const CategoryPage = () => {
     const [categories, setCategories] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         // 카테고리 정보 가져오기
         fetch(`http://localhost:8080/category/all`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 const categoriesMap = {};
-                data.forEach(category => {
+                data.forEach((category) => {
                     categoriesMap[category.id] = category.categoryName;
                 });
                 setCategories(categoriesMap);
             })
-            .catch(error => {
+            .catch((error) => {
                 setError(error);
             });
 
         // 해당 카테고리에 속한 상품 정보 가져오기
         fetch(`http://localhost:8080/category/${categoryId}`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setProducts(data.content);
                 setLoading(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 setError(error);
                 setLoading(false);
             });
@@ -57,7 +57,7 @@ const CategoryPage = () => {
     }
 
     const getCategoryName = (categoryId) => {
-        return categories[categoryId] || "Unknown";
+        return categories[categoryId] || 'Unknown';
     };
 
     const handleCardClick = (productId) => {
@@ -66,20 +66,15 @@ const CategoryPage = () => {
 
     return (
         <Container>
-            <Typography variant="h5" gutterBottom fontWeight="semibold" letterSpacing={3} marginBottom={"20px"}>
+            <Typography variant="h5" gutterBottom fontWeight="semibold" letterSpacing={3} marginBottom={'20px'}>
                 {getCategoryName(categoryId)} - 상품 목록
             </Typography>
             {products.length > 0 ? (
                 <Grid container spacing={4}>
-                    {products.map(product => (
+                    {products.map((product) => (
                         <Grid item key={product.id} xs={12} sm={6} md={4}>
                             <Card onClick={() => handleCardClick(product.id)} style={{ cursor: 'pointer' }}>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={product.imageLink}
-                                    alt={product.name}
-                                />
+                                <CardMedia component="img" height="140" image={product.imageLink} alt={product.name} />
                                 <CardContent>
                                     <Typography gutterBottom variant="h6" component="div">
                                         {product.name}
