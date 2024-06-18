@@ -34,9 +34,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
-              <Route path="/cart" element={<Cart />} />
+                         <Route path="/cart" element={<Cart />} />
               <Route path="/order" element={<Order />} />
-              <Route path="/mypage/orders" element={<OrderList />} /> 
+                       <Route path="/mypage/orders" element={<OrderList />} /> 
               <Route path="/mypage/orders/:orderId" element={<OrderDetail />} /> 
               <Route path="/orders" element={<OrderPage />} />
               <Route path="/orders/success" element={<OrderSuccess />} /> {/* 주문 성공 페이지 경로 추가 */}
