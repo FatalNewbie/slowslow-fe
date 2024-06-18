@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
 
-const Category = () => {
-    const { id: categoryId } = useParams(); // useParams로부터 id를 가져와 categoryId로 사용
+const CategoryMainPage = () => {
+    const { id: categoryId } = useParams(); // useParams를 올바르게 사용
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState({});
     const [loading, setLoading] = useState(true);
@@ -30,8 +30,8 @@ const Category = () => {
                 setError(error);
             });
 
-        // 해당 카테고리에 속한 상품 정보 가져오기
-        fetch(`http://localhost:8080/category/${categoryId}`)
+        // 해당 카테고리 또는 전체 상품 정보 가져오기
+        fetch(categoryId ? `http://localhost:8080/category/${categoryId}` : `http://localhost:8080/product/all`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -39,7 +39,12 @@ const Category = () => {
                 return response.json();
             })
             .then((data) => {
-                setProducts(data.content);
+                // 데이터 구조 확인 및 설정
+                if (data.content) {
+                    setProducts(data.content);
+                } else {
+                    setProducts(data);
+                }
                 setLoading(false);
             })
             .catch((error) => {
@@ -57,7 +62,7 @@ const Category = () => {
     }
 
     const getCategoryName = (categoryId) => {
-        return categories[categoryId] || 'Unknown';
+        return categories[categoryId] || '전체 상품';
     };
 
     const handleCardClick = (productId) => {
@@ -99,4 +104,4 @@ const Category = () => {
     );
 };
 
-export default Category;
+export default CategoryMainPage;

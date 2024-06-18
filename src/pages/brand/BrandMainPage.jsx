@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
 
-const Category = () => {
-    const { id: categoryId } = useParams(); // useParams로부터 id를 가져와 categoryId로 사용
+const BrandMainPage = () => {
+    const { id: brandId } = useParams(); // useParams를 올바르게 사용
     const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState({});
+    const [brands, setBrands] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // 카테고리 정보 가져오기
-        fetch(`http://localhost:8080/category/all`)
+        // 브랜드 정보 가져오기
+        fetch(`http://localhost:8080/brand/all`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -20,18 +20,18 @@ const Category = () => {
                 return response.json();
             })
             .then((data) => {
-                const categoriesMap = {};
-                data.forEach((category) => {
-                    categoriesMap[category.id] = category.categoryName;
+                const brandsMap = {};
+                data.forEach((brand) => {
+                    brandsMap[brand.id] = brand.brandName;
                 });
-                setCategories(categoriesMap);
+                setBrands(brandsMap);
             })
             .catch((error) => {
                 setError(error);
             });
 
-        // 해당 카테고리에 속한 상품 정보 가져오기
-        fetch(`http://localhost:8080/category/${categoryId}`)
+        // 해당 브랜드 또는 전체 상품 정보 가져오기
+        fetch(brandId ? `http://localhost:8080/brand/${brandId}` : `http://localhost:8080/product/all`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -39,14 +39,19 @@ const Category = () => {
                 return response.json();
             })
             .then((data) => {
-                setProducts(data.content);
+                // 데이터 구조 확인 및 설정
+                if (data.content) {
+                    setProducts(data.content);
+                } else {
+                    setProducts(data);
+                }
                 setLoading(false);
             })
             .catch((error) => {
                 setError(error);
                 setLoading(false);
             });
-    }, [categoryId]);
+    }, [brandId]);
 
     if (loading) {
         return <p>Loading...</p>;
@@ -56,8 +61,8 @@ const Category = () => {
         return <p>Error loading products: {error.message}</p>;
     }
 
-    const getCategoryName = (categoryId) => {
-        return categories[categoryId] || 'Unknown';
+    const getBrandName = (brandId) => {
+        return brands[brandId] || '전체 상품';
     };
 
     const handleCardClick = (productId) => {
@@ -67,7 +72,7 @@ const Category = () => {
     return (
         <Container>
             <Typography variant="h5" gutterBottom fontWeight="semibold" letterSpacing={3} marginBottom={'20px'}>
-                {getCategoryName(categoryId)} - 상품 목록
+                {getBrandName(brandId)} - 상품 목록
             </Typography>
             {products.length > 0 ? (
                 <Grid container spacing={4}>
@@ -91,12 +96,10 @@ const Category = () => {
                     ))}
                 </Grid>
             ) : (
-                <Typography variant="body1">
-                    {getCategoryName(categoryId)} 카테고리에 속하는 상품이 없습니다.
-                </Typography>
+                <Typography variant="body1">{getBrandName(brandId)} 브랜드에 속하는 상품이 없습니다.</Typography>
             )}
         </Container>
     );
 };
 
-export default Category;
+export default BrandMainPage;
