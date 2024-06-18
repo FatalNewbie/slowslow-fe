@@ -17,6 +17,8 @@ const Login = () => {
 
     const [showPassword, setShowPassword] = React.useState(false);
 
+    const [errorMessage, setErrorMessage] = useState('');
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
@@ -47,7 +49,8 @@ const Login = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to login');
+                const errorData = await response.json();
+                throw new Error(errorData.message);
             }
 
             // 토큰을 응답 헤더에서 가져오기
@@ -58,8 +61,10 @@ const Login = () => {
 
             navigate('/');
         } catch (error) {
+            // 에러 처리 로직
             console.error('Login error:', error);
-            // 에러 처리 로직 추가
+            // 에러 메시지를 사용자에게 표시하는 로직 추가
+            setErrorMessage(error.message);
         }
     };
 

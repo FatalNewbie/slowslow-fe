@@ -5,7 +5,11 @@ import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+
+    const [role, setRole] = useState(null);
+
+    const [username, setUsername] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -23,7 +27,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = (token) => {
+        const { role } = jwtDecode(token);
+        const { username } = jwtDecode(token);
         localStorage.setItem('token', token);
+        setRole(role);
+        setUsername(username);
         setIsLoggedIn(true);
     };
 
@@ -70,7 +78,17 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ isLoggedIn, login, logout, setToken, removeToken, isTokenValid, checkTokenValidity }}
+            value={{
+                isLoggedIn,
+                login,
+                logout,
+                setToken,
+                removeToken,
+                isTokenValid,
+                checkTokenValidity,
+                role,
+                username,
+            }}
         >
             {children}
         </AuthContext.Provider>

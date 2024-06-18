@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate, BrowserRouter } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Login from './pages/user/Login';
 import MainLayout from './layouts/MainLayout';
@@ -24,21 +24,32 @@ const theme = createTheme({
 });
 
 const App = () => {
-    const { isLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, role, username } = useContext(AuthContext);
+
+    console.log(isLoggedIn);
+
+    console.log('사용자 아이디 ' + username);
+
+    console.log('사용자 권한 ' + role);
+
+    useEffect(() => {
+        // 모든 페이지가 렌더링된 후 실행되는 코드
+        console.log('App 컴포넌트가 마운트되었습니다.');
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
-            <Router>
+            <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MainLayout />}>
                         <Route index element={<Home />} />
+
                         <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
                         <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
-                        <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/login" replace />} />
-                        <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/login" replace />} />
                     </Route>
+                    <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/login" replace />} />
                 </Routes>
-            </Router>
+            </BrowserRouter>
         </ThemeProvider>
     );
 };
