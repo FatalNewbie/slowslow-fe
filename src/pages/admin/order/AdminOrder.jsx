@@ -33,7 +33,6 @@ function AdminOrder() {
 
     return (
         <Box>
-            <Header></Header>
             <Container maxWidth="lg" sx={{ mb: 15 }}>
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={1}>
@@ -169,8 +168,6 @@ function AdminOrder() {
                     ))}
                 </Box>
             </Container>
-
-            <Footer></Footer>
         </Box>
     );
 }

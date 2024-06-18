@@ -13,6 +13,7 @@ import Category from './pages/category/Category';
 import CategoryPage from './pages/category/CategoryPage';
 import CategoryAdmin from './pages/admin/CategoryAdmin';
 import CartOrder from './pages/cart/CartOrder.jsx';
+import AdminOrder from './pages/admin/order/AdminOrder.jsx';
 
 import './index.css'; // CSS 파일 임포트
 
@@ -39,6 +40,9 @@ function App() {
                     <Route path="/cart" element={<MainLayout />}>
                         <Route index element={<Cart />} />
                     </Route>
+                    <Route path="/cart/order" element={<MainLayout />}>
+                        <Route index element={<CartOrder />} />
+                    </Route>
                     <Route path="/order" element={<MainLayout />}>
                         <Route index element={<Order />} />
                     </Route>
@@ -61,7 +65,7 @@ function App() {
                         <Route index element={<CategoryAdmin />} />
                     </Route>
                     <Route path="/admin/order" element={<MainLayout />}>
-                        <Route index element={<CartOrder />} />
+                        <Route index element={<AdminOrder />} />
                     </Route>
                 </Routes>
             </Router>

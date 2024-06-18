@@ -244,7 +244,6 @@ function Cart() {
 
     return (
         <Box>
-            <Header></Header>
             <Container maxWidth="lg">
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2}>
@@ -483,7 +482,6 @@ function Cart() {
                     </Box>
                 </Modal>
             </Container>
-            <Footer></Footer>
         </Box>
     );
 }
