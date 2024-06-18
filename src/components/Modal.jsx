@@ -1,6 +1,7 @@
 // src/components/Modal.jsx
 import React from 'react';
 import './Modal.css';
+import { Typography } from '@mui/material';
 
 const Modal = ({ show, title, children, onClose }) => {
     if (!show) {
@@ -10,7 +11,9 @@ const Modal = ({ show, title, children, onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="modal">
-                <h2>{title}</h2>
+                <Typography sx={{ fontWeight: 'semibold', fontSize: '1.2rem', marginBottom: '10px' }}>
+                    {title}
+                </Typography>
                 {children}
             </div>
         </div>
