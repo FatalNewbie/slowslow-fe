@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -10,9 +10,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { AuthContext } from './AuthContext';
 
 const Login = () => {
+    const { login } = useContext(AuthContext);
+
     const [showPassword, setShowPassword] = React.useState(false);
+
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -44,24 +49,22 @@ const Login = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to login');
+                const errorData = await response.json();
+                throw new Error(errorData.message);
             }
 
             // 토큰을 응답 헤더에서 가져오기
             const token = response.headers.get('Authorization');
 
-            if (token) {
-                // localStorage에 토큰 저장
-                localStorage.setItem('token', token);
+            //localStorage에 토큰 저장
+            login(token);
 
-                navigate('/main');
-            } else {
-                throw new Error('No token received');
-            }
+            navigate('/');
         } catch (error) {
+            // 에러 처리 로직
             console.error('Login error:', error);
-            // 에러 처리 로직 추가
-            alert('로그인 중 오류가 발생했습니다. 다시 시도해 주세요.');
+            // 에러 메시지를 사용자에게 표시하는 로직 추가
+            setErrorMessage(error.message);
         }
     };
 

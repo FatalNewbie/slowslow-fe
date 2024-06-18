@@ -1,8 +1,7 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import * as React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate, BrowserRouter } from 'react-router-dom';
 import { TokenProvider } from './contexts/TokenContext'; // TokenProvider 임포트
-
 import MainLayout from './layouts/MainLayout';
 import Cart from './pages/cart/Cart';
 import CartOrder from './pages/cart/CartOrder.jsx';
@@ -25,9 +24,12 @@ import AdminOrder from './pages/admin/order/AdminOrder.jsx';
 import Login from './pages/user/Login';
 import Main from './pages/user/Main';
 import Membership from './pages/user/Membership';
+import Admin from './pages/user/Admin';
 import MyPage from './pages/user/MyPage';
-
 import './index.css'; // CSS 파일 임포트
+import { AuthProvider } from './pages/user/AuthContext'; //로그인 전역 설정
+import { AuthContext } from './pages/user/AuthContext';
+import { useContext, useEffect } from 'react';
 
 const theme = createTheme({
     components: {
@@ -42,38 +44,50 @@ const theme = createTheme({
 });
 
 const App = () => {
+    const { isLoggedIn, role, username } = useContext(AuthContext);
+
+    console.log(isLoggedIn);
+
+    console.log('사용자 아이디 ' + username);
+
+    console.log('사용자 권한 ' + role);
+
+    useEffect(() => {
+        // 모든 페이지가 렌더링된 후 실행되는 코드
+        console.log('App 컴포넌트가 마운트되었습니다.');
+    }, []);
+
     return (
         <ThemeProvider theme={theme}>
-            <TokenProvider>
-                <Router>
-                    <Routes>
-                        <Route path="/" element={<MainLayout />}>
-                            <Route index element={<Home />} />
-                            <Route path="/cart" element={<Cart />} />
-                            <Route path="/cart/order" element={<CartOrder />} />
-                            <Route path="/order" element={<Order />} />
-                            <Route path="/orders" element={<OrderPage />} />
-                            <Route path="/orders/success" element={<OrderSuccess />} />
-                            <Route path="/orders/failure" element={<OrderFailure />} />
-                            <Route path="/mypage/orders" element={<OrderList />} />
-                            <Route path="/mypage/orders/:orderId" element={<OrderDetail />} />
-                            <Route path="/brand" element={<Brand />} />
-                            <Route path="/brand/:id" element={<BrandPage />} />
-                            <Route path="/admin/brand" element={<BrandAdmin />} />
-                            <Route path="/category" element={<Category />} />
-                            <Route path="/category/:id" element={<CategoryPage />} />
-                            <Route path="/admin/category" element={<CategoryAdmin />} />
-                            <Route path="/admin/order" element={<AdminOrder />} />
-                            <Route path="/product/:productId" element={<ProductDetail />} />
-                            <Route path="/admin/product" element={<ProductAdmin />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/main" element={<Main />} />
-                            <Route path="/membership" element={<Membership />} />
-                            <Route path="/mypage" element={<MyPage />} />
-                        </Route>
-                    </Routes>
-                </Router>
-            </TokenProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<MainLayout />}>
+                        <Route index element={<Home />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/cart/order" element={<CartOrder />} />
+                        <Route path="/order" element={<Order />} />
+                        <Route path="/orders" element={<OrderPage />} />
+                        <Route path="/orders/success" element={<OrderSuccess />} />
+                        <Route path="/orders/failure" element={<OrderFailure />} />
+                        <Route path="/mypage/orders" element={<OrderList />} />
+                        <Route path="/mypage/orders/:orderId" element={<OrderDetail />} />
+                        <Route path="/brand" element={<Brand />} />
+                        <Route path="/brand/:id" element={<BrandPage />} />
+                        <Route path="/admin/brand" element={<BrandAdmin />} />
+                        <Route path="/category" element={<Category />} />
+                        <Route path="/category/:id" element={<CategoryPage />} />
+                        <Route path="/admin/category" element={<CategoryAdmin />} />
+                        <Route path="/admin/order" element={<AdminOrder />} />
+                        <Route path="/product/:productId" element={<ProductDetail />} />
+                        <Route path="/admin/product" element={<ProductAdmin />} />
+                        <Route path="/mypage" element={<MyPage />} />
+                        <Route path="/main" element={<Main />} />
+                        <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
+                        <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
+                        <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/login" replace />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
         </ThemeProvider>
     );
 };
