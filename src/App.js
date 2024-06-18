@@ -19,6 +19,8 @@ import BrandAdmin from './pages/admin/BrandAdmin';
 import Category from './pages/category/Category';
 import CategoryPage from './pages/category/CategoryPage';
 import CategoryAdmin from './pages/admin/CategoryAdmin';
+import ProductDetail from './pages/product/ProductDetail.jsx';
+import ProductAdmin from './pages/admin/ProductAdmin.jsx';
 import AdminOrder from './pages/admin/order/AdminOrder.jsx';
 import Login from './pages/user/Login';
 import Main from './pages/user/Main';
@@ -62,6 +64,8 @@ const App = () => {
                             <Route path="/category/:id" element={<CategoryPage />} />
                             <Route path="/admin/category" element={<CategoryAdmin />} />
                             <Route path="/admin/order" element={<AdminOrder />} />
+                            <Route path="/product/:productId" element={<ProductDetail />} />
+                            <Route path="/admin/product" element={<ProductAdmin />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/main" element={<Main />} />
                             <Route path="/membership" element={<Membership />} />
