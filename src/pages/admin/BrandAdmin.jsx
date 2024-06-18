@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 import Form from '../../components/Form';
-import BrandDelete from './BrandDelete';
-import { Fab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
+import DeleteModal from '../../components/deleteModal';
+import { Fab, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 const BrandListAdmin = () => {
@@ -67,9 +67,21 @@ const BrandListAdmin = () => {
         <div>
             <div className="brand-list">
                 <div className="brand-header">
-                    <h2>브랜드 목록 - 관리자 화면</h2>
-                    
-                    <Fab color="primary" aria-label="add" onClick={() => setShowAddModal(true)}>
+                    <Typography sx={{ fontWeight: 'semibold', fontSize: '1.5rem' }}>
+                        브랜드 목록 - 관리자 화면
+                    </Typography>
+                    <Fab 
+                        sx={{
+                            backgroundColor: '#586555', 
+                            color: 'white', 
+                            '&:hover': {
+                                backgroundColor: '#3a4338'
+                            },
+                            zIndex: 0
+                        }} 
+                        aria-label="add" 
+                        onClick={() => setShowAddModal(true)}
+                    >
                         <AddIcon />
                     </Fab>
                 </div>
@@ -127,7 +139,7 @@ const BrandListAdmin = () => {
                         onClose={() => setShowEditModal(false)}
                     />
                 </Modal>
-                <BrandDelete
+                <DeleteModal
                     show={showDeleteModal}
                     onClose={() => setShowDeleteModal(false)}
                     onConfirm={handleDeleteBrand}

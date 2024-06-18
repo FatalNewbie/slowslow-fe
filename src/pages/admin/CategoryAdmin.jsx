@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 import Form from '../../components/Form';
-import CategoryDelete from './CategoryDelete';
-import { Fab, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import DeleteModal from '../../components/deleteModal';
+import { Fab, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 const CategoryListAdmin = () => {
@@ -67,8 +67,21 @@ const CategoryListAdmin = () => {
         <div>
             <div className="category-list">
                 <div className="category-header">
-                    <h2>카테고리 목록 - 관리자 화면</h2>
-                    <Fab color="primary" aria-label="add" onClick={() => setShowAddModal(true)}>
+                    <Typography sx={{ fontWeight: 'semibold', fontSize: '1.5rem' }}>
+                        카테고리 목록 - 관리자 화면
+                    </Typography>
+                    <Fab 
+                        sx={{ 
+                            backgroundColor: '#586555', 
+                            color: 'white', 
+                            '&:hover': {
+                                backgroundColor: '#3a4338'
+                            },
+                            zIndex: 0
+                        }} 
+                        aria-label="add" 
+                        onClick={() => setShowAddModal(true)}
+                    >
                         <AddIcon />
                     </Fab>
                 </div>
@@ -108,6 +121,7 @@ const CategoryListAdmin = () => {
                     show={showAddModal}
                     title="카테고리 추가"
                     onClose={() => setShowAddModal(false)}
+                    onSave={handleAddCategory}
                 >
                     <Form 
                         initialValue=""
@@ -126,7 +140,7 @@ const CategoryListAdmin = () => {
                         onClose={() => setShowEditModal(false)}
                     />
                 </Modal>
-                <CategoryDelete
+                <DeleteModal
                     show={showDeleteModal}
                     onClose={() => setShowDeleteModal(false)}
                     onConfirm={handleDeleteCategory}

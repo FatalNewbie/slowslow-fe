@@ -1,7 +1,7 @@
 import React from 'react';
-import '../../components/Modal.css';
+import './Modal.css';
 
-const CategoryDelete = ({ show, onClose, onConfirm }) => {
+const DeleteModal = ({ show, onClose, onConfirm }) => {
     if (!show) {
         return null;
     }
@@ -17,4 +17,4 @@ const CategoryDelete = ({ show, onClose, onConfirm }) => {
     );
 };
 
-export default CategoryDelete;
+export default DeleteModal;

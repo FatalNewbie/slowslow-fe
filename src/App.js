@@ -9,10 +9,10 @@ import Order from "./pages/order/Order";
 import Home from "./pages/home/Home";
 import Brand from "./pages/brand/Brand";
 import BrandPage from './pages/brand/BrandPage';
-import BrandAdmin from "./pages/brand/BrandAdmin";
+import BrandAdmin from "./pages/admin/BrandAdmin";
 import Category from "./pages/category/Category";
 import CategoryPage from "./pages/category/CategoryPage";
-import CategoryAdmin from "./pages/category/CategoryAdmin";
+import CategoryAdmin from "./pages/admin/CategoryAdmin";
 
 
 import './index.css'; // CSS 파일 임포트

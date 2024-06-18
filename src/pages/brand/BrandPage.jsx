@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Container, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
 
 const BrandPage = () => {
-    const { brandId } = useParams();
+    const { id: brandId } = useParams();
     const [products, setProducts] = useState([]);
     const [brandName, setBrandName] = useState("");
     const [loading, setLoading] = useState(true);
@@ -11,14 +11,18 @@ const BrandPage = () => {
 
     useEffect(() => {
         fetch(`http://localhost:8080/brand/${brandId}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                if (data && data.brandName) {
-                    setBrandName(data.brandName);
-                    setProducts(data.content || []);
+                setProducts(data.content);
+                if (data.content.length > 0) {
+                    setBrandName(data.content[0].brandName); // Assuming brandId is the name
                 } else {
-                    setBrandName("");
-                    setProducts([]);
+                    setBrandName("Unknown");
                 }
                 setLoading(false);
             })
@@ -38,39 +42,40 @@ const BrandPage = () => {
 
     return (
         <Container>
-            <div>
-                <Typography variant="h5" gutterBottom fontWeight="semibold" letterSpacing={3}>{brandName} 브랜드의 상품 목록</Typography>
-                {products.length > 0 ? (
-                    <TableContainer>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>ID</TableCell>
-                                    <TableCell>상품명</TableCell>
-                                    <TableCell>가격</TableCell>
-                                    <TableCell>설명</TableCell>
-                                    <TableCell>이미지 링크</TableCell>
-                                    <TableCell>카테고리</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {products.map(product => (
-                                    <TableRow key={product.id}>
-                                        <TableCell>{product.id}</TableCell>
-                                        <TableCell>{product.name}</TableCell>
-                                        <TableCell>{product.price}</TableCell>
-                                        <TableCell>{product.description}</TableCell>
-                                        <TableCell><a href={product.imageLink} target="_blank" rel="noopener noreferrer">{product.imageLink}</a></TableCell>
-                                        <TableCell>{product.category ? product.category.categoryName : 'Unknown'}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                ) : (
-                    <Typography variant="body1">{brandName} 브랜드에 속하는 상품이 없습니다.</Typography>
-                )}
-            </div>
+            <Typography variant="h5" gutterBottom fontWeight="semibold" letterSpacing={3}>
+                {brandName} 브랜드의 상품 목록
+            </Typography>
+            {products.length > 0 ? (
+                <Grid container spacing={4}>
+                    {products.map(product => (
+                        <Grid item key={product.id} xs={12} sm={6} md={4}>
+                            <Card>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={product.imageLink}
+                                    alt={product.name}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        {product.name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {product.description}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        가격: {product.price}원
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                <Typography variant="body1">
+                    {brandName} 브랜드에 속하는 상품이 없습니다.
+                </Typography>
+            )}
         </Container>
     );
 };
