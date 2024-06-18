@@ -4,6 +4,7 @@ import Form from '../../components/Form';
 import DeleteModal from '../../components/deleteModal';
 import { Fab, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import '../../list-styles.css';
 
 const BrandListAdmin = () => {
     const [brands, setBrands] = useState([]);
@@ -66,7 +67,7 @@ const BrandListAdmin = () => {
     return (
         <div>
             <div className="brand-list">
-                <div className="brand-header">
+                <div className="brand-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , marginBottom: '20px'}}>
                     <Typography sx={{ fontWeight: 'semibold', fontSize: '1.5rem' }}>
                         브랜드 목록 - 관리자 화면
                     </Typography>

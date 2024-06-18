@@ -1,9 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Box, Button, Stack } from '@mui/material';
 import { FaUser, FaShoppingCart, FaSignOutAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import CampingImage from '../assets/campingicon.png'; // 이미지 파일 가져오기
 
 const Header = () => {
+  const navigate = useNavigate(); 
+  const [categories, setCategories] = useState([]);
+
+  const handleBrandClick = () => {
+    navigate(`/brand`);
+  };
+
+  const handleCategoryClick = () => {
+    navigate(`/category`);
+  };
+
+  useEffect(() => {
+      fetch('http://localhost:8080/category/all')
+          .then(response => response.json())
+          .then(data => setCategories(data))
+          .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
   return (
     <AppBar position="static" sx={{ backgroundColor: 'white', color: 'black', boxShadow: 3, mb: 2 }}>
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', px: 8, mt: 7, mb: 4 }}>
@@ -30,12 +49,10 @@ const Header = () => {
       </Toolbar>
       <Box sx={{ backgroundColor: '#586555', py: 1.2, display: 'flex', justifyContent: 'center' }}>
         <Stack direction="row" spacing={3} alignItems="center">
-          <Button sx={{ color: 'white', fontWeight: 'bold' }}>브랜드</Button>
-          <Button sx={{ color: 'white', fontWeight: 'bold' }}>카테고리</Button>
-          <Typography variant="body2" sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}>텐트, 타프</Typography>
-          <Typography variant="body2" sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}>침낭, 매트</Typography>
-          <Typography variant="body2" sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}>퍼니처</Typography>
-          <Typography variant="body2" sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}>라이팅</Typography>
+          <Button sx={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleBrandClick()}>브랜드</Button>
+          <Button sx={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleCategoryClick()}>카테고리</Button>
+          {categories.slice(0, 4).map(category => (
+          <Typography variant="body2" sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}>{category.categoryName}</Typography>))}
         </Stack>
       </Box>
     </AppBar>

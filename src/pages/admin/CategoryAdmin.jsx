@@ -4,6 +4,7 @@ import Form from '../../components/Form';
 import DeleteModal from '../../components/deleteModal';
 import { Fab, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import '../../list-styles.css';
 
 const CategoryListAdmin = () => {
     const [categories, setCategories] = useState([]);
@@ -66,7 +67,7 @@ const CategoryListAdmin = () => {
     return (
         <div>
             <div className="category-list">
-                <div className="category-header">
+                <div className="category-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' , marginBottom: '20px' }}>
                     <Typography sx={{ fontWeight: 'semibold', fontSize: '1.5rem' }}>
                         카테고리 목록 - 관리자 화면
                     </Typography>
