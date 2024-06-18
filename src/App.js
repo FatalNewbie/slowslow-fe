@@ -17,6 +17,11 @@ import AdminOrder from './pages/admin/order/AdminOrder.jsx';
 
 import './index.css'; // CSS 파일 임포트
 
+import Login from './pages/user/Login';
+import Main from './pages/user/Main';
+import Membership from './pages/user/Membership';
+import MyPage from './pages/user/MyPage';
+
 const theme = createTheme({
     components: {
         MuiButton: {
@@ -29,7 +34,7 @@ const theme = createTheme({
     },
 });
 
-function App() {
+const App = () => {
     return (
         <ThemeProvider theme={theme}>
             <Router>
@@ -66,11 +71,16 @@ function App() {
                     </Route>
                     <Route path="/admin/order" element={<MainLayout />}>
                         <Route index element={<AdminOrder />} />
+                    <Route index element={<Main />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/main" element={<Main />} />
+                    <Route path="/membership" element={<Membership />} />
+                    <Route path="/mypage" element={<MyPage />} />
                     </Route>
                 </Routes>
             </Router>
         </ThemeProvider>
     );
-}
+};
 
 export default App;
