@@ -4,7 +4,7 @@ const TokenContext = createContext();
 
 export const TokenProvider = ({ children }) => {
   const [token, setToken] = useState(
-    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Impob2hhbmh3aUBuYXZlci5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE4NjE4NDgyLCJleHAiOjE3MTg2MTkwODJ9.9EmWBVRhbrOSUyNGiL6adntwdez_6C8SkoMxNvMHr64');
+    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Impob2hhbmh3aUBuYXZlci5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE4Njg3Mzg3LCJleHAiOjE3MTg2ODc5ODd9.nvejiaOn8Uv7mSGPYlXJyCrYnBrCEaKa747FSSJmxh8');
   const [userId, setUserId] = useState(16); // userId도 추가
 
   return (
