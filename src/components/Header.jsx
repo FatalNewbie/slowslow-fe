@@ -9,6 +9,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const { isLoggedIn, login, logout } = useContext(AuthContext);
+    const role = localStorage.getItem('role');
 
     const handleClick = () => {
         if (isLoggedIn) {
@@ -55,9 +56,10 @@ const Header = () => {
     // };
 
     const handleMyPage = () => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        if (role === 'ROLE_USER') {
             navigate('/mypage');
+        } else if (role === 'ROLE_ADMIN') {
+            navigate('/admin');
         } else {
             navigate('/login');
         }
@@ -91,9 +93,11 @@ const Header = () => {
                         <IconButton color="inherit" onClick={handleMyPage}>
                             <FaUser size="1.2em" />
                         </IconButton>
-                        <IconButton color="inherit" onClick={handleCart}>
-                            <FaShoppingCart size="1.2em" />
-                        </IconButton>
+                        {role !== 'ROLE_ADMIN' && (
+                            <IconButton color="inherit" onClick={handleCart}>
+                                <FaShoppingCart size="1.2em" />
+                            </IconButton>
+                        )}
                     </Stack>
                 </Box>
             </Toolbar>
