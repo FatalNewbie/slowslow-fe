@@ -73,14 +73,8 @@ const Header = () => {
                 <Box sx={{ flex: 1, pl: 22 }} />
                 <Box sx={{ cursor: 'pointer' }} onClick={handleHome}>
                     <Stack direction="row" spacing={1.5} alignItems="center">
-                        <img
-                            src={CampingImage}
-                            alt="캠핑"
-                            style={{ width: '65px', height: '65px', marginTop: '-14px' }}
-                        />
-                        <Typography sx={{ fontWeight: 'bold', letterSpacing: 4, fontSize: '1.8rem' }}>
-                            늘짝늘짝
-                        </Typography>
+                        <img src={CampingImage} alt="캠핑" style={{ width: '65px', height: '65px', marginTop: '-14px' }} />
+                        <Typography sx={{ fontWeight: 'bold', letterSpacing: 4, fontSize: '1.8rem' }}>늘짝늘짝</Typography>
                     </Stack>
                 </Box>
                 <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', pr: 22 }}>
@@ -106,10 +100,7 @@ const Header = () => {
                         카테고리
                     </Button>
                     {categories.slice(0, 4).map((category) => (
-                        <Typography
-                            variant="body2"
-                            sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}
-                        >
+                        <Typography variant="body2" sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}>
                             {category.categoryName}
                         </Typography>
                     ))}
