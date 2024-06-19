@@ -3,6 +3,8 @@ import { Box, Typography, Divider, Grid, Card, CardContent, CardMedia } from '@m
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import LatestProducts from '../product/LatestProducts';
+import LatestModifiedProducts from '../product/LatestModifiedProducts';
 
 const Home = () => {
     const settings = {
@@ -21,30 +23,42 @@ const Home = () => {
         'https://img.autocamping.co.kr/event/2022/event_0721.jpg',
     ];
 
-    const [products, setProducts] = useState([]);
+    const [latestProducts, setLatestProducts] = useState([]);
+    const [modifiedProducts, setModifiedProducts] = useState([]);
 
     useEffect(() => {
-        const fetchProducts = async () => {
+        const fetchLatestProducts = async () => {
             try {
-                const response = await fetch('http://localhost:8080/product/all');
+                const response = await fetch('http://localhost:8080/product/latest');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                const randomProducts = getRandomProducts(data, 4);
-                setProducts(randomProducts);
+                setLatestProducts(data); // 서버에서 받은 최신 상품 리스트를 상태에 설정
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching latest products:', error);
             }
         };
 
-        fetchProducts();
+        fetchLatestProducts();
     }, []);
 
-    const getRandomProducts = (products, count) => {
-        const shuffled = [...products].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
-    };
+    useEffect(() => {
+        const fetchModifiedProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/product/modify');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setModifiedProducts(data); // 서버에서 받은 최신 상품 리스트를 상태에 설정
+            } catch (error) {
+                console.error('Error fetching latest products:', error);
+            }
+        };
+
+        fetchModifiedProducts();
+    }, []);
 
     const handleCardClick = (productId) => {
         // 해당 제품 상세 페이지로 이동
@@ -66,28 +80,13 @@ const Home = () => {
                     />
                 ))}
             </Slider>
+
             <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2, marginTop: '50px' }} />
+            <Typography sx={{ fontWeight: 'bold', fontSize: '1.5rem', mt: 4, mb: 2 }}>신상품</Typography>
+
+            <LatestProducts products={latestProducts} handleCardClick={handleCardClick} />
             <Typography sx={{ fontWeight: 'bold', fontSize: '1.5rem', mt: 4, mb: 2 }}>최신 업데이트 상품</Typography>
-            <Grid container spacing={4}>
-                {products.map((product) => (
-                    <Grid item key={product.id} xs={12} sm={6} md={3}>
-                        <Card onClick={() => handleCardClick(product.id)} style={{ cursor: 'pointer' }}>
-                            <CardMedia component="img" height="140" image={product.imageLink} alt={product.name} />
-                            <CardContent>
-                                <Typography gutterBottom variant="h6" component="div">
-                                    {product.name}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {product.description}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    가격: {product.price}원
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+            <LatestModifiedProducts products={modifiedProducts} handleCardClick={handleCardClick} />
         </Box>
     );
 };
