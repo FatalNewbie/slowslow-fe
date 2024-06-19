@@ -21,7 +21,7 @@ const PasswordCheckForm = () => {
             const userToken = localStorage.getItem('token');
 
             const response = await axios.post(
-                '/api/v1/checkPassword',
+                'http://localhost:8080/api/v1/checkPassword',
                 { password },
                 {
                     headers: {
