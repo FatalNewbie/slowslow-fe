@@ -14,6 +14,8 @@ import CategoryPage from './pages/category/CategoryPage';
 import CategoryAdmin from './pages/admin/CategoryAdmin';
 import CartOrder from './pages/cart/CartOrder.jsx';
 import AdminOrder from './pages/admin/order/AdminOrder.jsx';
+import CheckPassword from './pages/user/CheckPassword.jsx';
+import Update from './pages/user/Update.jsx';
 
 import './index.css'; // CSS 파일 임포트
 
@@ -83,6 +85,12 @@ const App = () => {
                     </Route>
                     <Route path="/mypage" element={<MainLayout />}>
                         <Route index element={<MyPage />} />
+                    </Route>
+                    <Route path="/checkPassword" element={<MainLayout />}>
+                        <Route index element={<CheckPassword />} />
+                    </Route>
+                    <Route path="/update" element={<MainLayout />}>
+                        <Route index element={<Update />} />
                     </Route>
                 </Routes>
             </Router>
