@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Box, Button, Stack } from '@mui/material';
 import { FaUser, FaShoppingCart, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CampingImage from '../assets/campingicon.png'; // 이미지 파일 가져오기
 import { AuthContext, AuthProvider } from '../pages/user/AuthContext';
 
@@ -109,6 +109,8 @@ const Header = () => {
                         <Typography
                             variant="body2"
                             sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}
+                            component={Link}
+                            to={`/category/${category.id}`}
                         >
                             {category.categoryName}
                         </Typography>
