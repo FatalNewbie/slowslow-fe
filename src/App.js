@@ -3,6 +3,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate, BrowserRouter } from 'react-router-dom';
 import { TokenProvider } from './contexts/TokenContext'; // TokenProvider 임포트
 import MainLayout from './layouts/MainLayout';
+import BrandLayout from './layouts/BrandLayout.jsx';
+import CategoryLayout from './layouts/CategoryLayout.jsx';
 import Cart from './pages/cart/Cart';
 import CartOrder from './pages/cart/CartOrder.jsx';
 import Order from './pages/order/Order';
@@ -12,11 +14,7 @@ import OrderPage from './pages/order/OrderPage'; // OrderPage 임포트
 import OrderSuccess from './pages/order/OrderSuccess'; // OrderSuccess 임포트
 import OrderFailure from './pages/order/OrderFailure'; // OrderFailure 임포트
 import Home from './pages/home/Home';
-import Brand from './pages/brand/Brand';
-import BrandPage from './pages/brand/BrandPage';
 import BrandAdmin from './pages/admin/BrandAdmin';
-import Category from './pages/category/Category';
-import CategoryPage from './pages/category/CategoryPage';
 import CategoryAdmin from './pages/admin/CategoryAdmin';
 import ProductDetail from './pages/product/ProductDetail.jsx';
 import ProductAdmin from './pages/admin/ProductAdmin.jsx';
@@ -33,6 +31,8 @@ import './index.css'; // CSS 파일 임포트
 import { AuthProvider } from './pages/user/AuthContext'; //로그인 전역 설정
 import { AuthContext } from './pages/user/AuthContext';
 import { useContext, useEffect } from 'react';
+import BrandMainPage from './pages/brand/BrandMainPage.jsx';
+import CategoryMainPage from './pages/category/CategoryMainPage.jsx';
 
 const theme = createTheme({
     components: {
@@ -74,11 +74,15 @@ const App = () => {
                         <Route path="/orders/failure" element={<OrderFailure />} />
                         <Route path="/mypage/orders" element={<OrderList />} />
                         <Route path="/mypage/orders/:orderId" element={<OrderDetail />} />
-                        <Route path="/brand" element={<Brand />} />
-                        <Route path="/brand/:id" element={<BrandPage />} />
+                        <Route path="/brand" element={<BrandLayout />}>
+                            <Route path="/brand" element={<BrandMainPage />} />
+                            <Route path="/brand/:id" element={<BrandMainPage />} />
+                        </Route>
                         <Route path="/admin/brand" element={<BrandAdmin />} />
-                        <Route path="/category" element={<Category />} />
-                        <Route path="/category/:id" element={<CategoryPage />} />
+                        <Route path="/category" element={<CategoryLayout />}>
+                            <Route path="/category" element={<CategoryMainPage />} />
+                            <Route path="/category/:id" element={<CategoryMainPage />} />
+                        </Route>
                         <Route path="/admin/category" element={<CategoryAdmin />} />
                         <Route path="/admin/order" element={<AdminOrder />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
