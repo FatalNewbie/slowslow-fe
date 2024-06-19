@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Divider, Grid, Card, CardContent, CardMedia } from '@mui/material';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -16,6 +17,7 @@ const Home = () => {
         autoplay: true,
         autoplaySpeed: 3000,
     };
+    const navigate = useNavigate();
 
     const banners = [
         'https://img.autocamping.co.kr/event/2024/240613Dair_main_PC.jpg', // 여기에 실제 이미지 경로를 입력하세요
@@ -61,9 +63,7 @@ const Home = () => {
     }, []);
 
     const handleCardClick = (productId) => {
-        // 해당 제품 상세 페이지로 이동
-        // navigate(`/product/${productId}`);
-        console.log(`Navigate to product ${productId}`);
+        navigate(`/product/${productId}`);
     };
 
     return (
