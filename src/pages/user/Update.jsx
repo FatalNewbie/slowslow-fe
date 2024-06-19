@@ -15,7 +15,7 @@ const UserInfoUpdateForm = () => {
         const fetchUserInfo = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('/api/v1/mypage', {
+                const response = await axios.get('http://34.47.79.214:8080/api/v1/mypage', {
                     headers: {
                         Authorization: `${token}`,
                     },
@@ -42,7 +42,7 @@ const UserInfoUpdateForm = () => {
 
         try {
             await axios.post(
-                '/api/v1/update',
+                'http://34.47.79.214:8080/api/v1/update',
                 {
                     name,
                     password,

@@ -31,7 +31,7 @@ const MyPage = () => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             axios
-                .get('/api/v1/mypage', {
+                .get('http://34.47.79.214:8080/api/v1/mypage', {
                     headers: {
                         Authorization: `${storedToken}`,
                     },
