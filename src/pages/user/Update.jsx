@@ -30,7 +30,7 @@ const UserInfoUpdateForm = () => {
                 }
 
                 const token = localStorage.getItem('token');
-                const response = await axios.get('/api/v1/mypage', {
+                const response = await axios.get('http://localhost:8080/api/v1/mypage', {
                     headers: {
                         Authorization: `${token}`,
                     },
@@ -58,7 +58,7 @@ const UserInfoUpdateForm = () => {
         try {
             const token = localStorage.getItem('token');
             await axios.post(
-                '/api/v1/update',
+                'http://localhost:8080/api/v1/update',
                 {
                     name,
                     password,
