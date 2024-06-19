@@ -11,7 +11,11 @@ const Modal = ({ show, title, children, onClose }) => {
     return (
         <div className="modal-overlay">
             <div className="modal">
+<<<<<<< HEAD
                 <Typography sx={{ fontWeight: 'semibold', fontSize: '1.2rem', marginBottom: '10px' }}>
+=======
+                <Typography sx={{ fontWeight: 'semibold', fontSize: '1.5rem', marginBottom: '20px' }}>
+>>>>>>> feature/wonjeong
                     {title}
                 </Typography>
                 {children}
