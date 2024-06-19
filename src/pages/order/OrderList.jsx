@@ -1,44 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Typography, CircularProgress, Divider, Pagination, Box, Button, Card, CardContent, Grid } from '@mui/material';
-import { useToken } from '../../contexts/TokenContext'; // TokenContext 임포트
-import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
+import React, { useEffect, useState, useContext } from 'react';
+import {
+    Container,
+    Typography,
+    CircularProgress,
+    Divider,
+    Pagination,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Grid,
+} from '@mui/material';
+import axios from 'axios'; // Axios 임포트
+import { AuthContext } from '../user/AuthContext'; // AuthContext 임포트
+import { useNavigate } from 'react-router-dom';
 
 const OrderList = () => {
-    const { token } = useToken(); // Context에서 토큰 가져오기
+    const { id, isLoggedIn, role, username } = useContext(AuthContext);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const ordersPerPage = 3; // 한 페이지에 보여줄 주문 수
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const ordersPerPage = 3;
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/mypage/orders', {
+        const storedToken = localStorage.getItem('token');
+        console.log('Stored Token:', storedToken); // 토큰 값을 콘솔에 출력
+        if (storedToken) {
+            axios
+                .get('http://localhost:8080/api/v1/mypage/orders', {
+                    // URL에 /api/v1 추가
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: token,
+                        Authorization: `${storedToken}`,
                     },
+                })
+                .then((response) => {
+                    const data = response.data;
+                    const sortedData = data.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+                    setOrders(sortedData);
+                })
+                .catch((error) => {
+                    setError(error);
+                    console.error('There was an error!', error);
+                })
+                .finally(() => {
+                    setLoading(false);
                 });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                // 최신 주문순으로 정렬 (내림차순)
-                const sortedData = data.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
-                setOrders(sortedData);
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchOrders();
-    }, [token]);
+        } else {
+            navigate('/login');
+        }
+    }, [navigate]);
 
     if (loading) {
         return <CircularProgress />;
@@ -52,25 +65,20 @@ const OrderList = () => {
         );
     }
 
-    // 현재 페이지에 해당하는 주문 데이터 계산
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-    // 페이지 변경 핸들러
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
     };
 
-    // 숫자에 천 단위 구분자 추가 함수
     const formatNumber = (num) => {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     };
 
     return (
         <Container maxWidth="md">
-            {' '}
-            {/* Container의 최대 너비를 "md"로 조정 */}
             <Typography sx={{ fontWeight: 'bold', fontSize: '1.7rem' }} mb={1} ml={5}>
                 주문내역
             </Typography>
@@ -81,12 +89,21 @@ const OrderList = () => {
                         <Card key={order.id} sx={{ mb: 3 }}>
                             <CardContent>
                                 <Grid container spacing={2} alignItems="center">
-                                    <Grid item xs={12} sm={3} container direction="column" justifyContent="space-between">
+                                    <Grid
+                                        item
+                                        xs={12}
+                                        sm={3}
+                                        container
+                                        direction="column"
+                                        justifyContent="space-between"
+                                    >
                                         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
                                             <Typography variant="subtitle2" sx={{ color: 'gray', marginRight: '8px' }}>
                                                 {String(order.id).padStart(5, '0')}
                                             </Typography>
-                                            <Typography variant="h6">{new Date(order.createdDate).toLocaleDateString()}</Typography>
+                                            <Typography variant="h6">
+                                                {new Date(order.createdDate).toLocaleDateString()}
+                                            </Typography>
                                         </Box>
                                         <Button
                                             variant="contained"
@@ -102,7 +119,7 @@ const OrderList = () => {
                                                     backgroundColor: '#82957E',
                                                 },
                                             }}
-                                            onClick={() => navigate(`/mypage/orders/${order.id}`)} // 버튼 클릭 시 경로 이동
+                                            onClick={() => navigate(`/mypage/orders/${order.id}`)}
                                         >
                                             주문상세 조회
                                         </Button>
@@ -110,7 +127,11 @@ const OrderList = () => {
                                     <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center">
                                         {order.orderDetails.map((detail) => (
                                             <Box key={detail.id} mx={1} textAlign="center">
-                                                <img src={detail.orderImg} style={{ width: '100px', height: '100px' }} />
+                                                <img
+                                                    src={detail.orderImg}
+                                                    alt={detail.productName} // alt 속성 추가
+                                                    style={{ width: '100px', height: '100px' }}
+                                                />
                                                 <Typography variant="body2">{detail.productName}</Typography>
                                             </Box>
                                         ))}

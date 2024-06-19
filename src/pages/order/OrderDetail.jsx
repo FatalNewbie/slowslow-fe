@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Container, Typography, CircularProgress, Box, Grid, Button, Divider, Modal, TextField } from '@mui/material';
-import { useToken } from '../../contexts/TokenContext'; // TokenContext 임포트
+import { AuthContext } from '../user/AuthContext'; // AuthContext 임포트
 
 const OrderDetail = () => {
     const { orderId } = useParams(); // URL 파라미터에서 orderId 가져오기
-    const { token } = useToken(); // Context에서 토큰 가져오기
+    const { isLoggedIn, role, username } = useContext(AuthContext); // AuthContext 사용
     const navigate = useNavigate(); // useNavigate 훅 사용
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -14,57 +15,60 @@ const OrderDetail = () => {
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
-        const fetchOrder = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/mypage/orders/${orderId}`, {
+        const storedToken = localStorage.getItem('token');
+        console.log('Stored Token:', storedToken); // 토큰 값을 콘솔에 출력
+        if (storedToken) {
+            axios
+                .get(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, {
+                    // URL에 /api/v1 추가
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: token,
+                        Authorization: `${storedToken}`,
                     },
+                })
+                .then((response) => {
+                    const data = response.data;
+                    setOrder(data);
+                    setFormData({
+                        orderName: data.orderName,
+                        orderTel: data.orderTel,
+                        orderEmail: data.orderEmail,
+                        shipName: data.shipName,
+                        shipTel: data.shipTel,
+                        shipAddr: data.shipAddr,
+                        shipReq: data.shipReq,
+                        orderDetails: data.orderDetails,
+                        status: data.status,
+                        totalPrice: data.totalPrice,
+                        userId: data.userId,
+                    });
+                })
+                .catch((error) => {
+                    setError(error);
+                    console.error('There was an error!', error);
+                })
+                .finally(() => {
+                    setLoading(false);
                 });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                setOrder(data);
-                setFormData({
-                    orderName: data.orderName,
-                    orderTel: data.orderTel,
-                    orderEmail: data.orderEmail,
-                    shipName: data.shipName,
-                    shipTel: data.shipTel,
-                    shipAddr: data.shipAddr,
-                    shipReq: data.shipReq,
-                    orderDetails: data.orderDetails,
-                    status: data.status,
-                    totalPrice: data.totalPrice,
-                    userId: data.userId,
-                });
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchOrder();
-    }, [orderId, token]);
+        } else {
+            navigate('/login');
+        }
+    }, [orderId, navigate]);
 
     const handleCancelOrder = async () => {
+        const storedToken = localStorage.getItem('token');
+        if (!storedToken) {
+            navigate('/login');
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:8080/mypage/orders/${orderId}`, {
-                method: 'DELETE',
+            const response = await axios.delete(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token,
+                    Authorization: `Bearer ${storedToken}`,
                 },
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
 
             alert('주문이 취소되었습니다.');
             setOrder({ ...order, status: 'CANCELLED' });
@@ -90,21 +94,21 @@ const OrderDetail = () => {
     };
 
     const handleSubmit = async () => {
+        const storedToken = localStorage.getItem('token');
+        if (!storedToken) {
+            navigate('/login');
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:8080/mypage/orders/${orderId}`, {
-                method: 'PUT',
+            const response = await axios.put(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token,
+                    Authorization: `Bearer ${storedToken}`,
                 },
-                body: JSON.stringify(formData),
             });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const updatedOrder = await response.json();
+            const updatedOrder = response.data;
             setOrder(updatedOrder);
             handleCloseModal();
         } catch (err) {
@@ -155,7 +159,11 @@ const OrderDetail = () => {
                             {order.orderDetails.map((detail) => (
                                 <Grid item key={detail.id} container spacing={2} alignItems="center">
                                     <Grid item>
-                                        <img src={detail.orderImg} style={{ width: '100px', height: '100px' }} />
+                                        <img
+                                            src={detail.orderImg}
+                                            alt={detail.productName}
+                                            style={{ width: '100px', height: '100px' }}
+                                        />
                                     </Grid>
                                     <Grid item>
                                         <Typography variant="body2">{detail.productName}</Typography>
