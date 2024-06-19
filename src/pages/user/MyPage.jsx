@@ -4,6 +4,15 @@ import { Box, Typography, Button, List, ListItem, ListItemText } from '@mui/mate
 import { AuthContext } from './AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
+import SvgIcon from '@mui/material/SvgIcon';
+
+function HomeIcon(props) {
+    return (
+        <SvgIcon {...props}>
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </SvgIcon>
+    );
+}
 
 const MyPage = () => {
     const [userData, setUserData] = useState('');
@@ -85,6 +94,7 @@ const MyPage = () => {
                 <Box sx={{ width: 200, bgcolor: 'background.paper', position: 'fixed' }}>
                     <Box className="bucket-list-header">
                         <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                            <HomeIcon color="white" />
                             마이페이지
                         </Typography>
                     </Box>
