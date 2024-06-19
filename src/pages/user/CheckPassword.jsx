@@ -4,6 +4,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext'; // AuthContext 임포트
 import Grid from '@mui/material/Unstable_Grid2';
 import { Box, Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
+import SvgIcon from '@mui/material/SvgIcon';
+
+function HomeIcon(props) {
+    return (
+        <SvgIcon {...props}>
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </SvgIcon>
+    );
+}
 
 const PasswordCheckForm = () => {
     const { isLoggedIn } = useContext(AuthContext); // AuthContext에서 필요한 상태 가져오기
@@ -93,6 +102,7 @@ const PasswordCheckForm = () => {
             <Box sx={{ width: 200, bgcolor: 'background.paper', position: 'fixed' }}>
                 <Box className="bucket-list-header">
                     <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        <HomeIcon color="white" />
                         마이페이지
                     </Typography>
                 </Box>
