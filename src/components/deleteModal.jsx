@@ -1,6 +1,7 @@
 import React from 'react';
 import './Modal.css';
 import { Typography } from '@mui/material';
+
 const DeleteModal = ({ show, onClose, onConfirm }) => {
     if (!show) {
         return null;
