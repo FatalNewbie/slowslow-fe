@@ -88,7 +88,7 @@ function AdminOrder() {
                                 justifyContent: 'center',
                             }}
                         >
-                            주문번호
+                            주문ID
                         </Grid>
                         <Grid
                             xs={3}

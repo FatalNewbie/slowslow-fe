@@ -43,6 +43,9 @@ const initSelectAll = () => {
     // 로컬스토리지의 값들이 전부 ture인지 확인하는 변수
     let isAllChecked = true;
     const carts = JSON.parse(localStorage.getItem('orders'));
+    if (carts === null) {
+        return true;
+    }
     carts.map((cart) => {
         // 로컬 스토리지 체크박스중 체크가 꺼진 체크박스가 존재한다면 isAllChecked를 false로 바꿈.
         if (cart.checked === false) {
@@ -134,6 +137,9 @@ function Cart() {
     const getProducts = async () => {
         // 로컬스토리지에서 값을 꺼내와서 JSON형태로 저장
         const cart = JSON.parse(localStorage.getItem('orders'));
+        if (cart === null) {
+            return [];
+        }
         // 각 제품의 상세 정보를 백엔드에서 가져옴
         const detailedProducts = await Promise.all(
             cart.map(async (product) => {
@@ -159,6 +165,9 @@ function Cart() {
         let totalAmount = 0;
         //로컬 스토리지 가져옴.
         const carts = JSON.parse(localStorage.getItem('orders'));
+        if (carts === null) {
+            return;
+        }
         await Promise.all(
             // 로컬스토리지 값 순차접근
             carts.map(async (cart) => {
@@ -291,7 +300,8 @@ function Cart() {
                         }}
                     />
                     <Grid container spacing={2} sx={{ mt: 4 }}>
-                        {JSON.parse(localStorage.getItem('orders')).length > 0 ? (
+                        {localStorage.getItem('orders') !== null &&
+                        JSON.parse(localStorage.getItem('orders')).length > 0 ? (
                             <Grid xs={8}>
                                 <Box>
                                     <Grid container spacing={2}>
@@ -350,7 +360,8 @@ function Cart() {
                                 장바구니에 담은 상품이 없습니다.
                             </Box>
                         )}
-                        {JSON.parse(localStorage.getItem('orders')).length > 0 ? (
+                        {localStorage.getItem('orders') !== null &&
+                        JSON.parse(localStorage.getItem('orders')).length > 0 ? (
                             <Grid xs={4}>
                                 <Item>
                                     <Grid container spacing={2}>
@@ -487,6 +498,7 @@ function Cart() {
 }
 
 export default Cart;
+//구매하기 버튼 누르면 checked가 false인 제품들 날리고 로컬스토리지에 다시 저장
 
 // 구현을 하다가 문제가 발생해서 방향을 수정하는 것이 아닌 문제가 발생할 것 같아서 방향을 바꿨음.
 // 진짜 문제가 발생하는지는 안해봐서 모름.
