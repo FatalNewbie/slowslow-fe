@@ -68,36 +68,43 @@ const PasswordCheckForm = () => {
             >
                 <h2>비밀번호 확인</h2>
                 <form onSubmit={handleSubmit}>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 2 }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
                         <label>
                             <TextField
-                                sx={{ width: 400, color: '#586555' }}
                                 id="password-field"
-                                label=""
+                                label="비밀번호 확인"
                                 type="password"
                                 variant="outlined"
                                 value={password}
                                 onChange={handlePasswordChange}
+                                sx={{ mb: 2, width: 400 }}
                             />
                         </label>
-                    </Box>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            mb: 2,
-                            height: 50,
-                            width: 400,
-                            backgroundColor: '#586555',
-                            borderRadius: '10px',
-                            '&:hover': {
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{
+                                mb: 2,
+                                height: 50,
+                                width: 400,
                                 backgroundColor: '#586555',
-                            },
-                            disabled: loading,
-                        }}
-                    >
-                        {loading ? '로딩 중...' : '확인'}
-                    </Button>
+                                borderRadius: '10px',
+                                '&:hover': {
+                                    backgroundColor: '#586555',
+                                },
+                                disabled: loading,
+                            }}
+                        >
+                            {loading ? '로딩 중...' : '확인'}
+                        </Button>
+                    </div>
 
                     {error && <p style={{ color: 'red' }}>Error: {JSON.stringify(error)}</p>}
 

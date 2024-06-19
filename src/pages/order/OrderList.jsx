@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    Container,
-    Typography,
-    CircularProgress,
-    Divider,
-    Pagination,
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Grid,
-} from '@mui/material';
+import { Container, Typography, CircularProgress, Divider, Pagination, Box, Button, Card, CardContent, Grid } from '@mui/material';
 import { useToken } from '../../contexts/TokenContext'; // TokenContext 임포트
 import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
 
@@ -92,21 +81,12 @@ const OrderList = () => {
                         <Card key={order.id} sx={{ mb: 3 }}>
                             <CardContent>
                                 <Grid container spacing={2} alignItems="center">
-                                    <Grid
-                                        item
-                                        xs={12}
-                                        sm={3}
-                                        container
-                                        direction="column"
-                                        justifyContent="space-between"
-                                    >
+                                    <Grid item xs={12} sm={3} container direction="column" justifyContent="space-between">
                                         <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
                                             <Typography variant="subtitle2" sx={{ color: 'gray', marginRight: '8px' }}>
                                                 {String(order.id).padStart(5, '0')}
                                             </Typography>
-                                            <Typography variant="h6">
-                                                {new Date(order.createdDate).toLocaleDateString()}
-                                            </Typography>
+                                            <Typography variant="h6">{new Date(order.createdDate).toLocaleDateString()}</Typography>
                                         </Box>
                                         <Button
                                             variant="contained"
@@ -130,10 +110,7 @@ const OrderList = () => {
                                     <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center">
                                         {order.orderDetails.map((detail) => (
                                             <Box key={detail.id} mx={1} textAlign="center">
-                                                <img
-                                                    src={detail.orderImg}
-                                                    style={{ width: '100px', height: '100px' }}
-                                                />
+                                                <img src={detail.orderImg} style={{ width: '100px', height: '100px' }} />
                                                 <Typography variant="body2">{detail.productName}</Typography>
                                             </Box>
                                         ))}

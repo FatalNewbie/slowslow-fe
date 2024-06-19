@@ -462,16 +462,11 @@ function Cart() {
                     </Grid>
                 </Box>
                 <Box>
-                    <Button variant="contained" onClick={resetBtnHandler}>
+                    <Button variant="contained" onClick={resetBtnHandler} sx={{ bgcolor: '#586555' }}>
                         물품 리셋
                     </Button>
                 </Box>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
+                <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                     <Box sx={style}>
                         <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center', mb: 5 }}>
                             1개 이상의 상품을 선택해 주세요.
