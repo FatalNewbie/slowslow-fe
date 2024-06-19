@@ -5,7 +5,27 @@ import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
     const [userData, setUserData] = useState('');
+    const [username, setUsername] = useState('');
     const navigate = useNavigate();
+
+    const handleDeleteAccount = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete('/api/v1/delete', {
+                headers: {
+                    Authorization: `${token}`,
+                },
+                params: {
+                    username: username, // 현재 로그인한 사용자의 username
+                },
+            });
+            localStorage.removeItem('token');
+            navigate('/');
+        } catch (error) {
+            console.error('Error deleting user account:', error);
+            alert('회원 탈퇴에 실패했습니다.');
+        }
+    };
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
@@ -18,6 +38,7 @@ const MyPage = () => {
                 })
                 .then((response) => {
                     setUserData(response.data);
+                    setUsername(response.data.username);
                 })
                 .catch((error) => {
                     console.error('There was an error!', error);
@@ -50,15 +71,7 @@ const MyPage = () => {
             >
                 정보 수정
             </Button>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                    localStorage.removeItem('token');
-                    navigate('/main');
-                }}
-                sx={{ mt: 2 }}
-            >
+            <Button variant="contained" color="primary" onClick={handleDeleteAccount} sx={{ mt: 2 }}>
                 회원탈퇴
             </Button>
         </Box>

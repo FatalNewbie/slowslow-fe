@@ -55,7 +55,16 @@ const Header = () => {
     // };
 
     const handleMyPage = () => {
-        navigate('/mypage');
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate('/mypage');
+        } else {
+            navigate('/login');
+        }
+    };
+
+    const handleCart = () => {
+        navigate('/cart');
     };
 
     return (
@@ -82,7 +91,7 @@ const Header = () => {
                         <IconButton color="inherit" onClick={handleMyPage}>
                             <FaUser size="1.2em" />
                         </IconButton>
-                        <IconButton color="inherit">
+                        <IconButton color="inherit" onClick={handleCart}>
                             <FaShoppingCart size="1.2em" />
                         </IconButton>
                     </Stack>

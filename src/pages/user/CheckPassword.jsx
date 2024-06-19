@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const PasswordCheckForm = () => {
+    const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -16,9 +18,24 @@ const PasswordCheckForm = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('/api/v1/checkPassword', { password });
-            setMessage(response.data);
-            setPassword(''); // 폼 초기화
+            const userToken = localStorage.getItem('token');
+
+            const response = await axios.post(
+                '/api/v1/checkPassword',
+                { password },
+                {
+                    headers: {
+                        Authorization: `${userToken}`,
+                    },
+                }
+            );
+
+            if (response.data === '정보 수정 폼으로 이동') {
+                navigate('/update');
+            } else {
+                setMessage(response.data);
+            }
+            setPassword('');
         } catch (err) {
             setError(err.response.data);
         } finally {

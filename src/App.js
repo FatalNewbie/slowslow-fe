@@ -85,16 +85,18 @@ const App = () => {
                         <Route path="/admin/product" element={<ProductAdmin />} />
                         <Route path="/mypage" element={<MyPage />} />
                         <Route path="/main" element={<Main />} />
+                        <Route path="/checkPassword" element={<CheckPassword />} />
+                        <Route path="update" element={<Update />} />
                         <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
                         <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
                         <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/login" replace />} />
                     </Route>
-                    <Route path="/checkPassword" element={<MainLayout />}>
+                    {/* <Route path="/checkPassword" element={<MainLayout />}>
                         <Route index element={<CheckPassword />} />
                     </Route>
                     <Route path="/update" element={<MainLayout />}>
                         <Route index element={<Update />} />
-                    </Route>
+                    </Route> */}
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
