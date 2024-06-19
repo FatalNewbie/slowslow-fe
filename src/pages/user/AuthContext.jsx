@@ -18,10 +18,15 @@ export const AuthProvider = ({ children }) => {
             if (isValid) {
                 setIsLoggedIn(true);
             } else {
-                setIsLoggedIn(false);
                 removeToken();
+                removeRole();
+                removeUsername();
+                setIsLoggedIn(false);
             }
         } else {
+            removeToken();
+            removeRole();
+            removeUsername();
             setIsLoggedIn(false);
         }
     }, []);
@@ -29,14 +34,20 @@ export const AuthProvider = ({ children }) => {
     const login = (token) => {
         const { role } = jwtDecode(token);
         const { username } = jwtDecode(token);
-        localStorage.setItem('token', token);
-        setRole(role);
-        setUsername(username);
+        const { id } = jwtDecode(token);
+        setToken(token);
+        localStorage.setItem('role', role);
+        localStorage.setItem('username', username);
+        localStorage.setItem('id', id);
+        setRole(localStorage.getItem('role'));
+        setUsername(localStorage.getItem('username'));
         setIsLoggedIn(true);
     };
 
     const logout = () => {
         removeToken();
+        removeRole();
+        removeUsername();
         setIsLoggedIn(false);
     };
 
@@ -46,6 +57,14 @@ export const AuthProvider = ({ children }) => {
 
     const removeToken = () => {
         localStorage.removeItem('token');
+    };
+
+    const removeRole = () => {
+        localStorage.removeItem('role');
+    };
+
+    const removeUsername = () => {
+        localStorage.removeItem('username');
     };
 
     const isTokenValid = (token) => {
@@ -72,6 +91,8 @@ export const AuthProvider = ({ children }) => {
             return true;
         } else {
             removeToken();
+            removeRole();
+            removeUsername();
             return false;
         }
     };

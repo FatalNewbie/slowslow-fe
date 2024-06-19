@@ -59,7 +59,11 @@ const Login = () => {
             //localStorage에 토큰 저장
             login(token);
 
-            navigate('/');
+            if (localStorage.getItem('role') === 'ROLE_ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             // 에러 처리 로직
             console.error('Login error:', error);
