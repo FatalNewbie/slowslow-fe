@@ -7,7 +7,7 @@ const BrandSidebar = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:8080/brand/all')
+        fetch('http://34.47.79.214:8080/brand/all')
             .then((response) => response.json())
             .then((data) => setBrands(data))
             .catch((error) => console.error('Error fetching data:', error));
