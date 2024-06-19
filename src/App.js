@@ -34,6 +34,7 @@ import { AuthContext } from './pages/user/AuthContext';
 import { useContext, useEffect } from 'react';
 import BrandMainPage from './pages/brand/BrandMainPage.jsx';
 import CategoryMainPage from './pages/category/CategoryMainPage.jsx';
+import DeleteUser from './pages/user/DeleteUser.jsx';
 
 const theme = createTheme({
     components: {
@@ -89,7 +90,8 @@ const App = () => {
                         <Route path="/mypage" element={<MyPage />} />
                         <Route path="/main" element={<Main />} />
                         <Route path="/checkPassword" element={<CheckPassword />} />
-                        <Route path="update" element={<Update />} />
+                        <Route path="/update" element={<Update />} />
+                        <Route path="/deleteUser" element={<DeleteUser />} />
                         <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
                         <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
 
@@ -100,10 +102,7 @@ const App = () => {
                             <Route index element={<Update />} />
                         </Route> */}
                     </Route>
-                    <Route
-                        path="/admin"
-                        element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}
-                    >
+                    <Route path="/admin" element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}>
                         <Route index element={<AdminHome />} />
                         <Route path="/admin/brand" element={<BrandAdmin />} />
                         <Route path="/admin/category" element={<CategoryAdmin />} />

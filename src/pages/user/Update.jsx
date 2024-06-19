@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext'; // AuthContext 임포트
+import { Box, Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
 
 const UserInfoUpdateForm = () => {
     const [username, setUsername] = useState('');
@@ -8,12 +10,25 @@ const UserInfoUpdateForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const { logout, isLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const location = useLocation();
+
+    const isCurrentPage = (path) => {
+        return location.pathname === path;
+    };
 
     useEffect(() => {
         // 사용자 정보를 가져와 state에 저장
         const fetchUserInfo = async () => {
             try {
+                if (!isLoggedIn) {
+                    // 로그인 상태가 아니면 로그인 페이지로 리다이렉트
+                    navigate('/login');
+                    return;
+                }
+
                 const token = localStorage.getItem('token');
                 const response = await axios.get('/api/v1/mypage', {
                     headers: {
@@ -22,14 +37,14 @@ const UserInfoUpdateForm = () => {
                 });
                 setUsername(response.data.username);
                 setName(response.data.name);
-                setPassword(response.data.password);
                 setPhoneNumber(response.data.phoneNumber);
             } catch (error) {
                 console.error('Error fetching user info:', error);
             }
         };
+
         fetchUserInfo();
-    }, []);
+    }, [isLoggedIn, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,6 +56,7 @@ const UserInfoUpdateForm = () => {
         }
 
         try {
+            const token = localStorage.getItem('token');
             await axios.post(
                 '/api/v1/update',
                 {
@@ -50,7 +66,7 @@ const UserInfoUpdateForm = () => {
                 },
                 {
                     headers: {
-                        Authorization: `${localStorage.getItem('token')}`,
+                        Authorization: `${token}`,
                     },
                 }
             );
@@ -63,39 +79,133 @@ const UserInfoUpdateForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="username">사용자 이름:</label>
-                <input type="text" id="username" value={username} disabled />
-            </div>
-            <div>
-                <label htmlFor="name">이름:</label>
-                <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div>
-                <label htmlFor="password">비밀번호:</label>
-                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <div>
-                <label htmlFor="confirmPassword">비밀번호 확인:</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-            </div>
-            <div>
-                <label htmlFor="phoneNumber">전화번호:</label>
-                <input
-                    type="text"
-                    id="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-            </div>
-            <button type="submit">수정하기</button>
-        </form>
+        <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'flex-start', gap: 4 }}>
+            {/* 왼쪽 메뉴 */}
+            <Box sx={{ width: 200, bgcolor: 'background.paper', position: 'fixed' }}>
+                <Box className="bucket-list-header">
+                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        마이페이지
+                    </Typography>
+                </Box>
+                <List component="nav">
+                    <ListItem
+                        button
+                        onClick={() => navigate('/mypage')}
+                        // isCurrentPage 함수나 현재 페이지 상태를 통해 활성화 상태 관리
+                        sx={{
+                            backgroundColor: isCurrentPage('/update') ? '#586555' : 'transparent',
+                            color: isCurrentPage('/update') ? 'common.white' : 'inherit',
+                            '&:hover': {
+                                backgroundColor: isCurrentPage('/update') ? '#6d7b77' : '#f0f0f0',
+                            },
+                        }}
+                    >
+                        <ListItemText primary="회원정보" />
+                    </ListItem>
+                    <ListItem
+                        button
+                        onClick={() => navigate('/orders')}
+                        // isCurrentPage 함수나 현재 페이지 상태를 통해 활성화 상태 관리
+                        sx={{
+                            backgroundColor: 'transparent', // 기본 배경색 설정
+                            color: 'inherit', // 기본 글자색 설정
+                            '&:hover': {
+                                backgroundColor: '#f0f0f0', // 호버 배경색 설정
+                            },
+                        }}
+                    >
+                        <ListItemText primary="주문목록" />
+                    </ListItem>
+                    <ListItem
+                        button
+                        onClick={() => navigate('/deleteUser')}
+                        // isCurrentPage 함수나 현재 페이지 상태를 통해 활성화 상태 관리
+                        sx={{
+                            backgroundColor: 'transparent', // 기본 배경색 설정
+                            color: 'inherit', // 기본 글자색 설정
+                            '&:hover': {
+                                backgroundColor: '#f0f0f0', // 호버 배경색 설정
+                            },
+                        }}
+                    >
+                        <ListItemText primary="회원탈퇴" />
+                    </ListItem>
+                </List>
+            </Box>
+
+            {/* 회원 정보 수정 폼 */}
+            <Box sx={{ ml: 60, pl: 6, pt: 4, pr: 6, pb: 4, flexGrow: 0.3, border: '2px solid #586555', borderRadius: '10px' }}>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <Typography variant="body1" sx={{ marginRight: '8px' }}>
+                            계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정 |{' '}
+                        </Typography>
+                        <Typography variant="body1">{username}</Typography>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <Typography variant="body1" sx={{ marginRight: '8px' }}>
+                            이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름 |{' '}
+                        </Typography>
+                        <TextField id="outlined-basic" variant="outlined" value={name} size="small" />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <Typography variant="body1" sx={{ marginRight: '8px' }}>
+                            비&nbsp;&nbsp;&nbsp;밀&nbsp;&nbsp;&nbsp;번&nbsp;&nbsp;&nbsp;호 |{' '}
+                        </Typography>
+                        <TextField
+                            type="password"
+                            id="password"
+                            variant="outlined"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            size="small"
+                        />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                        <Typography variant="body1" sx={{ marginRight: '8px' }}>
+                            비밀번호&nbsp;&nbsp;확인 |{' '}
+                        </Typography>
+                        <TextField
+                            type="password"
+                            id="confirmPassword"
+                            variant="outlined"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            size="small"
+                        />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="body1" sx={{ marginRight: '8px' }}>
+                            전&nbsp;&nbsp;&nbsp;화&nbsp;&nbsp;&nbsp;번&nbsp;&nbsp;&nbsp;호 |{' '}
+                        </Typography>
+                        <TextField
+                            type="text"
+                            id="phoneNumber"
+                            variant="outlined"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            size="small"
+                        />
+                    </div>
+
+                    <Button
+                        type="submit"
+                        color="primary"
+                        sx={{
+                            mt: 2,
+                            bgcolor: '#586555',
+                            float: 'right',
+                            color: '#fff',
+                            '&:hover': {
+                                backgroundColor: '#6d7b77',
+                            },
+                        }}
+                    >
+                        수정하기
+                    </Button>
+                </form>
+            </Box>
+        </Box>
     );
 };
 
