@@ -5,6 +5,7 @@ import { TokenProvider } from './contexts/TokenContext'; // TokenProvider 임포
 import MainLayout from './layouts/MainLayout';
 import BrandLayout from './layouts/BrandLayout.jsx';
 import CategoryLayout from './layouts/CategoryLayout.jsx';
+import AdminLayout from './layouts/AdminLayout.jsx';
 import Cart from './pages/cart/Cart';
 import CartOrder from './pages/cart/CartOrder.jsx';
 import Order from './pages/order/Order';
@@ -23,7 +24,7 @@ import AdminOrder from './pages/admin/order/AdminOrder.jsx';
 import Login from './pages/user/Login';
 import Main from './pages/user/Main';
 import Membership from './pages/user/Membership';
-import Admin from './pages/user/Admin';
+import AdminHome from './pages/admin/AdminHome.jsx';
 import MyPage from './pages/user/MyPage';
 import CheckPassword from './pages/user/CheckPassword.jsx';
 import Update from './pages/user/Update.jsx';
@@ -55,6 +56,8 @@ const App = () => {
 
     console.log('사용자 권한 ' + role);
 
+    const admin = localStorage.getItem('role');
+
     useEffect(() => {
         // 모든 페이지가 렌더링된 후 실행되는 코드
         console.log('App 컴포넌트가 마운트되었습니다.');
@@ -78,29 +81,40 @@ const App = () => {
                             <Route path="/brand" element={<BrandMainPage />} />
                             <Route path="/brand/:id" element={<BrandMainPage />} />
                         </Route>
-                        <Route path="/admin/brand" element={<BrandAdmin />} />
                         <Route path="/category" element={<CategoryLayout />}>
                             <Route path="/category" element={<CategoryMainPage />} />
                             <Route path="/category/:id" element={<CategoryMainPage />} />
                         </Route>
-                        <Route path="/admin/category" element={<CategoryAdmin />} />
-                        <Route path="/admin/order" element={<AdminOrder />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
-                        <Route path="/admin/product" element={<ProductAdmin />} />
                         <Route path="/mypage" element={<MyPage />} />
                         <Route path="/main" element={<Main />} />
                         <Route path="/checkPassword" element={<CheckPassword />} />
                         <Route path="update" element={<Update />} />
                         <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
                         <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
-                        <Route path="/admin" element={isLoggedIn ? <Admin /> : <Navigate to="/login" replace />} />
+
+                        {/* <Route path="/admin/brand" element={<BrandAdmin />} />
+                        <Route path="/admin/category" element={<CategoryAdmin />} />
+                        <Route path="/admin/order" element={<AdminOrder />} />
+                        <Route path="/admin/product" element={<ProductAdmin />} /> */}
+
+                        {/* <Route path="/checkPassword" element={<MainLayout />}>
+                            <Route index element={<CheckPassword />} />
+                        </Route>
+                        <Route path="/update" element={<MainLayout />}>
+                            <Route index element={<Update />} />
+                        </Route> */}
                     </Route>
-                    {/* <Route path="/checkPassword" element={<MainLayout />}>
-                        <Route index element={<CheckPassword />} />
+                    <Route
+                        path="/admin"
+                        element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}
+                    >
+                        <Route index element={<AdminHome />} />
+                        <Route path="/admin/brand" element={<BrandAdmin />} />
+                        <Route path="/admin/category" element={<CategoryAdmin />} />
+                        <Route path="/admin/order" element={<AdminOrder />} />
+                        <Route path="/admin/product" element={<ProductAdmin />} />
                     </Route>
-                    <Route path="/update" element={<MainLayout />}>
-                        <Route index element={<Update />} />
-                    </Route> */}
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
