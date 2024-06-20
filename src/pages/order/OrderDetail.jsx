@@ -66,7 +66,7 @@ const OrderDetail = () => {
             const response = await axios.delete(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${storedToken}`,
+                    Authorization: `${storedToken}`,
                 },
             });
 
@@ -104,7 +104,7 @@ const OrderDetail = () => {
             const response = await axios.put(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${storedToken}`,
+                    Authorization: `${storedToken}`,
                 },
             });
 
