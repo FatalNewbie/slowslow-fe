@@ -20,7 +20,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const banners = [
-        'https://img.autocamping.co.kr/event/2024/240613Dair_main_PC.jpg', // 여기에 실제 이미지 경로를 입력하세요
+        'https://img.autocamping.co.kr/event/2024/240613Dair_main_PC.jpg',
         'https://img.autocamping.co.kr/event/2023/20231019SHELTER.jpg',
         'https://img.autocamping.co.kr/event/2022/event_0721.jpg',
     ];
