@@ -137,7 +137,7 @@ const OrderPage = () => {
 
         try {
             const response = await axios.post(
-                `http://34.47.79.214:8080/orders?paymentConfirmed=true&agreementConfirmed=true`,
+                `http://localhost:8080/orders?paymentConfirmed=true&agreementConfirmed=true`,
                 orderData,
                 {
                     headers: {

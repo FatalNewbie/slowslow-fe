@@ -13,7 +13,7 @@ const ProductDetail = () => {
     const [quantity, setQuantity] = useState(1); // 기본 수량은 1로 설정
 
     useEffect(() => {
-        fetch(`http://34.47.79.214:8080/product/${productId}`)
+        fetch(`http://localhost:8080/product/${productId}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

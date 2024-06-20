@@ -15,7 +15,7 @@ function AdminOrderItem({ orderId, totalPrice, orderName, orderDate, orderStatus
     const handleChange = async (event) => {
         setValue(event.target.value);
 
-        const url = `http://34.47.79.214:8080/admin/orders/${orderId}?status=${event.target.value}`;
+        const url = `http://localhost:8080/admin/orders/${orderId}?status=${event.target.value}`;
         try {
             const response = await fetch(url, {
                 method: 'PUT',

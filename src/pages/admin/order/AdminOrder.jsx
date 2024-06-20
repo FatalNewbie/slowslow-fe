@@ -25,7 +25,7 @@ function AdminOrder() {
 
     // 백에서 모든 주문을 가져오고, status별 주문 수를 체크함.
     const init = async () => {
-        const response = await fetch(`http://34.47.79.214:8080/admin/orders`);
+        const response = await fetch(`http://localhost:8080/admin/orders`);
         const data = await response.json();
 
         console.log(data);
