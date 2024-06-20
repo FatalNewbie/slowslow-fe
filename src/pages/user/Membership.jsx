@@ -58,7 +58,19 @@ function Membership() {
                 navigate('/login');
                 alert('회원가입이 완료되었습니다. 로그인해주세요.');
             } else {
-                alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+                const errorData = await response.json();
+                if (errorData.success === false && errorData.username) {
+                    // 이메일 중복 에러 표시
+                    alert(errorData.username);
+                } else {
+                    // 다른 에러 처리
+                    if (errorData.errors.password) {
+                        alert(errorData.errors.password);
+                    }
+                    if (errorData.errors.phoneNumber) {
+                        alert(errorData.errors.phoneNumber);
+                    }
+                }
             }
         } catch (error) {
             console.error('회원가입 실패:', error);
