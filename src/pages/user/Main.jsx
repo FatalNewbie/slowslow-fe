@@ -1,30 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-import { checkTokenValidity, setToken, removeToken } from '../../utils/auth';
+import { AuthContext } from './AuthContext';
 import { AppBar, Toolbar, Typography, IconButton, Box, Button, Stack } from '@mui/material';
 
 function Main() {
     const navigate = useNavigate();
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, logout, checkTokenValidity] = useContext(AuthContext);
 
     useEffect(() => {
-        if (checkTokenValidity()) {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
-        }
-    }, []);
+        checkTokenValidity();
+    }, [checkTokenValidity]);
 
     const handleLogin = () => {
         navigate('/login');
     };
 
     const handleLogout = () => {
-        removeToken();
-
-        setIsLoggedIn(false);
+        logout();
 
         navigate('/');
     };
