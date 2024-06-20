@@ -23,7 +23,7 @@ const Footer = () => {
                     <Typography variant="body2">김이삭</Typography>
                     <Typography variant="body2">조한휘</Typography>
                 </Stack>
-                <Typography variant="body2" fontSize="x-small" mt={3} mb={4}>
+                <Typography variant="body2" fontSize="x-small" mt={4} mb={4}>
                     늘짝늘짝 @ 2024. All rights reserved.
                 </Typography>
             </Stack>
