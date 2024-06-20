@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-=======
+// <<<<<<< HEAD
+// =======
 // import React, { useEffect, useState } from 'react';
 // import { Link } from 'react-router-dom';
 // import { List, ListItem, ListItemText, TextField } from '@mui/material';
@@ -43,7 +43,7 @@
 
 // export default CategorySidebar;
 
->>>>>>> feature/ko
+// >>>>>>> feature/ko
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { List, ListItem, ListItemText, TextField } from '@mui/material';
