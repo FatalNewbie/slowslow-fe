@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Container,
@@ -17,7 +17,9 @@ import {
     FormGroup,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import { useToken } from '../../contexts/TokenContext';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { AuthContext } from '../user/AuthContext';
 
 const getCartData = () => {
     return JSON.parse(localStorage.getItem('orders')) || [];
@@ -43,7 +45,7 @@ const FormSection = styled(Box)({
 });
 
 const OrderPage = () => {
-    const { token, userId } = useToken();
+    const { isLoggedIn, role, username } = useContext(AuthContext);
     const navigate = useNavigate();
     const [orderPageData, setOrderPageData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -102,13 +104,25 @@ const OrderPage = () => {
     }, []);
 
     const handleSubmitOrder = async () => {
-        if (!token) {
+        const storedToken = localStorage.getItem('token');
+        if (!storedToken) {
             alert('로그인이 필요합니다.');
             return;
         }
 
         if (!paymentMethod || !agreementConfirmed.personalInfo || !agreementConfirmed.orderAgreement) {
             alert('결제 수단과 주문자 동의에 체크해주세요.');
+            return;
+        }
+
+        let userId = null;
+        try {
+            const decodedToken = jwtDecode(storedToken);
+            console.log(decodedToken); // 디코딩된 토큰 구조를 확인
+            userId = decodedToken.id; // 필요한 필드를 확인 후 수정
+        } catch (error) {
+            console.error('Invalid token structure', error);
+            alert('유효하지 않은 토큰입니다.');
             return;
         }
 
@@ -119,29 +133,27 @@ const OrderPage = () => {
             totalPrice: orderPageData.totalPrice,
         };
 
+        console.log('Submitting order with data:', orderData);
+
         try {
-            const response = await fetch(`http://localhost:8080/orders?paymentConfirmed=true&agreementConfirmed=true`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token,
-                },
-                body: JSON.stringify(orderData),
-            });
-
-            if (!response.ok) {
-                if (response.status === 500) {
-                    navigate('/orders/failure');
-                } else {
-                    const errorResponse = await response.text();
-                    throw new Error(errorResponse);
+            const response = await axios.post(
+                `http://localhost:8080/orders?paymentConfirmed=true&agreementConfirmed=true`,
+                orderData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `${storedToken}`,
+                    },
                 }
-            }
+            );
 
-            const updatedOrder = await response.json();
             navigate('/orders/success');
         } catch (err) {
-            alert('주문 중 오류가 발생했습니다: ' + err.message);
+            if (err.response && err.response.status === 500) {
+                navigate('/orders/failure');
+            } else {
+                alert('주문 중 오류가 발생했습니다: ' + err.message);
+            }
         }
     };
 

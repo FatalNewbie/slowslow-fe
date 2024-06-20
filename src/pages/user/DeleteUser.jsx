@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext'; // AuthContext 임포트
 import { Box, Typography, Button, List, ListItem, ListItemText } from '@mui/material';
-import { AuthContext } from './AuthContext';
-import { useLocation, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
 import SvgIcon from '@mui/material/SvgIcon';
 
@@ -14,49 +14,34 @@ function HomeIcon(props) {
     );
 }
 
-const MyPage = () => {
-    const [userData, setUserData] = useState('');
-    const [username, setUsername] = useState('');
-    const navigate = useNavigate();
+const DeleteUserForm = () => {
     const { logout, isLoggedIn } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const location = useLocation();
-
-    const isCurrentPage = (path) => {
-        return location.pathname === path;
-    };
-
-    useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        if (storedToken) {
-            axios
-                .get('http://localhost:8080/api/v1/mypage', {
+    const handleDeleteAccount = async () => {
+        const confirmDelete = window.confirm('정말로 회원탈퇴를 하시겠습니까?');
+        if (confirmDelete) {
+            try {
+                const token = localStorage.getItem('token');
+                await axios.delete('/api/v1/delete', {
                     headers: {
-                        Authorization: `${storedToken}`,
+                        Authorization: `${token}`,
                     },
-                })
-                .then((response) => {
-                    setUserData(response.data);
-                    setUsername(response.data.username);
-                })
-                .catch((error) => {
-                    console.error('There was an error!', error);
-                    navigate('/login');
                 });
-        } else {
-            navigate('/login');
+                logout();
+                navigate('/');
+            } catch (error) {
+                console.error('Error deleting user account:', error);
+                alert('회원 탈퇴에 실패했습니다.');
+            }
         }
-    }, [navigate]);
-
-    if (!userData) {
-        return <Typography>Loading...</Typography>;
-    }
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
                 <Grid xs={6}>
-                    <Box sx={{ fontSize: 27, fontWeight: 'bold' }}>회원정보</Box>
+                    <Box sx={{ fontSize: 27, fontWeight: 'bold' }}>회원탈퇴</Box>
                 </Grid>
                 <Grid xs={6}>
                     <Box
@@ -69,16 +54,8 @@ const MyPage = () => {
                             height: '100%',
                         }}
                     >
-                        <Box
-                            sx={{
-                                fontSize: 20,
-                                fontWeight: 'bold',
-                                color: 'rgb(195, 195, 195)',
-                            }}
-                        >
-                            마이페이지 &gt;
-                        </Box>
-                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원정보</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원탈퇴</Box>
                     </Box>
                 </Grid>
             </Grid>
@@ -103,10 +80,10 @@ const MyPage = () => {
                             button
                             onClick={() => navigate('/mypage')}
                             sx={{
-                                backgroundColor: isCurrentPage('/mypage') ? '#586555' : 'transparent',
-                                color: isCurrentPage('/mypage') ? 'common.white' : 'inherit',
+                                backgroundColor: 'transparent',
+                                color: 'inherit',
                                 '&:hover': {
-                                    backgroundColor: isCurrentPage('/mypage') ? '#6d7b77' : '#f0f0f0',
+                                    backgroundColor: '#f0f0f0',
                                 },
                             }}
                         >
@@ -116,10 +93,10 @@ const MyPage = () => {
                             button
                             onClick={() => navigate('/mypage/orders')}
                             sx={{
-                                backgroundColor: isCurrentPage('/mypage/orders') ? '#586555' : 'transparent',
-                                color: isCurrentPage('/mypage/orders') ? 'common.white' : 'inherit',
+                                backgroundColor: 'transparent',
+                                color: 'inherit',
                                 '&:hover': {
-                                    backgroundColor: isCurrentPage('/mypage/orders') ? '#6d7b77' : '#f0f0f0',
+                                    backgroundColor: '#f0f0f0',
                                 },
                             }}
                         >
@@ -127,12 +104,12 @@ const MyPage = () => {
                         </ListItem>
                         <ListItem
                             button
-                            onClick={() => navigate('/deleteUser')}
+                            onClick={handleDeleteAccount}
                             sx={{
-                                backgroundColor: isCurrentPage('/delete') ? '#586555' : 'transparent',
-                                color: isCurrentPage('/delete') ? 'common.white' : 'inherit',
+                                backgroundColor: '#586555',
+                                color: '#fff',
                                 '&:hover': {
-                                    backgroundColor: isCurrentPage('/delete') ? '#6d7b77' : '#f0f0f0',
+                                    backgroundColor: '#6d7b77',
                                 },
                             }}
                         >
@@ -141,42 +118,42 @@ const MyPage = () => {
                     </List>
                 </Box>
 
-                {/* 오른쪽 컨텐츠 */}
-                <Box
-                    sx={{
-                        ml: 60,
-                        pl: 6,
-                        pt: 4,
-                        pr: 6,
-                        pb: 4,
-                        flexGrow: 0.3,
-                        border: '2px solid #586555',
-                        borderRadius: '10px',
-                    }}
-                >
-                    <Typography variant="h5" sx={{ mb: 2 }}>
-                        {userData.name}님
-                    </Typography>
+                {/* 회원 탈퇴 폼 */}
+                <Box sx={{ ml: 60, pl: 6, pt: 4, pr: 6, pb: 4, flexGrow: 0.3, border: '2px solid #586555', borderRadius: '10px' }}>
                     <Typography variant="h6" sx={{ mb: 2 }}>
-                        계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정 | {userData.username}
+                        회원 탈퇴
                     </Typography>
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                        전화번호 | {userData.phoneNumber}
+                    <Typography variant="body1" sx={{ mb: 2 }}>
+                        정말로 탈퇴하시겠습니까?
                     </Typography>
                     <Button
+                        onClick={() => navigate('/mypage')}
                         variant="contained"
-                        color="primary"
-                        onClick={() => navigate('/checkPassword')}
                         sx={{
-                            mt: 2,
                             bgcolor: '#586555',
+                            color: '#fff',
                             float: 'right',
                             '&:hover': {
                                 backgroundColor: '#6d7b77',
                             },
                         }}
                     >
-                        정보수정
+                        취&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소
+                    </Button>
+                    <Button
+                        onClick={handleDeleteAccount}
+                        variant="contained"
+                        sx={{
+                            bgcolor: '#586555',
+                            color: '#fff',
+                            float: 'right',
+                            mr: '5px',
+                            '&:hover': {
+                                backgroundColor: '#6d7b77',
+                            },
+                        }}
+                    >
+                        회원탈퇴
                     </Button>
                 </Box>
             </Box>
@@ -184,4 +161,4 @@ const MyPage = () => {
     );
 };
 
-export default MyPage;
+export default DeleteUserForm;

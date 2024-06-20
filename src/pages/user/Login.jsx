@@ -10,23 +10,21 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Typography from '@mui/material/Typography'; // Typography 임포트 추가
 import { AuthContext } from './AuthContext';
 
 const Login = () => {
     const { login } = useContext(AuthContext);
-
-    const [showPassword, setShowPassword] = React.useState(false);
-
+    const [showPassword, setShowPassword] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [formData, setFormData] = useState({ username: '', password: '' });
+    const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
-    const [formData, setFormData] = useState({ username: '', password: '' });
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,25 +54,22 @@ const Login = () => {
             // 토큰을 응답 헤더에서 가져오기
             const token = response.headers.get('Authorization');
 
-            //localStorage에 토큰 저장
+            // AuthContext의 login 함수 호출
             login(token);
 
-            navigate('/');
+            if (localStorage.getItem('role') === 'ROLE_ADMIN') {
+                navigate('/admin');
+            } else {
+                navigate('/');
+            }
         } catch (error) {
-            // 에러 처리 로직
             console.error('Login error:', error);
-            // 에러 메시지를 사용자에게 표시하는 로직 추가
             setErrorMessage(error.message);
         }
     };
 
     return (
-        <Box
-            sx={{
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
+        <Box sx={{ justifyContent: 'center', alignItems: 'center' }}>
             <Box
                 sx={{
                     padding: '20px',
@@ -87,12 +82,9 @@ const Login = () => {
             >
                 <h2>로그인</h2>
                 <form onSubmit={handleSubmit}>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 2, mt: 7 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 2 }}>
                         <TextField
-                            sx={{
-                                width: 400,
-                                color: '#586555',
-                            }}
+                            sx={{ width: 400, color: '#586555' }}
                             id="input-with-sx"
                             label="이메일"
                             variant="outlined"
@@ -128,7 +120,7 @@ const Login = () => {
                             />
                         </FormControl>
                     </Box>
-
+                    {errorMessage && <Typography color="error">{errorMessage}</Typography>}
                     <Button
                         type="submit"
                         variant="contained"
@@ -139,7 +131,7 @@ const Login = () => {
                             backgroundColor: '#586555',
                             borderRadius: '10px',
                             '&:hover': {
-                                backgroundColor: '#586555', // 마우스 오버 시 배경색 변경
+                                backgroundColor: '#586555',
                             },
                         }}
                     >

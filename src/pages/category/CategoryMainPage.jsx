@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
+import { Container, Typography, Grid, Card, CardContent, CardMedia, Divider } from '@mui/material';
 
 const CategoryMainPage = () => {
     const { id: categoryId } = useParams(); // useParams를 올바르게 사용
@@ -71,9 +71,17 @@ const CategoryMainPage = () => {
 
     return (
         <Container>
-            <Typography variant="h5" gutterBottom fontWeight="semibold" letterSpacing={3} marginBottom={'20px'}>
-                {getCategoryName(categoryId)} - 상품 목록
+            <Typography
+                variant="h5"
+                gutterBottom
+                fontWeight="bold"
+                letterSpacing={3}
+                marginTop={'20px'}
+                marginBottom={'20px'}
+            >
+                {getCategoryName(categoryId)}
             </Typography>
+            <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
             {products.length > 0 ? (
                 <Grid container spacing={4}>
                     {products.map((product) => (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Box, Button, Stack } from '@mui/material';
 import { FaUser, FaShoppingCart, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CampingImage from '../assets/campingicon.png'; // 이미지 파일 가져오기
 import { AuthContext, AuthProvider } from '../pages/user/AuthContext';
 
@@ -9,6 +9,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const { isLoggedIn, login, logout } = useContext(AuthContext);
+    const role = localStorage.getItem('role');
 
     const handleClick = () => {
         if (isLoggedIn) {
@@ -55,9 +56,10 @@ const Header = () => {
     // };
 
     const handleMyPage = () => {
-        const token = localStorage.getItem('token');
-        if (token) {
+        if (role === 'ROLE_USER') {
             navigate('/mypage');
+        } else if (role === 'ROLE_ADMIN') {
+            navigate('/admin');
         } else {
             navigate('/login');
         }
@@ -91,9 +93,11 @@ const Header = () => {
                         <IconButton color="inherit" onClick={handleMyPage}>
                             <FaUser size="1.2em" />
                         </IconButton>
-                        <IconButton color="inherit" onClick={handleCart}>
-                            <FaShoppingCart size="1.2em" />
-                        </IconButton>
+                        {role !== 'ROLE_ADMIN' && (
+                            <IconButton color="inherit" onClick={handleCart}>
+                                <FaShoppingCart size="1.2em" />
+                            </IconButton>
+                        )}
                     </Stack>
                 </Box>
             </Toolbar>
@@ -109,6 +113,8 @@ const Header = () => {
                         <Typography
                             variant="body2"
                             sx={{ color: 'white', cursor: 'pointer', alignSelf: 'center', fontSize: '0.875rem' }}
+                            component={Link}
+                            to={`/category/${category.id}`}
                         >
                             {category.categoryName}
                         </Typography>
