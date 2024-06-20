@@ -88,10 +88,28 @@ const ProductDetail = () => {
                         onClick={handleOrder}
                         fullWidth
                         style={{ marginBottom: '10px' }}
+                        sx={{
+                            bgcolor: '#586555',
+                            '&:hover': {
+                                backgroundColor: '#6d7b77',
+                            },
+                        }}
                     >
                         주문하기
                     </Button>
-                    <Button variant="outlined" color="primary" onClick={handleAddToCart} fullWidth>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddToCart}
+                        sx={{
+                            bgcolor: '#586555',
+                            color: '#fff',
+                            '&:hover': {
+                                backgroundColor: '#6d7b77',
+                            },
+                        }}
+                        fullWidth
+                    >
                         장바구니에 담기
                     </Button>
                 </Grid>

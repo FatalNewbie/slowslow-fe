@@ -202,7 +202,7 @@ const PasswordCheckForm = () => {
                             </Button>
                         </div>
 
-                        {error && <p style={{ color: 'red' }}>Error: {JSON.stringify(error)}</p>}
+                        {error && <p style={{ color: 'red' }}>{JSON.stringify(error)}</p>}
 
                         {message && (
                             <div>

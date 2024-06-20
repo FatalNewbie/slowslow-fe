@@ -35,6 +35,7 @@ import { useContext, useEffect } from 'react';
 import BrandMainPage from './pages/brand/BrandMainPage.jsx';
 import CategoryMainPage from './pages/category/CategoryMainPage.jsx';
 import DeleteUser from './pages/user/DeleteUser.jsx';
+import UserAdmin from './pages/admin/UserAdmin.jsx';
 
 const theme = createTheme({
     components: {
@@ -108,6 +109,7 @@ const App = () => {
                         <Route path="/admin/category" element={<CategoryAdmin />} />
                         <Route path="/admin/order" element={<AdminOrder />} />
                         <Route path="/admin/product" element={<ProductAdmin />} />
+                        <Route path="/admin/userList" element={<UserAdmin />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

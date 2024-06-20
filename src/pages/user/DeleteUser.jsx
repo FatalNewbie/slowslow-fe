@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext'; // AuthContext 임포트
@@ -15,25 +15,30 @@ function HomeIcon(props) {
 }
 
 const DeleteUserForm = () => {
-    const { logout, isLoggedIn } = useContext(AuthContext);
+    const [userData, setUserData] = useState('');
+    const { username } = useContext(AuthContext); // AuthContext에서 username 가져오기
     const navigate = useNavigate();
 
     const handleDeleteAccount = async () => {
-        const confirmDelete = window.confirm('정말로 회원탈퇴를 하시겠습니까?');
-        if (confirmDelete) {
-            try {
-                const token = localStorage.getItem('token');
-                await axios.delete('/api/v1/delete', {
-                    headers: {
-                        Authorization: `${token}`,
-                    },
-                });
-                logout();
-                navigate('/');
-            } catch (error) {
-                console.error('Error deleting user account:', error);
-                alert('회원 탈퇴에 실패했습니다.');
-            }
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get('http://localhost:8080/api/v1/delete', {
+                headers: {
+                    Authorization: `${token}`,
+                },
+                params: {
+                    username: username, // 현재 로그인한 사용자의 username
+                },
+            });
+
+            setUserData(response.data);
+            localStorage.removeItem('token');
+            alert('회원 탈퇴가 성공적으로 처리되었습니다.');
+
+            navigate('/');
+        } catch (error) {
+            console.error('Error deleting user account:', error);
+            alert('회원 탈퇴에 실패했습니다.');
         }
     };
 
@@ -104,7 +109,7 @@ const DeleteUserForm = () => {
                         </ListItem>
                         <ListItem
                             button
-                            onClick={handleDeleteAccount}
+                            onClick={() => navigate('/delete')}
                             sx={{
                                 backgroundColor: '#586555',
                                 color: '#fff',
@@ -138,7 +143,7 @@ const DeleteUserForm = () => {
                             },
                         }}
                     >
-                        취&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;소
+                        아니오
                     </Button>
                     <Button
                         onClick={handleDeleteAccount}
@@ -153,7 +158,7 @@ const DeleteUserForm = () => {
                             },
                         }}
                     >
-                        회원탈퇴
+                        &nbsp;&nbsp;&nbsp;네&nbsp;&nbsp;&nbsp;
                     </Button>
                 </Box>
             </Box>

@@ -20,6 +20,10 @@ const AdminHome = () => {
         navigate('/admin/category');
     };
 
+    const handleAdminUserList = () => {
+        navigate('/admin/userList');
+    };
+
     return (
         <Box justifyContent="center" sx={{ '& button': { mt: 3, mb: 2, ml: 4, mr: 4 } }}>
             {/* <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 1 }} /> */}
@@ -48,6 +52,7 @@ const AdminHome = () => {
                         height: '150px',
                         borderRadius: '12px',
                     }}
+                    onClick={handleAdminUserList}
                 >
                     회원 관리
                 </Button>
