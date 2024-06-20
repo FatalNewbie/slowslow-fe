@@ -40,7 +40,7 @@ const UserInfoUpdateForm = () => {
                 }
 
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8080/api/v1/mypage', {
+                const response = await axios.get('http://34.47.79.214:8080/api/v1/mypage', {
                     headers: {
                         Authorization: `${token}`,
                     },
@@ -68,7 +68,7 @@ const UserInfoUpdateForm = () => {
         try {
             const token = localStorage.getItem('token');
             await axios.post(
-                'http://localhost:8080/api/v1/update',
+                'http://34.47.79.214:8080/api/v1/update',
                 {
                     name,
                     password,
@@ -105,7 +105,9 @@ const UserInfoUpdateForm = () => {
                             height: '100%',
                         }}
                     >
-                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                            마이페이지 &gt;
+                        </Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원정보 &gt;</Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원정보수정</Box>
                     </Box>
@@ -174,17 +176,30 @@ const UserInfoUpdateForm = () => {
                 </Box>
 
                 {/* 회원 정보 수정 폼 */}
-                <Box sx={{ ml: 60, pl: 6, pt: 4, pr: 6, pb: 4, flexGrow: 0.3, border: '2px solid #586555', borderRadius: '10px' }}>
+                <Box
+                    sx={{
+                        ml: 60,
+                        pl: 6,
+                        pt: 4,
+                        pr: 6,
+                        pb: 4,
+                        flexGrow: 0.3,
+                        border: '2px solid #586555',
+                        borderRadius: '10px',
+                    }}
+                >
                     <form onSubmit={handleSubmit}>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                             <Typography variant="body1" sx={{ marginRight: '8px' }}>
-                                계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정 |{' '}
+                                계&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정
+                                |{' '}
                             </Typography>
                             <Typography variant="body1">{username}</Typography>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                             <Typography variant="body1" sx={{ marginRight: '8px' }}>
-                                이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름 |{' '}
+                                이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름
+                                |{' '}
                             </Typography>
                             <TextField id="outlined-basic" variant="outlined" value={name} size="small" />
                         </div>

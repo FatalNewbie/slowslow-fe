@@ -46,7 +46,7 @@ const OrderList = () => {
         console.log('Stored Token:', storedToken); // 토큰 값을 콘솔에 출력
         if (storedToken) {
             axios
-                .get('http://localhost:8080/api/v1/mypage/orders', {
+                .get('http://34.47.79.214:8080/api/v1/mypage/orders', {
                     // URL에 /api/v1 추가
                     headers: {
                         'Content-Type': 'application/json',

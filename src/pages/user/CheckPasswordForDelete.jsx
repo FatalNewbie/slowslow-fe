@@ -40,7 +40,7 @@ const PasswordCheckForm = () => {
 
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                'http://localhost:8080/api/v1/checkPasswordForDelete',
+                'http://34.47.79.214:8080/api/v1/checkPasswordForDelete',
                 { password },
                 { headers: { Authorization: `${token}` } }
             );
@@ -72,7 +72,9 @@ const PasswordCheckForm = () => {
                             height: '100%',
                         }}
                     >
-                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                            마이페이지 &gt;
+                        </Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원탈퇴 &gt;</Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>비밀번호확인</Box>
                     </Box>

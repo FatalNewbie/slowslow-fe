@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import {
+    Container,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+} from '@mui/material';
 
 const MemberList = () => {
     const [members, setMembers] = useState([]);
@@ -11,7 +21,7 @@ const MemberList = () => {
 
     const fetchMemberData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/v1/admin/userList');
+            const response = await fetch('http://34.47.79.214:8080/api/v1/admin/userList');
             const data = await response.json();
             setMembers(data);
         } catch (error) {
@@ -21,7 +31,7 @@ const MemberList = () => {
 
     const handleRestoreMember = async (username) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/restoreUser/${username}`, {
+            const response = await fetch(`http://34.47.79.214:8080/api/v1/restoreUser/${username}`, {
                 method: 'Get',
                 headers: {
                     'Content-Type': 'application/json',

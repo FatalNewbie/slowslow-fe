@@ -25,14 +25,14 @@ const BrandListAdmin = () => {
     const [brandToEdit, setBrandToEdit] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8080/brand/all')
+        fetch('http://34.47.79.214:8080/brand/all')
             .then((response) => response.json())
             .then((data) => setBrands(data))
             .catch((error) => console.error('Error fetching data:', error));
     }, []);
 
     const handleAddBrand = (brandName) => {
-        fetch('http://localhost:8080/admin/brand/post', {
+        fetch('http://34.47.79.214:8080/admin/brand/post', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const BrandListAdmin = () => {
     };
 
     const handleUpdateBrand = (brandName) => {
-        fetch(`http://localhost:8080/admin/brand/edit/${brandToEdit.id}`, {
+        fetch(`http://34.47.79.214:8080/admin/brand/edit/${brandToEdit.id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const BrandListAdmin = () => {
     };
 
     const handleDeleteBrand = () => {
-        fetch(`http://localhost:8080/admin/brand/delete/${deleteBrandId}`, {
+        fetch(`http://34.47.79.214:8080/admin/brand/delete/${deleteBrandId}`, {
             method: 'DELETE',
         })
             .then(() => {

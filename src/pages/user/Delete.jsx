@@ -23,7 +23,7 @@ const ConfirmDelete = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(
-                'http://localhost:8080/api/v1/delete', // 회원 탈퇴 요청을 보내는 엔드포인트
+                'http://34.47.79.214:8080/api/v1/delete', // 회원 탈퇴 요청을 보내는 엔드포인트
                 {
                     headers: {
                         Authorization: `${token}`,
@@ -64,7 +64,9 @@ const ConfirmDelete = () => {
                             height: '100%',
                         }}
                     >
-                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                            마이페이지 &gt;
+                        </Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원탈퇴 &gt;</Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>비밀번호확인</Box>
                     </Box>
@@ -139,7 +141,18 @@ const ConfirmDelete = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Box sx={{ ml: 10, pl: 6, pt: 4, pr: 6, pb: 4, flexGrow: 0.3, border: '2px solid #586555', borderRadius: '10px' }}>
+                    <Box
+                        sx={{
+                            ml: 10,
+                            pl: 6,
+                            pt: 4,
+                            pr: 6,
+                            pb: 4,
+                            flexGrow: 0.3,
+                            border: '2px solid #586555',
+                            borderRadius: '10px',
+                        }}
+                    >
                         <h2>정말 탈퇴하시겠습니까?</h2>
                         <Button
                             variant="contained"
