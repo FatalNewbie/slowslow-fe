@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react'; // useContext 추가
+import { Link, useParams, useNavigate } from 'react-router-dom'; // useNavigate 추가
 import { Container, Typography, Divider, Button, Grid, Card, CardContent, CardMedia, TextField } from '@mui/material';
+import { AuthContext } from '../user/AuthContext'; // AuthContext 임포트
 
 const ProductDetail = () => {
     const { productId } = useParams();
+    const navigate = useNavigate(); // 네비게이션 훅 사용
+    const { isLoggedIn } = useContext(AuthContext); // AuthContext 사용
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -37,7 +40,26 @@ const ProductDetail = () => {
     };
 
     const handleOrder = () => {
-        // 주문 로직을 추가하시면 됩니다.
+        if (isLoggedIn) {
+            // 로그인 상태 확인
+            // 제품 정보를 로컬스토리지에 저장
+            const orderDetails = {
+                productId: product.id,
+                productName: product.name,
+                orderImg: product.imageLink, // 이미지 링크 수정
+                productCnt: quantity, // 수량 반영
+                productPrice: product.price,
+            };
+
+            localStorage.setItem('orders', JSON.stringify([orderDetails]));
+
+            // OrderPage로 이동
+            navigate('/orders');
+        } else {
+            // 로그인 페이지로 이동
+            navigate('/login');
+        }
+
         console.log(`Ordered product ${product.name} with quantity ${quantity}`);
     };
 
@@ -85,7 +107,7 @@ const ProductDetail = () => {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleOrder}
+                        onClick={handleOrder} // 기존 handleOrder 함수 수정
                         fullWidth
                         style={{ marginBottom: '10px' }}
                     >
