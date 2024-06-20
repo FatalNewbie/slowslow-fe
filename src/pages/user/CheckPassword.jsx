@@ -123,7 +123,7 @@ const PasswordCheckForm = () => {
                     </ListItem>
                     <ListItem
                         button
-                        onClick={() => navigate('/orders')}
+                        onClick={() => navigate('/mypage/orders')}
                         // isCurrentPage 함수나 현재 페이지 상태를 통해 활성화 상태 관리
                         sx={{
                             backgroundColor: 'transparent', // 기본 배경색 설정
