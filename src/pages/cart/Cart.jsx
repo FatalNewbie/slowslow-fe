@@ -76,7 +76,7 @@ function Cart() {
 
     // 백엔드 서버에서 제품 정보를 가져오는 함수
     const fetchProductDetails = async (productId) => {
-        const response = await fetch(`http://localhost:8080/cart/${productId}`);
+        const response = await fetch(`http://localhost:8080/product/${productId}`);
         const data = await response.json();
         return data;
     };
@@ -130,6 +130,10 @@ function Cart() {
 
         if (allSelectFalse === true) {
             handleOpen();
+            return;
+        }
+
+        if (allSelectFalse === false) {
         }
     };
 
@@ -147,8 +151,9 @@ function Cart() {
 
                 return {
                     ...product,
-                    productName: details.productName,
+                    productName: details.name,
                     productPrice: details.price,
+                    orderImg: details.imageLink,
                 };
             })
         );
@@ -306,7 +311,7 @@ function Cart() {
                                 <Box>
                                     <Grid container spacing={2}>
                                         <Grid xs={10}>
-                                            <Box>
+                                            <Box sx={{ fontWeight: 500, fontSize: 17 }}>
                                                 {/* 전체선택 체크박스 */}
                                                 <Checkbox
                                                     {...label}
@@ -323,7 +328,12 @@ function Cart() {
                                         </Grid>
                                         <Grid xs={2}>
                                             <Box sx={{ textAlign: `right` }}>
-                                                <Button onClick={DeleteSelectionBtnHandler}>선택삭제</Button>
+                                                <Button
+                                                    onClick={DeleteSelectionBtnHandler}
+                                                    sx={{ fontSize: 16, textDecoration: 'underline', color: `black` }}
+                                                >
+                                                    {selectAll ? '전체삭제' : '선택삭제'}
+                                                </Button>
                                             </Box>
                                         </Grid>
                                     </Grid>
@@ -338,6 +348,7 @@ function Cart() {
                                             checked={product.checked}
                                             name={product.productName}
                                             price={product.productPrice}
+                                            image={product.orderImg}
                                             parentSelectAll={parentSelectAll}
                                             CalcTotalProductAmount={CalcTotalProductAmount}
                                             selectAll={selectAll}
@@ -472,11 +483,11 @@ function Cart() {
                         )}
                     </Grid>
                 </Box>
-                <Box>
+                {/* <Box>
                     <Button variant="contained" onClick={resetBtnHandler}>
                         물품 리셋
                     </Button>
-                </Box>
+                </Box> */}
                 <Modal
                     open={open}
                     onClose={handleClose}
@@ -484,11 +495,25 @@ function Cart() {
                     aria-describedby="modal-modal-description"
                 >
                     <Box sx={style}>
-                        <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center', mb: 5 }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{ fontSize: 17, mt: 2, textAlign: 'center', mb: 5 }}
+                        >
                             1개 이상의 상품을 선택해 주세요.
                         </Typography>
                         <Box sx={{ textAlign: 'center' }}>
-                            <Button onClick={handleClose}>닫기</Button>
+                            <Button
+                                variant="contained"
+                                onClick={handleClose}
+                                sx={{
+                                    backgroundColor: 'rgb(88, 101, 85)',
+                                    '&:hover': {
+                                        backgroundColor: 'rgb(63, 71, 61)',
+                                    },
+                                }}
+                            >
+                                확인
+                            </Button>
                         </Box>
                     </Box>
                 </Modal>

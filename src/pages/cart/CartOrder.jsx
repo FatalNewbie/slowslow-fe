@@ -59,7 +59,7 @@ function CartOrder() {
             productCnt: Number(product_Cnt),
             checked: true,
         });
-        localStorage.setItem('orders', JSON.stringify(storedUsers));
+        console.log(storedUsers);
     };
 
     function emptyCart() {

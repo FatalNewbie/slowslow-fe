@@ -7,6 +7,8 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Typography from '@mui/material/Typography';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -43,6 +45,7 @@ function CartProduct({
     allCheckUncheckedByUser,
     CalcTotalProductAmount,
     productDelete,
+    image,
 }) {
     const [isChecked, setChecked] = useState(getCheckedFromLocalStorage(id));
     const [cnt, setCnt] = useState(0);
@@ -202,7 +205,7 @@ function CartProduct({
 
     return (
         <Item sx={{ mb: 3 }}>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} sx={{ mt: 0.5, mb: 0.5 }}>
                 <Grid xs={1}>
                     <Box>
                         <Checkbox
@@ -217,32 +220,50 @@ function CartProduct({
                         />
                     </Box>
                 </Grid>
-                <Grid xs={10}>
+                <Grid xs={2.5}>
+                    <Box
+                        component="img"
+                        sx={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                        }}
+                        alt="Example Image"
+                        src={image}
+                    />
+                </Grid>
+                <Grid xs={7} sx={{ pl: 2 }}>
                     <Box>
-                        <Box
-                            sx={{
-                                textAlign: 'left',
-                                fontSize: 23,
-                                color: `black`,
-                                pl: 2,
-                                pt: 2,
-                            }}
-                        >
-                            {name}
+                        <Box sx={{ textAlign: 'left', pl: 2, pt: 2 }}>
+                            <Typography
+                                component={Link}
+                                to={`/product/${id}`}
+                                sx={{
+                                    fontSize: 22,
+                                    color: `black`,
+                                    textDecoration: 'none', // 기본 밑줄 제거
+                                    '&:hover': {
+                                        textDecoration: 'underline', // 마우스를 올렸을 때 밑줄 추가
+                                    },
+                                }}
+                            >
+                                {name}
+                            </Typography>
                         </Box>
 
                         <Box
                             sx={{
                                 textAlign: 'left',
-                                fontSize: 23,
+                                fontSize: 24,
                                 color: `black`,
+                                fontWeight: 500,
                                 pl: 2,
                                 pt: 2,
                             }}
                         >
                             {(price * cnt).toLocaleString('ko-KR')}원
                         </Box>
-                        <Box sx={{ textAlign: 'left', pt: 2 }}>
+                        <Box sx={{ textAlign: 'left', pt: 2, pl: 1.5 }}>
                             <ButtonGroup size="small" variant="contained" aria-label="Basic button group">
                                 <Button
                                     name="Btn-"
@@ -285,10 +306,16 @@ function CartProduct({
                         </Box>
                     </Box>
                 </Grid>
-                <Grid xs={1}>
-                    <Button variant="text" onClick={deleteBtnHnadler}>
-                        삭제
-                    </Button>
+                <Grid xs={1.5}>
+                    <Box sx={{ textAlign: `right` }}>
+                        <Button
+                            variant="text"
+                            onClick={deleteBtnHnadler}
+                            sx={{ color: `black`, textDecoration: 'underline', fontSize: 16 }}
+                        >
+                            삭제
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
         </Item>
