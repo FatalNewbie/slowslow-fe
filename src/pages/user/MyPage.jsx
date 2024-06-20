@@ -142,18 +142,7 @@ const MyPage = () => {
                 </Box>
 
                 {/* 오른쪽 컨텐츠 */}
-                <Box
-                    sx={{
-                        ml: 60,
-                        pl: 6,
-                        pt: 4,
-                        pr: 6,
-                        pb: 4,
-                        flexGrow: 0.3,
-                        border: '2px solid #586555',
-                        borderRadius: '10px',
-                    }}
-                >
+                <Box sx={{ ml: 60, pl: 6, pt: 4, pr: 6, pb: 4, flexGrow: 0.3, border: '2px solid #586555', borderRadius: '10px' }}>
                     <Typography variant="h5" sx={{ mb: 2 }}>
                         {userData.name}님
                     </Typography>
@@ -166,7 +155,7 @@ const MyPage = () => {
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={() => navigate('/checkPassword')}
+                        onClick={() => navigate('/checkPasswordForUpdate')}
                         sx={{
                             mt: 2,
                             bgcolor: '#586555',

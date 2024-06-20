@@ -25,7 +25,8 @@ import Main from './pages/user/Main';
 import Membership from './pages/user/Membership';
 import AdminHome from './pages/admin/AdminHome.jsx';
 import MyPage from './pages/user/MyPage';
-import CheckPassword from './pages/user/CheckPassword.jsx';
+import CheckPasswordForUpdate from './pages/user/CheckPasswordForUpdate.jsx';
+import CheckPasswordForDelete from './pages/user/CheckPasswordForDelete.jsx';
 import Update from './pages/user/Update.jsx';
 import './index.css'; // CSS 파일 임포트
 import { AuthProvider } from './pages/user/AuthContext'; //로그인 전역 설정
@@ -34,6 +35,7 @@ import { useContext, useEffect } from 'react';
 import BrandMainPage from './pages/brand/BrandMainPage.jsx';
 import CategoryMainPage from './pages/category/CategoryMainPage.jsx';
 import DeleteUser from './pages/user/DeleteUser.jsx';
+import Delete from './pages/user/Delete.jsx';
 import UserAdmin from './pages/admin/UserAdmin.jsx';
 
 const theme = createTheme({
@@ -88,9 +90,11 @@ const App = () => {
                         <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/mypage" element={<MyPage />} />
                         <Route path="/main" element={<Main />} />
-                        <Route path="/checkPassword" element={<CheckPassword />} />
+                        <Route path="/checkPasswordForUpdate" element={<CheckPasswordForUpdate />} />
+                        <Route path="/checkPasswordForDelete" element={<CheckPasswordForDelete />} />
                         <Route path="/update" element={<Update />} />
                         <Route path="/deleteUser" element={<DeleteUser />} />
+                        <Route path="/delete" element={<Delete />} />
                         <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
                         <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
 
