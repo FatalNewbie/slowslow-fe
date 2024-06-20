@@ -67,8 +67,8 @@ const Home = () => {
     };
 
     return (
-        <Box px={5} py={2}>
-            <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
+        <Box px={5}>
+            <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.3)', width: '100%', mb: 2 }} />
             <Slider {...settings}>
                 {banners.map((banner, index) => (
                     <Box
@@ -81,7 +81,7 @@ const Home = () => {
                 ))}
             </Slider>
 
-            <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2, marginTop: '50px' }} />
+            <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.3)', width: '100%', mb: 2, marginTop: '50px' }} />
             <Typography sx={{ fontWeight: 'bold', fontSize: '1.5rem', mt: 4, mb: 2 }}>신상품</Typography>
 
             <LatestProducts products={latestProducts} handleCardClick={handleCardClick} />

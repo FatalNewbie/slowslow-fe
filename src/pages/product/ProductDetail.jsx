@@ -12,6 +12,8 @@ const ProductDetail = () => {
     const [error, setError] = useState(null);
     const [quantity, setQuantity] = useState(1); // 기본 수량은 1로 설정
 
+    const role = localStorage.getItem('role');
+
     useEffect(() => {
         fetch(`http://localhost:8080/product/${productId}`)
             .then((response) => {
@@ -40,7 +42,9 @@ const ProductDetail = () => {
     };
 
     const handleOrder = () => {
-        if (isLoggedIn) {
+        if (role === 'ROLE_ADMIN') {
+            alert('관리자는 주문이 불가능합니다.');
+        } else if (isLoggedIn) {
             // 로그인 상태 확인
             // 제품 정보를 로컬스토리지에 저장
             const orderDetails = {
@@ -120,6 +124,13 @@ const ProductDetail = () => {
     // };
 
     const handleAddToCart = () => {
+        console.log(role);
+        if (role === 'ROLE_ADMIN') {
+            alert('관리자는 주문이 불가능합니다.');
+
+            return false;
+        }
+
         // 장바구니 추가 처리
         let storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
 
