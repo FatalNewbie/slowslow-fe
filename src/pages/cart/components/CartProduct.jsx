@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -323,29 +324,3 @@ function CartProduct({
 }
 
 export default CartProduct;
-
-//productName
-//productPrice
-//orderImg
-
-// 상위 컴포넌트에서 함수하나를 props로 등록. 이 props는 상위에서 useEffect로 관리됨. 이 함수는 로컬에서 값들을 읽어오는 함수
-// 상위 컴포넌트에서 전체 선택으로 로컬스토리지의 모든 checked값을 상위와 동일하게 만듦. 위의 함수를 사용해서
-// 그러면 이제 상위 에서는 prop가 변경되었으니 하위로 값을 다시 던짐
-// 하위에서는 porps값 중 checked를 useEffect로 등록해놔서 새로 던져진 props를 하위의 필요한 곳들에 전부 적용.
-
-/*
-체크박스를 눌러서 true로 만들때
--> 모든 체크박스들이 true인지 확인해서 전부 true라면 상우의 전체선택 체크박스를 true로 만들어줘야함
-
-체크박스를 눌러서 false로 만들때
--> 나를 제외한 모든 체크박스들이 false인지 확인해서 전부 false라면 상위의 전체선택 체크박스를 false로 만들어줘야함.
-
---> 둘이 똑같은데 동작방식이??? 하나의 함수로 퉁치면 될듯.
-상위 컴포넌트의 값을 바꿔주는 방법은 위에적은것처럼 props로 상위의 함수를 하나 받아와서 걔를 호출하면
-(호출된 상위컴포넌트의 함수는 전체선택 채크박스의 useState값을 set하는 함수를 가지고 있음.)
-상우의 체크박스를 바꿀 수 있을 것 같다.
-
-
-
-장바구니에 동일한 아이템이 담길때 아이디 확인해서 동일한 아이템 있으면 갯수만 추가해주는거 구현해야함!!!!!!!
-*/

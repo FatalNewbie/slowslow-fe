@@ -223,8 +223,8 @@ function Cart() {
             setDeliveryFee(3000);
             return;
         }
-        // 50,000 이상이면 무료
-        if (totalAmount >= 50000) {
+        // 50,000 이상이면이거나 아무 제품도 선택하지 않아서 총액이 0원일때는 배송비 0원으로 표시
+        if (totalAmount == 0 || totalAmount >= 50000) {
             setDeliveryFee(0);
         }
     };
