@@ -7,7 +7,6 @@ import BrandLayout from './layouts/BrandLayout.jsx';
 import CategoryLayout from './layouts/CategoryLayout.jsx';
 import AdminLayout from './layouts/AdminLayout.jsx';
 import Cart from './pages/cart/Cart';
-import CartOrder from './pages/cart/CartOrder.jsx';
 import Order from './pages/order/Order';
 import OrderList from './pages/order/OrderList'; // OrderList 임포트
 import OrderDetail from './pages/order/OrderDetail'; // OrderDetail 임포트
@@ -72,7 +71,6 @@ const App = () => {
                     <Route path="/" element={<MainLayout />}>
                         <Route index element={<Home />} />
                         <Route path="/cart" element={<Cart />} />
-                        <Route path="/cart/order" element={<CartOrder />} />
                         <Route path="/order" element={<Order />} />
                         <Route path="/orders" element={<OrderPage />} />
                         <Route path="/orders/success" element={<OrderSuccess />} />
@@ -103,7 +101,10 @@ const App = () => {
                             <Route index element={<Update />} />
                         </Route> */}
                     </Route>
-                    <Route path="/admin" element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}>
+                    <Route
+                        path="/admin"
+                        element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}
+                    >
                         <Route index element={<AdminHome />} />
                         <Route path="/admin/brand" element={<BrandAdmin />} />
                         <Route path="/admin/category" element={<CategoryAdmin />} />

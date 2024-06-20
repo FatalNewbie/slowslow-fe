@@ -139,6 +139,7 @@ const ProductDetail = () => {
                 productName: product.name,
                 productCnt: quantity,
                 productPrice: product.price,
+                checked: true,
             });
             localStorage.setItem('orders', JSON.stringify(storedOrders));
         }
