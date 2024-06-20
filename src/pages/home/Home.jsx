@@ -20,7 +20,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const banners = [
-        'https://img.autocamping.co.kr/event/2024/240613Dair_main_PC.jpg',
+        'https://www.ocamall.com/design/ocamall/2022_renew/img/PC1.jpg',
         'https://img.autocamping.co.kr/event/2023/20231019SHELTER.jpg',
         'https://img.autocamping.co.kr/event/2022/event_0721.jpg',
     ];
