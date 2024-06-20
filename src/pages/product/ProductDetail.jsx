@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Container, Typography, Divider, Button, Grid, Card, CardContent, CardMedia, TextField } from '@mui/material';
 
 const ProductDetail = () => {
@@ -7,7 +7,8 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [quantity, setQuantity] = useState(1); // 기본 수량은 1로 설정
+    const [cnt, setCnt] = useState(1); // 기본 수량은 1로 설정
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:8080/product/${productId}`)
@@ -27,23 +28,27 @@ const ProductDetail = () => {
             });
     }, [productId]);
 
-    const handleQuantityChange = (event) => {
+    const handleCntChange = (event) => {
         const value = parseInt(event.target.value, 10);
         if (!isNaN(value) && value >= 1) {
-            setQuantity(value);
+            setCnt(value);
         } else {
-            setQuantity(1);
+            setCnt(1);
         }
     };
 
     const handleOrder = () => {
         // 주문 로직을 추가하시면 됩니다.
-        console.log(`Ordered product ${product.name} with quantity ${quantity}`);
+        console.log(`Ordered product ${product.name} with cnt ${cnt}`);
     };
 
     const handleAddToCart = () => {
         // 장바구니 추가 로직을 추가하시면 됩니다.
-        console.log(`Added product ${product.name} to cart with quantity ${quantity}`);
+        console.log(`Added product ${product.id} to cart with cnt ${cnt}`);
+
+        localStorage.setItem('productId', product.id);
+        localStorage.setItem('productCnt', cnt);
+        navigate('/cart/order');
     };
 
     if (loading) {
@@ -72,15 +77,15 @@ const ProductDetail = () => {
                     <Divider style={{ margin: '20px 0' }} />
                     <TextField
                         type="number"
-                        label="Quantity"
+                        label="Cnt"
                         variant="outlined"
-                        value={quantity}
-                        onChange={handleQuantityChange}
+                        value={cnt}
+                        onChange={handleCntChange}
                         inputProps={{ min: 1 }}
                         style={{ marginBottom: '20px' }}
                     />
                     <Typography variant="h6" gutterBottom fontWeight="bold">
-                        Total {product.price * quantity}원
+                        Total {product.price * cnt}원
                     </Typography>
                     <Button
                         variant="contained"
