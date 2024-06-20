@@ -13,9 +13,7 @@
 //             .catch((error) => console.error('Error fetching data:', error));
 //     }, []);
 
-//     const filteredCategories = categories.filter((category) =>
-//         category.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
-//     );
+//     const filteredCategories = categories.filter((category) => category.categoryName.toLowerCase().includes(searchTerm.toLowerCase()));
 
 //     return (
 //         <div>

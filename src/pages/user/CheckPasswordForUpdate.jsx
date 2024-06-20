@@ -46,7 +46,7 @@ const PasswordCheckForm = () => {
 
             const userToken = localStorage.getItem('token');
             const response = await axios.post(
-                'http://localhost:8080/api/v1/checkPassword',
+                'http://localhost:8080/api/v1/checkPasswordForUpdate',
                 { password },
                 {
                     headers: {
@@ -55,7 +55,7 @@ const PasswordCheckForm = () => {
                 }
             );
 
-            if (response.data === '정보 수정 폼으로 이동') {
+            if (response.data === '정보 수정') {
                 navigate('/update');
             } else {
                 setMessage(response.data);
@@ -112,10 +112,10 @@ const PasswordCheckForm = () => {
                         onClick={() => navigate('/mypage')}
                         // isCurrentPage 함수나 현재 페이지 상태를 통해 활성화 상태 관리
                         sx={{
-                            backgroundColor: isCurrentPage('/checkPassword') ? '#586555' : 'transparent',
-                            color: isCurrentPage('/checkPassword') ? 'common.white' : 'inherit',
+                            backgroundColor: isCurrentPage('/checkPasswordForUpdate') ? '#586555' : 'transparent',
+                            color: isCurrentPage('/checkPasswordForUpdate') ? 'common.white' : 'inherit',
                             '&:hover': {
-                                backgroundColor: isCurrentPage('/checkPassword') ? '#6d7b77' : '#f0f0f0',
+                                backgroundColor: isCurrentPage('/checkPasswordForUpdate') ? '#6d7b77' : '#f0f0f0',
                             },
                         }}
                     >

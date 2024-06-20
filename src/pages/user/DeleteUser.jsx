@@ -15,32 +15,7 @@ function HomeIcon(props) {
 }
 
 const DeleteUserForm = () => {
-    const [userData, setUserData] = useState('');
-    const { username } = useContext(AuthContext); // AuthContext에서 username 가져오기
     const navigate = useNavigate();
-
-    const handleDeleteAccount = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8080/api/v1/delete', {
-                headers: {
-                    Authorization: `${token}`,
-                },
-                params: {
-                    username: username, // 현재 로그인한 사용자의 username
-                },
-            });
-
-            setUserData(response.data);
-            localStorage.removeItem('token');
-            alert('회원 탈퇴가 성공적으로 처리되었습니다.');
-
-            navigate('/');
-        } catch (error) {
-            console.error('Error deleting user account:', error);
-            alert('회원 탈퇴에 실패했습니다.');
-        }
-    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -146,7 +121,7 @@ const DeleteUserForm = () => {
                         아니오
                     </Button>
                     <Button
-                        onClick={handleDeleteAccount}
+                        onClick={() => navigate('/CheckPasswordForDelete')}
                         variant="contained"
                         sx={{
                             bgcolor: '#586555',
