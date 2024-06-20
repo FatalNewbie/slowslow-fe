@@ -50,7 +50,8 @@ const Login = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message);
+                // throw new Error(errorData.message);
+                throw new Error(`${errorData.errorCode}: ${errorData.errorMessage}`);
             }
 
             // 토큰을 응답 헤더에서 가져오기
@@ -67,8 +68,9 @@ const Login = () => {
         } catch (error) {
             // 에러 처리 로직
             console.error('Login error:', error);
-            // 에러 메시지를 사용자에게 표시하는 로직 추가
-            setErrorMessage(error.message);
+
+            // 에러 메시지를 UI에 표시
+            alert(error.message);
         }
     };
 

@@ -58,6 +58,13 @@ function Membership() {
                 navigate('/login');
                 alert('회원가입이 완료되었습니다. 로그인해주세요.');
             } else {
+                const errorData = await response.json();
+                let errorMessage = '회원가입에 실패했습니다. 다시 시도해주세요.';
+                if (typeof errorData === 'object') {
+                    // 백엔드에서 보낸 오류 정보를 활용하여 오류 메시지 생성
+                    errorMessage = Object.values(errorData).join(', ');
+                    console.log(errorMessage);
+                }
                 alert('회원가입에 실패했습니다. 다시 시도해주세요.');
             }
         } catch (error) {
