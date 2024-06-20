@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -12,6 +12,8 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { AuthContext } from '../user/AuthContext'; // AuthContext 임포트
+import { Link, useParams, useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 // MUI 체크박스 만드는데 필요한 라벨
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -69,6 +71,10 @@ function Cart() {
     // 전체선택 버튼을 직접 눌러서 체크해제 했을때만 true로 바뀌는 변수. 필요이유 아래 설명.
     const [allCheckUncheckedByUser, setAllCheckUncheckedByUser] = useState(false);
 
+    const { isLoggedIn } = useContext(AuthContext); // AuthContext 사용
+
+    const navigate = useNavigate(); // 네비게이션 훅 사용
+
     // 모달용 변수와 함수. 장바구니를 아무것도 선택안하고 결제하기 눌렀을때 열리는 모달.
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -119,7 +125,7 @@ function Cart() {
 
     // 구매하기 버튼 핸들러
     const purchaseBtnhandler = () => {
-        // 장바구니의 모든 선택이 해제되어있는지 체크하는 변수.
+        // 장바구니에 선택한 상품이 없는지 체크하는 변수.
         let allSelectFalse = true;
         const carts = JSON.parse(localStorage.getItem('orders'));
         carts.map((cart) => {
@@ -128,13 +134,39 @@ function Cart() {
             }
         });
 
+        // 만약 선택한 제품 없이 구매하기 눌렀다면 경고 모달 출력.
         if (allSelectFalse === true) {
             handleOpen();
             return;
         }
 
+        // 선택한 제품 있다면 구매하기 버튼 동작.
         if (allSelectFalse === false) {
+            // 장바구니에서 선택안한 제품들을 로컬스토리지에서 제거하는 작업.
+            deleteUncheckedProduct();
+
+            if (isLoggedIn) {
+                // 로그인 상태 확인
+
+                // OrderPage로 이동
+                navigate('/orders');
+            } else {
+                // 로그인 페이지로 이동
+                navigate('/login');
+            }
         }
+    };
+
+    // 로컬스토리지에서 체크안된 제품들을 제거하는 함수.
+    const deleteUncheckedProduct = () => {
+        // 로컬스토리지 가져와서 JSON문자열을 JavaScript 객체로 변환.
+        let carts = JSON.parse(localStorage.getItem('orders'));
+        // 체크가 안된 제품들을 제외한 새로운 배열 생성
+        carts = carts.filter((cart) => cart.checked === true);
+        // 수정된 배열을 JSON 문자열로 변환.
+        const newCarts = JSON.stringify(carts);
+        // 로컬스토리지에 다시 저장
+        localStorage.setItem('orders', newCarts);
     };
 
     // 로컬스토리지에 들어있는 제품들을 가져와서 백엔드 서버의 제품 정보와 합치는 함수
