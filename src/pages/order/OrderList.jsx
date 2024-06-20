@@ -111,7 +111,9 @@ const OrderList = () => {
                             height: '100%',
                         }}
                     >
-                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                        <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                            마이페이지 &gt;
+                        </Box>
                         <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>주문목록</Box>
                     </Box>
                 </Grid>
@@ -187,12 +189,24 @@ const OrderList = () => {
                             <Card key={order.id} sx={{ mb: 3 }}>
                                 <CardContent>
                                     <Grid container spacing={2} alignItems="center">
-                                        <Grid item xs={12} sm={3} container direction="column" justifyContent="space-between">
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={3}
+                                            container
+                                            direction="column"
+                                            justifyContent="space-between"
+                                        >
                                             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-                                                <Typography variant="subtitle2" sx={{ color: 'gray', marginRight: '8px' }}>
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    sx={{ color: 'gray', marginRight: '8px' }}
+                                                >
                                                     {String(order.id).padStart(5, '0')}
                                                 </Typography>
-                                                <Typography variant="h6">{new Date(order.createdDate).toLocaleDateString()}</Typography>
+                                                <Typography variant="h6">
+                                                    {new Date(order.createdDate).toLocaleDateString()}
+                                                </Typography>
                                             </Box>
                                             <Button
                                                 variant="contained"
@@ -225,7 +239,14 @@ const OrderList = () => {
                                                 </Box>
                                             ))}
                                         </Grid>
-                                        <Grid item xs={12} sm={3} container direction="column" justifyContent="flex-end">
+                                        <Grid
+                                            item
+                                            xs={12}
+                                            sm={3}
+                                            container
+                                            direction="column"
+                                            justifyContent="flex-end"
+                                        >
                                             <Typography variant="h5" align="right">
                                                 <Box component="span" sx={{ fontWeight: 'bold', marginRight: '2px' }}>
                                                     {formatNumber(order.totalPrice)}

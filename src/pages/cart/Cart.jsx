@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -12,6 +12,8 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import { AuthContext } from '../user/AuthContext'; // AuthContext 임포트
+import { Link, useParams, useNavigate } from 'react-router-dom'; // useNavigate 추가
 
 // MUI 체크박스 만드는데 필요한 라벨
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -43,6 +45,9 @@ const initSelectAll = () => {
     // 로컬스토리지의 값들이 전부 ture인지 확인하는 변수
     let isAllChecked = true;
     const carts = JSON.parse(localStorage.getItem('orders'));
+    if (carts === null) {
+        return true;
+    }
     carts.map((cart) => {
         // 로컬 스토리지 체크박스중 체크가 꺼진 체크박스가 존재한다면 isAllChecked를 false로 바꿈.
         if (cart.checked === false) {
@@ -66,6 +71,10 @@ function Cart() {
     // 전체선택 버튼을 직접 눌러서 체크해제 했을때만 true로 바뀌는 변수. 필요이유 아래 설명.
     const [allCheckUncheckedByUser, setAllCheckUncheckedByUser] = useState(false);
 
+    const { isLoggedIn } = useContext(AuthContext); // AuthContext 사용
+
+    const navigate = useNavigate(); // 네비게이션 훅 사용
+
     // 모달용 변수와 함수. 장바구니를 아무것도 선택안하고 결제하기 눌렀을때 열리는 모달.
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -73,7 +82,7 @@ function Cart() {
 
     // 백엔드 서버에서 제품 정보를 가져오는 함수
     const fetchProductDetails = async (productId) => {
-        const response = await fetch(`http://localhost:8080/cart/${productId}`);
+        const response = await fetch(`http://localhost:8080/product/${productId}`);
         const data = await response.json();
         return data;
     };
@@ -116,7 +125,7 @@ function Cart() {
 
     // 구매하기 버튼 핸들러
     const purchaseBtnhandler = () => {
-        // 장바구니의 모든 선택이 해제되어있는지 체크하는 변수.
+        // 장바구니에 선택한 상품이 없는지 체크하는 변수.
         let allSelectFalse = true;
         const carts = JSON.parse(localStorage.getItem('orders'));
         carts.map((cart) => {
@@ -125,15 +134,48 @@ function Cart() {
             }
         });
 
+        // 만약 선택한 제품 없이 구매하기 눌렀다면 경고 모달 출력.
         if (allSelectFalse === true) {
             handleOpen();
+            return;
         }
+
+        // 선택한 제품 있다면 구매하기 버튼 동작.
+        if (allSelectFalse === false) {
+            // 장바구니에서 선택안한 제품들을 로컬스토리지에서 제거하는 작업.
+            deleteUncheckedProduct();
+
+            if (isLoggedIn) {
+                // 로그인 상태 확인
+
+                // OrderPage로 이동
+                navigate('/orders');
+            } else {
+                // 로그인 페이지로 이동
+                navigate('/login');
+            }
+        }
+    };
+
+    // 로컬스토리지에서 체크안된 제품들을 제거하는 함수.
+    const deleteUncheckedProduct = () => {
+        // 로컬스토리지 가져와서 JSON문자열을 JavaScript 객체로 변환.
+        let carts = JSON.parse(localStorage.getItem('orders'));
+        // 체크가 안된 제품들을 제외한 새로운 배열 생성
+        carts = carts.filter((cart) => cart.checked === true);
+        // 수정된 배열을 JSON 문자열로 변환.
+        const newCarts = JSON.stringify(carts);
+        // 로컬스토리지에 다시 저장
+        localStorage.setItem('orders', newCarts);
     };
 
     // 로컬스토리지에 들어있는 제품들을 가져와서 백엔드 서버의 제품 정보와 합치는 함수
     const getProducts = async () => {
         // 로컬스토리지에서 값을 꺼내와서 JSON형태로 저장
         const cart = JSON.parse(localStorage.getItem('orders'));
+        if (cart === null) {
+            return [];
+        }
         // 각 제품의 상세 정보를 백엔드에서 가져옴
         const detailedProducts = await Promise.all(
             cart.map(async (product) => {
@@ -141,8 +183,9 @@ function Cart() {
 
                 return {
                     ...product,
-                    productName: details.productName,
+                    productName: details.name,
                     productPrice: details.price,
+                    orderImg: details.imageLink,
                 };
             })
         );
@@ -159,6 +202,9 @@ function Cart() {
         let totalAmount = 0;
         //로컬 스토리지 가져옴.
         const carts = JSON.parse(localStorage.getItem('orders'));
+        if (carts === null) {
+            return;
+        }
         await Promise.all(
             // 로컬스토리지 값 순차접근
             carts.map(async (cart) => {
@@ -291,12 +337,13 @@ function Cart() {
                         }}
                     />
                     <Grid container spacing={2} sx={{ mt: 4 }}>
-                        {JSON.parse(localStorage.getItem('orders')).length > 0 ? (
+                        {localStorage.getItem('orders') !== null &&
+                        JSON.parse(localStorage.getItem('orders')).length > 0 ? (
                             <Grid xs={8}>
                                 <Box>
                                     <Grid container spacing={2}>
                                         <Grid xs={10}>
-                                            <Box>
+                                            <Box sx={{ fontWeight: 500, fontSize: 17 }}>
                                                 {/* 전체선택 체크박스 */}
                                                 <Checkbox
                                                     {...label}
@@ -313,7 +360,12 @@ function Cart() {
                                         </Grid>
                                         <Grid xs={2}>
                                             <Box sx={{ textAlign: `right` }}>
-                                                <Button onClick={DeleteSelectionBtnHandler}>선택삭제</Button>
+                                                <Button
+                                                    onClick={DeleteSelectionBtnHandler}
+                                                    sx={{ fontSize: 16, textDecoration: 'underline', color: `black` }}
+                                                >
+                                                    {selectAll ? '전체삭제' : '선택삭제'}
+                                                </Button>
                                             </Box>
                                         </Grid>
                                     </Grid>
@@ -328,6 +380,7 @@ function Cart() {
                                             checked={product.checked}
                                             name={product.productName}
                                             price={product.productPrice}
+                                            image={product.orderImg}
                                             parentSelectAll={parentSelectAll}
                                             CalcTotalProductAmount={CalcTotalProductAmount}
                                             selectAll={selectAll}
@@ -350,7 +403,8 @@ function Cart() {
                                 장바구니에 담은 상품이 없습니다.
                             </Box>
                         )}
-                        {JSON.parse(localStorage.getItem('orders')).length > 0 ? (
+                        {localStorage.getItem('orders') !== null &&
+                        JSON.parse(localStorage.getItem('orders')).length > 0 ? (
                             <Grid xs={4}>
                                 <Item>
                                     <Grid container spacing={2}>
@@ -461,18 +515,37 @@ function Cart() {
                         )}
                     </Grid>
                 </Box>
-                <Box>
-                    <Button variant="contained" onClick={resetBtnHandler} sx={{ bgcolor: '#586555' }}>
+                {/* <Box>
+                    <Button variant="contained" onClick={resetBtnHandler}>
                         물품 리셋
                     </Button>
-                </Box>
-                <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                </Box> */}
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
                     <Box sx={style}>
-                        <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center', mb: 5 }}>
+                        <Typography
+                            id="modal-modal-description"
+                            sx={{ fontSize: 17, mt: 2, textAlign: 'center', mb: 5 }}
+                        >
                             1개 이상의 상품을 선택해 주세요.
                         </Typography>
                         <Box sx={{ textAlign: 'center' }}>
-                            <Button onClick={handleClose}>닫기</Button>
+                            <Button
+                                variant="contained"
+                                onClick={handleClose}
+                                sx={{
+                                    backgroundColor: 'rgb(88, 101, 85)',
+                                    '&:hover': {
+                                        backgroundColor: 'rgb(63, 71, 61)',
+                                    },
+                                }}
+                            >
+                                확인
+                            </Button>
                         </Box>
                     </Box>
                 </Modal>
@@ -482,6 +555,7 @@ function Cart() {
 }
 
 export default Cart;
+//구매하기 버튼 누르면 checked가 false인 제품들 날리고 로컬스토리지에 다시 저장
 
 // 구현을 하다가 문제가 발생해서 방향을 수정하는 것이 아닌 문제가 발생할 것 같아서 방향을 바꿨음.
 // 진짜 문제가 발생하는지는 안해봐서 모름.
