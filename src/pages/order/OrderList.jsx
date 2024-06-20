@@ -26,7 +26,7 @@ const OrderList = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://34.47.79.214:8080/mypage/orders', {
+                const response = await fetch('http://localhost:8080/mypage/orders', {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: token,

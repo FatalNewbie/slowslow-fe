@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 function CartOrder() {
-    const [productId, setProductId] = useState('');
-    const [productCnt, setProductCnt] = useState('');
+    const [product_Id, setProductId] = useState('');
+    const [product_Cnt, setProductCnt] = useState('');
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -11,12 +11,12 @@ function CartOrder() {
         let storedUsers = JSON.parse(localStorage.getItem('orders'));
         let isExist = false;
 
-        // 만약 비어있으면 새로 만들어서 넣어줌.
-        if (storedUsers == null) {
+        // 가져온 값이 비어있으면 새로 만들어서 넣어줌.
+        if (storedUsers === null) {
             let order = [
                 {
-                    productId: Number(productId),
-                    productCnt: Number(productCnt),
+                    productId: Number(product_Id),
+                    productCnt: Number(product_Cnt),
                     checked: true,
                 },
             ];
@@ -24,23 +24,20 @@ function CartOrder() {
             return;
         }
 
-        // 안 비어있으면 기존에 존재하는 값인지 확인함
+        // 안 비어있으면 이미 담겨져 있는 상품인지 확인함.
         storedUsers.map((cart) => {
-            if (Number(cart.productId) === Number(productId)) {
+            if (Number(cart.productId) === Number(product_Id)) {
                 isExist = true;
             }
         });
 
-        console.log(isExist);
-
-        // 같은 값이 존재한다면 현재 갯수를 추가해줌.
+        // 안 비어있고 이미 담겨져 있는 상품이라면 갯수를 추가해줌.
         if (isExist) {
             let newStoredUsers = storedUsers.map((cart) => {
-                if (cart.productId === Number(productId)) {
-                    console.log(Number(cart.productCnt + productCnt));
+                if (cart.productId === Number(product_Id)) {
                     return {
                         ...cart,
-                        productCnt: Number(cart.productCnt) + Number(productCnt),
+                        productCnt: Number(cart.productCnt) + Number(product_Cnt),
                     };
                 }
                 return cart;
@@ -51,13 +48,15 @@ function CartOrder() {
 
             //isExist 초기화
             isExist = false;
+
             return;
         }
 
-        // 안 비어있고 중복된 값이 없다면 json객채 배열에 현재 값을 추가해서 다시 로컬스토리지에 저장함.
+        // 안 비어있고 담겨져 있는 상품이 아니라면 json객채 배열에 현재 값을 추가해서 다시 로컬스토리지에 저장함.
+
         storedUsers.push({
-            productId: Number(productId),
-            productCnt: Number(productCnt),
+            productId: Number(product_Id),
+            productCnt: Number(product_Cnt),
             checked: true,
         });
         localStorage.setItem('orders', JSON.stringify(storedUsers));
@@ -72,21 +71,21 @@ function CartOrder() {
             <h1>주문</h1>
             <form onSubmit={onSubmit}>
                 <div>
-                    <label htmlFor="productId">제품ID</label>
+                    <label htmlFor="product_Id">제품ID</label>
                     <input
                         type="text"
-                        id="productId"
-                        name="productId"
-                        value={productId}
+                        id="product_Id"
+                        name="product_Id"
+                        value={product_Id}
                         onChange={(e) => setProductId(e.target.value)}
                     />
                 </div>
-                <label htmlFor="productCnt">제품수량</label>
+                <label htmlFor="product_Cnt">제품수량</label>
                 <input
                     type="text"
-                    id="productCnt"
-                    name="productCnt"
-                    value={productCnt}
+                    id="product_Cnt"
+                    name="product_Cnt"
+                    value={product_Cnt}
                     onChange={(e) => setProductCnt(e.target.value)}
                 />
                 <div></div>

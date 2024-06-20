@@ -120,17 +120,14 @@ const OrderPage = () => {
         };
 
         try {
-            const response = await fetch(
-                `http://34.47.79.214:8080/orders?paymentConfirmed=true&agreementConfirmed=true`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: token,
-                    },
-                    body: JSON.stringify(orderData),
-                }
-            );
+            const response = await fetch(`http://localhost:8080/orders?paymentConfirmed=true&agreementConfirmed=true`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token,
+                },
+                body: JSON.stringify(orderData),
+            });
 
             if (!response.ok) {
                 if (response.status === 500) {

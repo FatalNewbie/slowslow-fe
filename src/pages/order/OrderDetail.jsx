@@ -16,7 +16,7 @@ const OrderDetail = () => {
     useEffect(() => {
         const fetchOrder = async () => {
             try {
-                const response = await fetch(`http://34.47.79.214:8080/mypage/orders/${orderId}`, {
+                const response = await fetch(`http://localhost:8080/mypage/orders/${orderId}`, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: token,
@@ -54,7 +54,7 @@ const OrderDetail = () => {
 
     const handleCancelOrder = async () => {
         try {
-            const response = await fetch(`http://34.47.79.214:8080/mypage/orders/${orderId}`, {
+            const response = await fetch(`http://localhost:8080/mypage/orders/${orderId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ const OrderDetail = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch(`http://34.47.79.214:8080/mypage/orders/${orderId}`, {
+            const response = await fetch(`http://localhost:8080/mypage/orders/${orderId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
