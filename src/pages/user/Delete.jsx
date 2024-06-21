@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Typography, Button, List, ListItem, ListItemText, Container, Card, CardContent, Divider } from '@mui/material';
@@ -16,7 +16,7 @@ function HomeIcon(props) {
 
 const ConfirmDelete = () => {
     const navigate = useNavigate();
-    const { username } = useContext(AuthContext);
+    const { username, logout } = useContext(AuthContext);
     const location = useLocation();
 
     const isCurrentPage = (path) => {
@@ -39,7 +39,8 @@ const ConfirmDelete = () => {
             );
 
             if (response.status === 200) {
-                localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 삭제
+                logout();
+                // localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 삭제
                 alert('회원 탈퇴가 성공적으로 처리되었습니다.');
                 navigate('/');
             } else {
