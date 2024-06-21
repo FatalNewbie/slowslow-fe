@@ -8,6 +8,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Container from '@mui/material/Container';
 import { GiConsoleController } from 'react-icons/gi';
 import CircularProgress from '@mui/material/CircularProgress';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { BsHddRack } from 'react-icons/bs';
 
 function AdminOrder() {
     //모든 주문의 목록을 담고 있는 변수
@@ -22,9 +24,14 @@ function AdminOrder() {
     const [completedOrder, setCompletedOrder] = useState(0);
     // 주문실패된 주문의 수를 담고 있는 변수
     const [failedOrder, setFailedOrder] = useState(0);
+    // 로딩 상태 변수
+    const [isLoading, setIsLoading] = useState(false);
 
     // 백에서 모든 주문을 가져오고, status별 주문 수를 체크함.
     const init = async () => {
+        // 로딩 시작
+        setIsLoading(true);
+
         const response = await fetch(`http://localhost:8080/admin/orders`);
         const data = await response.json();
 
@@ -42,7 +49,6 @@ function AdminOrder() {
         let orderFailed = 0;
 
         data.map((order) => {
-            console.log(order.status);
             if (order.status === 'PENDING') {
                 orderPreparing = orderPreparing + 1;
                 orderAll = orderAll + 1;
@@ -64,8 +70,59 @@ function AdminOrder() {
         setCompletedOrder(orderCompleted);
         setFailedOrder(orderFailed);
 
+        // 가져운 주문을 날짜 내림차순으로 정렬
+        data.sort((a, b) => {
+            if (a.createdDate > b.createdDate) return -1;
+            if (a.createdDate < b.createdDate) return 1;
+            return 0;
+        });
+
+        // 정렬된 주문 목록 저장.
         setOrderList(data);
+
+        //로딩 완료
+        setIsLoading(false);
     };
+
+    // 주문이 삭제되어 주문목록 갱신이 필요할때 자식 컴포넌트가 사용하는 메소드.
+    const updateOrderList = async () => {
+        init();
+    };
+
+    // 주문의 상태가 변경된 것을 자식 컴포넌트로부터 받아 주문 수를 수정하는 함수
+    function updateOrderCount(before, after) {
+        switch (before) {
+            case 'PENDING':
+                setPreparingOrder((prevCount) => prevCount - 1);
+                break;
+            case 'SHIPPING':
+                setShippingOrder((prevCount) => prevCount - 1);
+                break;
+            case 'COMPLETED':
+                setCompletedOrder((prevCount) => prevCount - 1);
+                break;
+            case 'FAILED':
+                setFailedOrder((prevCount) => prevCount - 1);
+                break;
+            default:
+        }
+
+        switch (after) {
+            case 'PENDING':
+                setPreparingOrder((prevCount) => prevCount + 1);
+                break;
+            case 'SHIPPING':
+                setShippingOrder((prevCount) => prevCount + 1);
+                break;
+            case 'COMPLETED':
+                setCompletedOrder((prevCount) => prevCount + 1);
+                break;
+            case 'FAILED':
+                setFailedOrder((prevCount) => prevCount + 1);
+                break;
+            default:
+        }
+    }
 
     //초기값세팅.
     useEffect(() => {
@@ -194,7 +251,11 @@ function AdminOrder() {
                         </Grid>
                     </Grid>
                 </Box>
-                {orderList.length !== 0 ? (
+                {isLoading ? (
+                    <Box sx={{ textAlign: 'center', mt: 13 }}>
+                        <CircularProgress color="success" size={60} />
+                    </Box>
+                ) : (
                     <Box>
                         {orderList.map((order) => (
                             // key는 React.js에서만, map안에서 component들을 render할 때 사용한다.
@@ -207,16 +268,15 @@ function AdminOrder() {
                                         orderName={order.orderName}
                                         orderDate={order.createdDate}
                                         orderStatus={order.status}
+                                        orderDetail={order.orderDetails}
+                                        updateOrderList={updateOrderList}
+                                        updateOrderCount={updateOrderCount}
                                     />
                                 ) : (
                                     ''
                                 )}
                             </Box>
                         ))}
-                    </Box>
-                ) : (
-                    <Box sx={{ textAlign: 'center', mt: 13 }}>
-                        <CircularProgress color="success" size={60} />
                     </Box>
                 )}
             </Container>

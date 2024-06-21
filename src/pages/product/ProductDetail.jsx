@@ -67,62 +67,6 @@ const ProductDetail = () => {
         console.log(`Ordered product ${product.name} with quantity ${quantity}`);
     };
 
-    // const handleAddToCart = () => {
-    //     // 장바구니 추가 로직을 추가하시면 됩니다.
-    //     let storedUsers = JSON.parse(localStorage.getItem('orders'));
-    //     let isExist = false;
-
-    //     // 가져온 값이 비어있으면 새로 만들어서 넣어줌.
-    //     if (storedUsers === null) {
-    //         let order = [
-    //             {
-    //                 productId: Number(product.id),
-    //                 productCnt: Number(quantity),
-    //                 checked: true,
-    //             },
-    //         ];
-    //         localStorage.setItem('orders', JSON.stringify(order));
-    //         return;
-    //     }
-
-    //     // 안 비어있으면 이미 담겨져 있는 상품인지 확인함.
-    //     storedUsers.map((cart) => {
-    //         if (Number(cart.productId) === Number(product.id)) {
-    //             isExist = true;
-    //         }
-    //     });
-
-    //     // 안 비어있고 이미 담겨져 있는 상품이라면 갯수를 추가해줌.
-    //     if (isExist) {
-    //         let newStoredUsers = storedUsers.map((cart) => {
-    //             if (cart.productId === Number(product.id)) {
-    //                 return {
-    //                     ...cart,
-    //                     productCnt: Number(cart.productCnt) + Number(quantity),
-    //                 };
-    //             }
-    //             return cart;
-    //         });
-
-    //         // 갯수추가한 정보 로컬스토리지에 저장.
-    //         localStorage.setItem('orders', JSON.stringify(newStoredUsers));
-
-    //         //isExist 초기화
-    //         isExist = false;
-
-    //         return;
-    //     }
-
-    //     // 안 비어있고 담겨져 있는 상품이 아니라면 json객채 배열에 현재 값을 추가해서 다시 로컬스토리지에 저장함.
-
-    //     storedUsers.push({
-    //         productId: Number(product.id),
-    //         productCnt: Number(quantity),
-    //         checked: true,
-    //     });
-    //     localStorage.setItem('orders', JSON.stringify(storedUsers));
-    // };
-
     const handleAddToCart = () => {
         console.log(role);
         if (role === 'ROLE_ADMIN') {

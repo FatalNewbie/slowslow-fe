@@ -9,7 +9,6 @@ import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
