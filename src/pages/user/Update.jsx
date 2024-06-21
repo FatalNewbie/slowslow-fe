@@ -2,7 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext'; // AuthContext 임포트
-import { Box, Typography, Button, List, ListItem, ListItemText, TextField, Container, Divider, Card, CardContent } from '@mui/material';
+import {
+    Box,
+    Typography,
+    Button,
+    List,
+    ListItem,
+    ListItemText,
+    TextField,
+    Container,
+    Divider,
+    Card,
+    CardContent,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import SvgIcon from '@mui/material/SvgIcon';
 
@@ -157,8 +169,12 @@ const UserInfoUpdateForm = () => {
                                     height: '100%',
                                 }}
                             >
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>{' '}
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원정보 &gt;</Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                                    마이페이지 &gt;
+                                </Box>{' '}
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                                    회원정보 &gt;
+                                </Box>
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원정보수정</Box>
                             </Box>
                         </Grid>
@@ -198,7 +214,7 @@ const UserInfoUpdateForm = () => {
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                                     <Typography variant="body1" sx={{ marginRight: '8px' }}>
-                                        비밀번호&nbsp;&nbsp;확인&nbsp;|{' '}
+                                        비밀번호&nbsp;&nbsp;확인&nbsp;&nbsp;|{' '}
                                     </Typography>
                                     <TextField
                                         type="password"

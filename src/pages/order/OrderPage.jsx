@@ -66,27 +66,38 @@ const OrderPage = () => {
     });
 
     useEffect(() => {
-        const fetchOrderPage = () => {
+        const fetchOrderPage = async () => {
             try {
-                const cartData = getCartData();
-                const totalPrice = cartData.reduce((total, item) => total + item.productCnt * item.productPrice, 0);
+                const storedToken = localStorage.getItem('token');
 
-                const data = {
-                    orderDetails: cartData,
-                    totalPrice,
-                };
+                if (storedToken) {
+                    const response = await axios.get('http://localhost:8080/api/v1/mypage', {
+                        headers: {
+                            Authorization: `${storedToken}`,
+                        },
+                    });
+                    const userData = response.data;
 
-                setOrderPageData(data);
-                setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    orderName: '',
-                    orderTel: '',
-                    orderEmail: '',
-                    shipName: '',
-                    shipTel: '',
-                    shipAddr: '',
-                    shipReq: '',
-                }));
+                    const cartData = getCartData();
+                    const totalPrice = cartData.reduce((total, item) => total + item.productCnt * item.productPrice, 0);
+
+                    const data = {
+                        orderDetails: cartData,
+                        totalPrice,
+                    };
+
+                    setOrderPageData(data);
+                    setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        orderName: userData.name,
+                        orderTel: userData.phoneNumber,
+                        orderEmail: userData.username,
+                        shipName: userData.name,
+                        shipTel: userData.phoneNumber,
+                        shipAddr: '',
+                        shipReq: '배송 전 연락 바랍니다.',
+                    }));
+                }
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -96,6 +107,38 @@ const OrderPage = () => {
 
         fetchOrderPage();
     }, []);
+
+    // useEffect(() => {
+    //     const fetchOrderPage = () => {
+    //         try {
+    //             const cartData = getCartData();
+    //             const totalPrice = cartData.reduce((total, item) => total + item.productCnt * item.productPrice, 0);
+
+    //             const data = {
+    //                 orderDetails: cartData,
+    //                 totalPrice,
+    //             };
+
+    //             setOrderPageData(data);
+    //             setFormData((prevFormData) => ({
+    //                 ...prevFormData,
+    //                 orderName: '',
+    //                 orderTel: '',
+    //                 orderEmail: '',
+    //                 shipName: '',
+    //                 shipTel: '',
+    //                 shipAddr: '',
+    //                 shipReq: '',
+    //             }));
+    //         } catch (err) {
+    //             setError(err.message);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchOrderPage();
+    // }, []);
 
     const handleSubmitOrder = async () => {
         const storedToken = localStorage.getItem('token');
