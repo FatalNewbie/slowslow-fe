@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import {
+    Container,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+} from '@mui/material';
 
 const MemberList = () => {
     const [members, setMembers] = useState([]);
@@ -11,7 +21,12 @@ const MemberList = () => {
 
     const fetchMemberData = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/v1/admin/userList');
+            const response = await fetch('http://localhost:8080/api/v1/admin/userList', {
+                method: 'GET',
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`,
+                },
+            });
             const data = await response.json();
             console.log(data); // 데이터 확인
             setMembers(data);
@@ -26,6 +41,7 @@ const MemberList = () => {
                 method: 'PUT', // 'Put'를 'PUT'으로 변경
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `${localStorage.getItem('token')}`,
                 },
             });
             if (response.ok) {
@@ -60,7 +76,9 @@ const MemberList = () => {
                                 <TableCell>{member.id}</TableCell>
                                 <TableCell>{member.name}</TableCell>
                                 <TableCell>{member.username}</TableCell>
-                                <TableCell>{member.createdDate ? new Date(member.createdDate).toLocaleDateString() : 'N/A'}</TableCell>{' '}
+                                <TableCell>
+                                    {member.createdDate ? new Date(member.createdDate).toLocaleDateString() : 'N/A'}
+                                </TableCell>{' '}
                                 {/* 값이 없을 경우 'N/A' 표시 */}
                                 <TableCell>
                                     <Button

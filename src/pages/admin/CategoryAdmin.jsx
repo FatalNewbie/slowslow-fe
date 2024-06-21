@@ -36,6 +36,7 @@ const CategoryListAdmin = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
             },
             body: JSON.stringify({ categoryName }),
         })
@@ -52,6 +53,7 @@ const CategoryListAdmin = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
             },
             body: JSON.stringify({ categoryName }),
         })
@@ -68,6 +70,9 @@ const CategoryListAdmin = () => {
     const handleDeleteCategory = () => {
         fetch(`http://localhost:8080/admin/category/delete/${deleteCategoryId}`, {
             method: 'DELETE',
+            headers: {
+                Authorization: `${localStorage.getItem('token')}`,
+            },
         })
             .then(() => {
                 setCategories(categories.filter((category) => category.id !== deleteCategoryId));

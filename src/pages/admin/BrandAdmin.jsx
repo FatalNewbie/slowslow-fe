@@ -36,6 +36,7 @@ const BrandListAdmin = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
             },
             body: JSON.stringify({ brandName }),
         })
@@ -52,6 +53,7 @@ const BrandListAdmin = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
             },
             body: JSON.stringify({ brandName }),
         })
@@ -66,6 +68,10 @@ const BrandListAdmin = () => {
     const handleDeleteBrand = () => {
         fetch(`http://localhost:8080/admin/brand/delete/${deleteBrandId}`, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
+            },
         })
             .then(() => {
                 setBrands(brands.filter((brand) => brand.id !== deleteBrandId));

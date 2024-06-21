@@ -62,6 +62,7 @@ const ProductAdmin = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
             },
             body: JSON.stringify(productDto),
         })
@@ -78,6 +79,7 @@ const ProductAdmin = () => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
             },
             body: JSON.stringify(productDto),
         })
@@ -92,6 +94,10 @@ const ProductAdmin = () => {
     const handleDeleteProduct = () => {
         fetch(`http://localhost:8080/admin/product/delete/${deleteProductId}`, {
             method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${localStorage.getItem('token')}`,
+            },
         })
             .then(() => {
                 setProducts(products.filter((product) => product.id !== deleteProductId));
