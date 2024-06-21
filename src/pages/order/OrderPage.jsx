@@ -74,25 +74,19 @@ const OrderPage = () => {
                 const data = {
                     orderDetails: cartData,
                     totalPrice,
-                    orderName: '홍길동',
-                    orderTel: '010-1234-5678',
-                    orderEmail: 'hong@example.com',
-                    shipName: '홍길동',
-                    shipTel: '010-1234-5678',
-                    shipAddr: '서울특별시 홍지동 123-12, 201호',
-                    shipReq: '문 앞에 놔주세요.',
                 };
 
                 setOrderPageData(data);
-                setFormData({
-                    orderName: data.orderName,
-                    orderTel: data.orderTel,
-                    orderEmail: data.orderEmail,
-                    shipName: data.shipName,
-                    shipTel: data.shipTel,
-                    shipAddr: data.shipAddr,
-                    shipReq: data.shipReq,
-                });
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    orderName: '',
+                    orderTel: '',
+                    orderEmail: '',
+                    shipName: '',
+                    shipTel: '',
+                    shipAddr: '',
+                    shipReq: '',
+                }));
             } catch (err) {
                 setError(err.message);
             } finally {
