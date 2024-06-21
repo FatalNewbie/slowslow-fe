@@ -34,7 +34,6 @@ import { AuthContext } from './pages/user/AuthContext';
 import { useContext, useEffect } from 'react';
 import BrandMainPage from './pages/brand/BrandMainPage.jsx';
 import CategoryMainPage from './pages/category/CategoryMainPage.jsx';
-import DeleteUser from './pages/user/DeleteUser.jsx';
 import Delete from './pages/user/Delete.jsx';
 import UserAdmin from './pages/admin/UserAdmin.jsx';
 
@@ -69,21 +68,13 @@ const App = () => {
                     <Route path="/" element={<MainLayout />}>
                         <Route index element={<Home />} />
                         <Route path="/cart" element={admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Cart />} />
-                        <Route
-                            path="/order"
-                            element={admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Order />}
-                        />
-                        <Route
-                            path="/orders"
-                            element={admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <OrderPage />}
-                        />
+                        <Route path="/order" element={admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Order />} />
+                        <Route path="/orders" element={admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <OrderPage />} />
                         <Route path="/orders/success" element={<OrderSuccess />} />
                         <Route path="/orders/failure" element={<OrderFailure />} />
                         <Route
                             path="/mypage/orders"
-                            element={
-                                !isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <OrderList />
-                            }
+                            element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <OrderList />}
                         />
                         <Route path="/mypage/orders/:orderId" element={<OrderDetail />} />
                         <Route path="/brand" element={<BrandLayout />}>
@@ -99,52 +90,18 @@ const App = () => {
                         <Route path="/main" element={<Main />} />
                         <Route
                             path="/checkPasswordForUpdate"
-                            element={
-                                !isLoggedIn || admin === 'ROLE_ADMIN' ? (
-                                    <Navigate to="/" replace />
-                                ) : (
-                                    <CheckPasswordForUpdate />
-                                )
-                            }
+                            element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <CheckPasswordForUpdate />}
                         />
                         <Route
                             path="/checkPasswordForDelete"
-                            element={
-                                !isLoggedIn || admin === 'ROLE_ADMIN' ? (
-                                    <Navigate to="/" replace />
-                                ) : (
-                                    <CheckPasswordForDelete />
-                                )
-                            }
+                            element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <CheckPasswordForDelete />}
                         />
-                        <Route
-                            path="/update"
-                            element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Update />}
-                        />
-                        <Route
-                            path="/deleteUser"
-                            element={
-                                !isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <DeleteUser />
-                            }
-                        />
-                        <Route
-                            path="/delete"
-                            element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Delete />}
-                        />
+                        <Route path="/update" element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Update />} />
+                        <Route path="/delete" element={!isLoggedIn || admin === 'ROLE_ADMIN' ? <Navigate to="/" replace /> : <Delete />} />
                         <Route path="/login" element={isLoggedIn ? <Navigate to="/" replace /> : <Login />} />
                         <Route path="/membership" element={isLoggedIn ? <Navigate to="/" replace /> : <Membership />} />
-
-                        {/* <Route path="/checkPassword" element={<MainLayout />}>
-                            <Route index element={<CheckPassword />} />
-                        </Route>
-                        <Route path="/update" element={<MainLayout />}>
-                            <Route index element={<Update />} />
-                        </Route> */}
                     </Route>
-                    <Route
-                        path="/admin"
-                        element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}
-                    >
+                    <Route path="/admin" element={admin === 'ROLE_ADMIN' ? <AdminLayout /> : <Navigate to="/" replace />}>
                         <Route index element={<AdminHome />} />
                         <Route path="/admin/brand" element={<BrandAdmin />} />
                         <Route path="/admin/category" element={<CategoryAdmin />} />

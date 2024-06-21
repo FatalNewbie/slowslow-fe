@@ -133,12 +133,12 @@ const OrderList = () => {
                     </ListItem>
                     <ListItem
                         button
-                        onClick={() => navigate('/deleteUser')}
+                        onClick={() => navigate('/checkPasswordForDelete')}
                         sx={{
-                            backgroundColor: isCurrentPage('/delete') ? '#586555' : 'transparent',
-                            color: isCurrentPage('/delete') ? 'common.white' : 'inherit',
+                            backgroundColor: isCurrentPage('/checkPasswordForDelete') ? '#586555' : 'transparent',
+                            color: isCurrentPage('/checkPasswordForDelete') ? 'common.white' : 'inherit',
                             '&:hover': {
-                                backgroundColor: isCurrentPage('/delete') ? '#6d7b77' : '#f0f0f0',
+                                backgroundColor: isCurrentPage('/checkPasswordForDelete') ? '#6d7b77' : '#f0f0f0',
                             },
                         }}
                     >
@@ -164,44 +164,24 @@ const OrderList = () => {
                                     height: '100%',
                                 }}
                             >
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
-                                    마이페이지 &gt;
-                                </Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>주문목록</Box>
                             </Box>
                         </Grid>
                     </Grid>
-                    <hr
-                        style={{
-                            height: `2px`,
-                            backgroundColor: `black`,
-                            border: 'none',
-                        }}
-                    />
+                    <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
                     {currentOrders.length > 0 ? (
                         <>
                             {currentOrders.map((order) => (
                                 <Card key={order.id} sx={{ mb: 3 }}>
                                     <CardContent>
                                         <Grid container spacing={2} alignItems="center">
-                                            <Grid
-                                                item
-                                                xs={12}
-                                                sm={3}
-                                                container
-                                                direction="column"
-                                                justifyContent="space-between"
-                                            >
+                                            <Grid item xs={12} sm={3} container direction="column" justifyContent="space-between">
                                                 <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
-                                                    <Typography
-                                                        variant="subtitle2"
-                                                        sx={{ color: 'gray', marginRight: '8px' }}
-                                                    >
+                                                    <Typography variant="subtitle2" sx={{ color: 'gray', marginRight: '8px' }}>
                                                         {String(order.id).padStart(5, '0')}
                                                     </Typography>
-                                                    <Typography variant="h6">
-                                                        {new Date(order.createdDate).toLocaleDateString()}
-                                                    </Typography>
+                                                    <Typography variant="h6">{new Date(order.createdDate).toLocaleDateString()}</Typography>
                                                 </Box>
                                                 <Button
                                                     variant="contained"
@@ -222,14 +202,7 @@ const OrderList = () => {
                                                     주문상세 조회
                                                 </Button>
                                             </Grid>
-                                            <Grid
-                                                item
-                                                xs={12}
-                                                sm={6}
-                                                container
-                                                justifyContent="center"
-                                                alignItems="center"
-                                            >
+                                            <Grid item xs={12} sm={6} container justifyContent="center" alignItems="center">
                                                 {order.orderDetails.map((detail) => (
                                                     <Box key={detail.id} mx={1} textAlign="center">
                                                         <img
@@ -241,19 +214,9 @@ const OrderList = () => {
                                                     </Box>
                                                 ))}
                                             </Grid>
-                                            <Grid
-                                                item
-                                                xs={12}
-                                                sm={3}
-                                                container
-                                                direction="column"
-                                                justifyContent="flex-end"
-                                            >
+                                            <Grid item xs={12} sm={3} container direction="column" justifyContent="flex-end">
                                                 <Typography variant="h5" align="right">
-                                                    <Box
-                                                        component="span"
-                                                        sx={{ fontWeight: 'bold', marginRight: '2px' }}
-                                                    >
+                                                    <Box component="span" sx={{ fontWeight: 'bold', marginRight: '2px' }}>
                                                         {formatNumber(order.totalPrice)}
                                                     </Box>
                                                     <Box component="span" sx={{ fontSize: '0.875rem' }}>
