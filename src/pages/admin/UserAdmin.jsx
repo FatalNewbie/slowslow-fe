@@ -13,6 +13,7 @@ const MemberList = () => {
         try {
             const response = await fetch('http://localhost:8080/api/v1/admin/userList');
             const data = await response.json();
+            console.log(data); // 데이터 확인
             setMembers(data);
         } catch (error) {
             console.error('Error fetching member data:', error);
@@ -22,7 +23,7 @@ const MemberList = () => {
     const handleRestoreMember = async (username) => {
         try {
             const response = await fetch(`http://localhost:8080/api/v1/restoreUser/${username}`, {
-                method: 'Put',
+                method: 'PUT', // 'Put'를 'PUT'으로 변경
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -59,7 +60,8 @@ const MemberList = () => {
                                 <TableCell>{member.id}</TableCell>
                                 <TableCell>{member.name}</TableCell>
                                 <TableCell>{member.username}</TableCell>
-                                <TableCell>{new Date(member.createdAt).toLocaleDateString()}</TableCell>
+                                <TableCell>{member.createdDate ? new Date(member.createdDate).toLocaleDateString() : 'N/A'}</TableCell>{' '}
+                                {/* 값이 없을 경우 'N/A' 표시 */}
                                 <TableCell>
                                     <Button
                                         variant="contained"

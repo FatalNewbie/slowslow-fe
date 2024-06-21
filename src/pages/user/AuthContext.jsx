@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
@@ -51,6 +50,11 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
     };
 
+    const handleTokenExpired = () => {
+        logout();
+        window.location.href = '/login'; // 토큰 만료 시 로그인 화면으로 리디렉션
+    };
+
     const setToken = (token) => {
         localStorage.setItem('token', token);
     };
@@ -90,10 +94,7 @@ export const AuthProvider = ({ children }) => {
         if (token && isTokenValid(token)) {
             return true;
         } else {
-            removeToken();
-            removeRole();
-            removeUsername();
-            return false;
+            handleTokenExpired();
         }
     };
 
