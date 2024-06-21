@@ -73,16 +73,10 @@ const Header = () => {
         <AppBar position="static" sx={{ backgroundColor: 'white', color: 'black', boxShadow: 3, mb: 2 }}>
             <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', px: 8, mt: 7, mb: 4 }}>
                 <Box sx={{ flex: 1, pl: 22 }} />
-                <Box sx={{ cursor: 'pointer' }} onClick={handleHome}>
+                <Box sx={{ cursor: 'pointer' }} onClick={handleHome} alignItems={'center'}>
                     <Stack direction="row" spacing={1.5} alignItems="center">
-                        <img
-                            src={CampingImage}
-                            alt="캠핑"
-                            style={{ width: '65px', height: '65px', marginTop: '-14px' }}
-                        />
-                        <Typography sx={{ fontWeight: 'bold', letterSpacing: 4, fontSize: '1.8rem' }}>
-                            늘짝늘짝
-                        </Typography>
+                        <img src={CampingImage} alt="캠핑" style={{ width: '65px', height: '65px', marginTop: '-14px' }} />
+                        <Typography sx={{ fontWeight: 'bold', letterSpacing: 4, fontSize: '1.8rem' }}>늘짝늘짝</Typography>
                     </Stack>
                 </Box>
                 <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', pr: 22 }}>

@@ -86,9 +86,9 @@ const AdminHome = () => {
                         height: '150px',
                         borderRadius: '12px',
                     }}
-                    onClick={handleAdminProduct}
+                    onClick={handleAdminBrand}
                 >
-                    제품 관리
+                    브랜드 관리
                 </Button>
             </Box>
             <Box display="flex" justifyContent="center">
@@ -102,9 +102,9 @@ const AdminHome = () => {
                         height: '150px',
                         borderRadius: '12px',
                     }}
-                    onClick={handleAdminBrand}
+                    onClick={handleAdminProduct}
                 >
-                    브랜드 관리
+                    제품 관리
                 </Button>
             </Box>
         </Box>

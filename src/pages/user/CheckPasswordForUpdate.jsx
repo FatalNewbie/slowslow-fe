@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext'; // AuthContext 임포트
 import Grid from '@mui/material/Unstable_Grid2';
-import { Box, Typography, Button, List, ListItem, ListItemText, TextField, Container } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemText, TextField, Container, Divider } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 
 function HomeIcon(props) {
@@ -107,12 +107,12 @@ const PasswordCheckForm = () => {
                     </ListItem>
                     <ListItem
                         button
-                        onClick={() => navigate('/deleteUser')}
+                        onClick={() => navigate('/checkPasswordForDelete')}
                         sx={{
-                            backgroundColor: isCurrentPage('/delete') ? '#586555' : 'transparent',
-                            color: isCurrentPage('/delete') ? 'common.white' : 'inherit',
+                            backgroundColor: isCurrentPage('/checkPasswordForDelete') ? '#586555' : 'transparent',
+                            color: isCurrentPage('/checkPasswordForDelete') ? 'common.white' : 'inherit',
                             '&:hover': {
-                                backgroundColor: isCurrentPage('/delete') ? '#6d7b77' : '#f0f0f0',
+                                backgroundColor: isCurrentPage('/checkPasswordForDelete') ? '#6d7b77' : '#f0f0f0',
                             },
                         }}
                     >
@@ -137,20 +137,13 @@ const PasswordCheckForm = () => {
                                     height: '100%',
                                 }}
                             >
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
-                                    마이페이지 &gt;
-                                </Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원정보 &gt;</Box>
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>비밀번호 확인</Box>
                             </Box>
                         </Grid>
                     </Grid>
-                    <hr
-                        style={{
-                            height: `2px`,
-                            backgroundColor: `black`,
-                            border: 'none',
-                        }}
-                    />
+                    <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
                     <Box
                         sx={{
                             padding: '20px',

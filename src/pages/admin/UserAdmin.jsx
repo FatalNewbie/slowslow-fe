@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Container,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Button,
-} from '@mui/material';
+import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
 const MemberList = () => {
     const [members, setMembers] = useState([]);
@@ -32,7 +22,7 @@ const MemberList = () => {
     const handleRestoreMember = async (username) => {
         try {
             const response = await fetch(`http://localhost:8080/api/v1/restoreUser/${username}`, {
-                method: 'Get',
+                method: 'Put',
                 headers: {
                     'Content-Type': 'application/json',
                 },

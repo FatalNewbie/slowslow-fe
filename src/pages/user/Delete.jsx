@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemText, TextField, Container } from '@mui/material';
+import { Box, Typography, Button, List, ListItem, ListItemText, Container, Card, CardContent, Divider } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 import Grid from '@mui/material/Unstable_Grid2';
 import { AuthContext } from './AuthContext';
@@ -16,9 +16,7 @@ function HomeIcon(props) {
 
 const ConfirmDelete = () => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState('');
     const { username } = useContext(AuthContext);
-
     const location = useLocation();
 
     const isCurrentPage = (path) => {
@@ -68,10 +66,10 @@ const ConfirmDelete = () => {
                         button
                         onClick={() => navigate('/mypage')}
                         sx={{
-                            backgroundColor: isCurrentPage('/checkPasswordForUpdate') ? '#586555' : 'transparent',
-                            color: isCurrentPage('/checkPasswordForUpdate') ? 'common.white' : 'inherit',
+                            backgroundColor: isCurrentPage('/mypage') ? '#586555' : 'transparent',
+                            color: isCurrentPage('/mypage') ? 'common.white' : 'inherit',
                             '&:hover': {
-                                backgroundColor: isCurrentPage('/checkPasswordForUpdate') ? '#6d7b77' : '#f0f0f0',
+                                backgroundColor: isCurrentPage('/mypage') ? '#6d7b77' : '#f0f0f0',
                             },
                         }}
                     >
@@ -92,7 +90,7 @@ const ConfirmDelete = () => {
                     </ListItem>
                     <ListItem
                         button
-                        onClick={() => navigate('/deleteUser')}
+                        onClick={() => navigate('/checkPasswordForDelete')}
                         sx={{
                             backgroundColor: isCurrentPage('/delete') ? '#586555' : 'transparent',
                             color: isCurrentPage('/delete') ? 'common.white' : 'inherit',
@@ -122,39 +120,55 @@ const ConfirmDelete = () => {
                                     height: '100%',
                                 }}
                             >
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
-                                    회원탈퇴 &gt;
-                                </Box>
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>비밀번호확인</Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원탈퇴</Box>
                             </Box>
                         </Grid>
                     </Grid>
-                    <hr
-                        style={{
-                            height: `2px`,
-                            backgroundColor: `black`,
-                            border: 'none',
-                        }}
-                    />
+                    <Divider sx={{ backgroundColor: 'rgba(128, 128, 128, 0.8)', width: '100%', mb: 2 }} />
+                    <Card sx={{ mb: 3 }}>
+                        <CardContent>
+                            <Grid alignItems="center">
+                                <Grid item xs={12} sm={3} container direction="row" mt={3} ml={5}>
+                                    {/* 회원 탈퇴 폼 */}
+                                    <Box sx={{ mr: 2 }}>
+                                        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+                                            회원 탈퇴
+                                        </Typography>
+                                        <Typography variant="body1" sx={{ mb: 2 }}>
+                                            정말로 탈퇴하시겠습니까?
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+                    </Card>
                     <Box
                         sx={{
-                            padding: '20px',
-                            borderRadius: '4px',
-                            textAlign: 'center',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            gap: 2,
                         }}
+                        mt={3}
                     >
-                        <h2>정말 탈퇴하시겠습니까?</h2>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleDeleteAccount}
+                            sx={{
+                                bgcolor: '#586555',
+                                '&:hover': {
+                                    backgroundColor: '#6d7b77',
+                                },
+                            }}
+                        >
+                            &nbsp;&nbsp;&nbsp;네&nbsp;&nbsp;&nbsp;
+                        </Button>
                         <Button
                             variant="contained"
                             color="primary"
                             onClick={() => navigate('/mypage')}
                             sx={{
-                                mt: 2,
-                                mr: 41,
                                 bgcolor: '#586555',
-                                float: 'right',
                                 '&:hover': {
                                     backgroundColor: '#6d7b77',
                                 },
@@ -162,167 +176,10 @@ const ConfirmDelete = () => {
                         >
                             아니오
                         </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleDeleteAccount}
-                            sx={{
-                                mt: 2,
-                                mr: 3,
-                                bgcolor: '#586555',
-                                float: 'right',
-                                '&:hover': {
-                                    backgroundColor: '#6d7b77',
-                                },
-                            }}
-                        >
-                            네
-                        </Button>
                     </Box>
                 </Container>
             </Box>
         </Box>
-        // <Box sx={{ flexGrow: 1 }}>
-        //     <Grid container spacing={2}>
-        //         <Grid xs={6}>
-        //             <Box sx={{ fontSize: 27, fontWeight: 'bold' }}>비밀번호확인</Box>
-        //         </Grid>
-        //         <Grid xs={6}>
-        //             <Box
-        //                 sx={{
-        //                     display: 'flex',
-        //                     alignItems: 'right',
-        //                     justifyContent: 'flex-end',
-        //                     alignItems: 'flex-end',
-        //                     gap: 1,
-        //                     height: '100%',
-        //                 }}
-        //             >
-        //                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
-        //                     마이페이지 &gt;
-        //                 </Box>
-        // <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원탈퇴 &gt;</Box>
-        // <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>비밀번호확인</Box>
-        //             </Box>
-        //         </Grid>
-        //     </Grid>
-        //     <hr
-        //         style={{
-        //             height: `2px`,
-        //             backgroundColor: `black`,
-        //             border: 'none',
-        //         }}
-        //     />
-        //     {/* 왼쪽 메뉴 */}
-        //     <Box sx={{ width: 200, bgcolor: 'background.paper', position: 'fixed' }}>
-        //         <Box className="bucket-list-header">
-        //             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-        //                 <HomeIcon color="white" />
-        //                 마이페이지
-        //             </Typography>
-        //         </Box>
-        //         <List component="nav">
-        //             <ListItem
-        //                 button
-        //                 onClick={() => navigate('/mypage')}
-        //                 sx={{
-        //                     backgroundColor: 'transparent',
-        //                     color: 'inherit',
-        //                     '&:hover': {
-        //                         backgroundColor: '#f0f0f0',
-        //                     },
-        //                 }}
-        //             >
-        //                 <ListItemText primary="회원정보" />
-        //             </ListItem>
-        //             <ListItem
-        //                 button
-        //                 onClick={() => navigate('/mypage/orders')}
-        //                 // isCurrentPage 함수나 현재 페이지 상태를 통해 활성화 상태 관리
-        //                 sx={{
-        //                     backgroundColor: 'transparent', // 기본 배경색 설정
-        //                     color: 'inherit', // 기본 글자색 설정
-        //                     '&:hover': {
-        //                         backgroundColor: '#f0f0f0', // 호버 배경색 설정
-        //                     },
-        //                 }}
-        //             >
-        //                 <ListItemText primary="주문목록" />
-        //             </ListItem>
-        //             <ListItem
-        //                 button
-        //                 onClick={() => navigate('/delete')}
-        //                 sx={{
-        //                     backgroundColor: '#586555',
-        //                     color: '#fff',
-        //                     '&:hover': {
-        //                         backgroundColor: '#6d7b77',
-        //                     },
-        //                 }}
-        //             >
-        //                 <ListItemText primary="회원탈퇴" />
-        //             </ListItem>
-        //         </List>
-        //     </Box>
-        //     <Box sx={{ justifyContent: 'center', alignItems: 'center' }}>
-        //         <Box
-        //             sx={{
-        //                 padding: '20px',
-        //                 borderRadius: '4px',
-        //                 textAlign: 'center',
-        //                 display: 'flex',
-        //                 flexDirection: 'column',
-        //                 alignItems: 'center',
-        //             }}
-        //         >
-        //             <Box
-        //                 sx={{
-        //                     ml: 10,
-        //                     pl: 6,
-        //                     pt: 4,
-        //                     pr: 6,
-        //                     pb: 4,
-        //                     flexGrow: 0.3,
-        //                     border: '2px solid #586555',
-        //                     borderRadius: '10px',
-        //                 }}
-        //             >
-        // <h2>정말 탈퇴하시겠습니까?</h2>
-        // <Button
-        //     variant="contained"
-        //     color="primary"
-        //     onClick={() => navigate('/mypage')}
-        //     sx={{
-        //         mt: 2,
-        //         ml: 1,
-        //         bgcolor: '#586555',
-        //         float: 'right',
-        //         '&:hover': {
-        //             backgroundColor: '#6d7b77',
-        //         },
-        //     }}
-        // >
-        //     아니오
-        // </Button>
-        // <Button
-        //     variant="contained"
-        //     color="primary"
-        //     onClick={handleDeleteAccount}
-        //     sx={{
-        //         mt: 2,
-        //         bgcolor: '#586555',
-        //         float: 'right',
-        //         '&:hover': {
-        //             backgroundColor: '#6d7b77',
-        //         },
-        //     }}
-        // >
-        //     &nbsp;&nbsp;&nbsp;네&nbsp;&nbsp;&nbsp;
-        // </Button>
-        //             </Box>
-        //         </Box>
-        //     </Box>
-        // </Box>
     );
 };
 
