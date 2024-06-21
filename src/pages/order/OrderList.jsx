@@ -14,8 +14,8 @@ import {
     ListItem,
     ListItemText,
 } from '@mui/material';
-import axios from 'axios'; // Axios 임포트
-import { AuthContext } from '../user/AuthContext'; // AuthContext 임포트
+import axios from 'axios';
+import { AuthContext } from '../user/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SvgIcon from '@mui/material/SvgIcon';
 
@@ -43,11 +43,10 @@ const OrderList = () => {
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
-        console.log('Stored Token:', storedToken); // 토큰 값을 콘솔에 출력
+        console.log('Stored Token:', storedToken);
         if (storedToken) {
             axios
                 .get('http://localhost:8080/api/v1/mypage/orders', {
-                    // URL에 /api/v1 추가
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `${storedToken}`,
@@ -234,7 +233,7 @@ const OrderList = () => {
                                                     <Box key={detail.id} mx={1} textAlign="center">
                                                         <img
                                                             src={detail.orderImg}
-                                                            alt={detail.productName} // alt 속성 추가
+                                                            alt={detail.productName}
                                                             style={{ width: '100px', height: '100px' }}
                                                         />
                                                         <Typography variant="body2">{detail.productName}</Typography>
@@ -260,6 +259,25 @@ const OrderList = () => {
                                                         원
                                                     </Box>
                                                 </Typography>
+                                                <Box mt={2}>
+                                                    <Typography
+                                                        variant="body2"
+                                                        align="right"
+                                                        sx={{
+                                                            color:
+                                                                order.status === 'CANCELLED' ||
+                                                                order.status === 'FAILED'
+                                                                    ? 'darkred'
+                                                                    : 'black',
+                                                        }}
+                                                    >
+                                                        {order.status === 'PENDING' && '상품준비중'}
+                                                        {order.status === 'SHIPPING' && '배송중'}
+                                                        {order.status === 'CANCELLED' && '취소 완료'}
+                                                        {order.status === 'COMPLETED' && '배송 완료'}
+                                                        {order.status === 'FAILED' && '주문 실패'}
+                                                    </Typography>
+                                                </Box>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -290,7 +308,7 @@ const OrderList = () => {
                             </Box>
                         </>
                     ) : (
-                        <Typography variant="h6">No orders found.</Typography>
+                        <Typography variant="h6">주문 내역이 없습니다.</Typography>
                     )}
                 </Container>
             </Box>
