@@ -112,7 +112,7 @@ const PasswordCheckForm = () => {
                 <Container maxWidth="md">
                     <Grid container spacing={2}>
                         <Grid item xs={6}>
-                            <Box sx={{ fontSize: 27, fontWeight: 'bold' }}>회원정보</Box>
+                            <Box sx={{ fontSize: 27, fontWeight: 'bold' }}>회원탈퇴</Box>
                         </Grid>
                         <Grid item xs={6}>
                             <Box
@@ -125,7 +125,6 @@ const PasswordCheckForm = () => {
                                 }}
                             >
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>회원탈퇴 &gt;</Box>
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>비밀번호확인</Box>
                             </Box>
                         </Grid>
