@@ -1,6 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Container, Box, Typography, Button, List, ListItem, ListItemText, Card, CardContent, Divider } from '@mui/material';
+import {
+    Container,
+    Box,
+    Typography,
+    Button,
+    List,
+    ListItem,
+    ListItemText,
+    Card,
+    CardContent,
+    Divider,
+} from '@mui/material';
 import { AuthContext } from './AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -31,7 +42,7 @@ const MyPage = () => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
             axios
-                .get('http://localhost:8080/api/v1/mypage', {
+                .get('http://34.47.79.214:8080/api/v1/mypage', {
                     headers: {
                         Authorization: `${storedToken}`,
                     },
@@ -122,7 +133,9 @@ const MyPage = () => {
                                     height: '100%',
                                 }}
                             >
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                                    마이페이지 &gt;
+                                </Box>
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원정보</Box>
                             </Box>
                         </Grid>
@@ -133,7 +146,14 @@ const MyPage = () => {
                             <Grid alignItems="center">
                                 <Grid item xs={12} sm={3} container direction="row" mt={3} ml={5}>
                                     <FaRegUser fontSize={150} color="#586555" />
-                                    <Box container direction="row" alignItems="center" justifyContent="center" mb={2} pl={4}>
+                                    <Box
+                                        container
+                                        direction="row"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                        mb={2}
+                                        pl={4}
+                                    >
                                         <Box sx={{ mr: 2 }}>
                                             <Typography variant="h5" sx={{ mb: 2, mt: 3 }} color="#21272A">
                                                 {userData.name} 님

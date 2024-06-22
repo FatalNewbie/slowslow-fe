@@ -1,7 +1,18 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, Typography, Button, List, ListItem, ListItemText, Container, Card, CardContent, Divider } from '@mui/material';
+import {
+    Box,
+    Typography,
+    Button,
+    List,
+    ListItem,
+    ListItemText,
+    Container,
+    Card,
+    CardContent,
+    Divider,
+} from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 import Grid from '@mui/material/Unstable_Grid2';
 import { AuthContext } from './AuthContext';
@@ -27,7 +38,7 @@ const ConfirmDelete = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(
-                'http://localhost:8080/api/v1/delete', // 회원 탈퇴 요청을 보내는 엔드포인트
+                'http://34.47.79.214:8080/api/v1/delete', // 회원 탈퇴 요청을 보내는 엔드포인트
                 {
                     headers: {
                         Authorization: `${token}`,
@@ -121,7 +132,9 @@ const ConfirmDelete = () => {
                                     height: '100%',
                                 }}
                             >
-                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
+                                <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                                    마이페이지 &gt;
+                                </Box>
                                 <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>회원탈퇴</Box>
                             </Box>
                         </Grid>

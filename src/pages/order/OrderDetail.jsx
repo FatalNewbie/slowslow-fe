@@ -48,7 +48,7 @@ const OrderDetail = () => {
         console.log('Stored Token:', storedToken); // 토큰 값을 콘솔에 출력
         if (storedToken) {
             axios
-                .get(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, {
+                .get(`http://34.47.79.214:8080/api/v1/mypage/orders/${orderId}`, {
                     // URL에 /api/v1 추가
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const OrderDetail = () => {
         }
 
         try {
-            const response = await axios.delete(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, {
+            const response = await axios.delete(`http://34.47.79.214:8080/api/v1/mypage/orders/${orderId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `${storedToken}`,
@@ -130,7 +130,7 @@ const OrderDetail = () => {
         }
 
         try {
-            const response = await axios.put(`http://localhost:8080/api/v1/mypage/orders/${orderId}`, formData, {
+            const response = await axios.put(`http://34.47.79.214:8080/api/v1/mypage/orders/${orderId}`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `${storedToken}`,
@@ -198,11 +198,18 @@ const OrderDetail = () => {
                         onClick={() => navigate('/mypage/orders')}
                         sx={{
                             backgroundColor:
-                                isCurrentPage('/mypage/orders') || isCurrentPage('/mypage/orders/:orderId') ? '#586555' : 'transparent',
-                            color: isCurrentPage('/mypage/orders') || isCurrentPage('/mypage/orders/:orderId') ? 'common.white' : 'inherit',
+                                isCurrentPage('/mypage/orders') || isCurrentPage('/mypage/orders/:orderId')
+                                    ? '#586555'
+                                    : 'transparent',
+                            color:
+                                isCurrentPage('/mypage/orders') || isCurrentPage('/mypage/orders/:orderId')
+                                    ? 'common.white'
+                                    : 'inherit',
                             '&:hover': {
                                 backgroundColor:
-                                    isCurrentPage('/mypage/orders') || isCurrentPage('/mypage/orders/:orderId') ? '#6d7b77' : '#f0f0f0',
+                                    isCurrentPage('/mypage/orders') || isCurrentPage('/mypage/orders/:orderId')
+                                        ? '#6d7b77'
+                                        : '#f0f0f0',
                             },
                         }}
                     >
@@ -239,8 +246,12 @@ const OrderDetail = () => {
                                 height: '100%',
                             }}
                         >
-                            <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>마이페이지 &gt;</Box>
-                            <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>주문목록 &gt;</Box>
+                            <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                                마이페이지 &gt;
+                            </Box>
+                            <Box sx={{ fontSize: 20, fontWeight: 'bold', color: 'rgb(195, 195, 195)' }}>
+                                주문목록 &gt;
+                            </Box>
                             <Box sx={{ fontSize: 20, fontWeight: 'bold', color: `black` }}>주문상세</Box>
                         </Box>
                     </Grid>

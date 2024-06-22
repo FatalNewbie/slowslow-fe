@@ -29,7 +29,7 @@ const Header = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:8080/category/all')
+        fetch('http://34.47.79.214:8080/category/all')
             .then((response) => response.json())
             .then((data) => setCategories(data))
             .catch((error) => console.error('Error fetching data:', error));
@@ -75,8 +75,14 @@ const Header = () => {
                 <Box sx={{ flex: 1, pl: 22 }} />
                 <Box sx={{ cursor: 'pointer' }} onClick={handleHome} alignItems={'center'}>
                     <Stack direction="row" spacing={1.5} alignItems="center">
-                        <img src={CampingImage} alt="캠핑" style={{ width: '65px', height: '65px', marginTop: '-14px' }} />
-                        <Typography sx={{ fontWeight: 'bold', letterSpacing: 4, fontSize: '1.8rem' }}>늘짝늘짝</Typography>
+                        <img
+                            src={CampingImage}
+                            alt="캠핑"
+                            style={{ width: '65px', height: '65px', marginTop: '-14px' }}
+                        />
+                        <Typography sx={{ fontWeight: 'bold', letterSpacing: 4, fontSize: '1.8rem' }}>
+                            늘짝늘짝
+                        </Typography>
                     </Stack>
                 </Box>
                 <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', pr: 22 }}>
